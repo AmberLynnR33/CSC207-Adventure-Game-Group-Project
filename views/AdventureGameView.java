@@ -57,10 +57,6 @@ public class AdventureGameView {
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
 
-
-    private ArrayList<Node> interactiveNodes; //for buttons, text and images that move on and off screen
-    private int curInteractive = -1; //current index traversing for interactiveNodes
-
     private PauseTransition forcedTransition; //the transition that occurs when in FORCED room
 
     private HashMap<AdventureObject, Integer> seenObjects = new HashMap<>();
