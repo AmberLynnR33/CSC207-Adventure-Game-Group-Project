@@ -256,67 +256,13 @@ public class AdventureGameView {
                     //clear the box for new input
                     inputTextField.setText("");
                 }else if(keyEvent.getCode() == KeyCode.TAB){
-                    setCurInteractive();
+                    saveButton.requestFocus();
                 }
                 keyEvent.consume();
             }
         };
 
         this.inputTextField.setOnKeyPressed(pressedButton);
-
-    }
-
-
-
-     //setInteractive
-
-    //Moves focus to a different interactive element.
-     //Useful for traversing using the keyboard.
-
-    private void setCurInteractive(){
-        if (this.interactiveNodes == null){
-            this.updateInteractiveNodes(false);
-        }else {
-            this.updateInteractiveNodes(true);
-        }
-
-        this.curInteractive++;
-
-        if (this.curInteractive >= this.interactiveNodes.size()){
-            this.curInteractive = 0;
-        }
-        this.interactiveNodes.get(this.curInteractive).requestFocus();
-    }
-
-    //updateInteractive
-
-    //allows the interactiveNodes to be updated, so they can be traversed via the keyboard
-    //isInitialized allows this.interactiveNodes to have the base buttons and textbox traversable
-    private void updateInteractiveNodes(boolean isInitialized){
-        if(!isInitialized){
-            this.interactiveNodes = new ArrayList<>();
-            this.interactiveNodes.add(this.inputTextField);
-            this.interactiveNodes.add(this.saveButton);
-            this.interactiveNodes.add(this.helpButton);
-            this.interactiveNodes.add(this.loadButton);
-        }
-        if(this.interactiveNodes.size() > 4) {
-            for (int i = 4; i <= interactiveNodes.size(); i++) {
-                this.interactiveNodes.remove(4);
-            }
-        }
-
-        for (Node curNode: this.objectsInRoom.getChildren()){
-            if (curNode.getClass() == this.TEST_BUTTON.getClass()){
-                this.interactiveNodes.add(curNode);
-            }
-        }
-
-        for (Node curNode: this.objectsInInventory.getChildren()){
-            if (curNode.getClass() == this.TEST_BUTTON.getClass()){
-                this.interactiveNodes.add(curNode);
-            }
-        }
 
     }
 
