@@ -104,6 +104,7 @@ public class AdventureGameView {
         ColumnConstraints column1 = new ColumnConstraints(150);
         ColumnConstraints column2 = new ColumnConstraints(650);
         ColumnConstraints column3 = new ColumnConstraints(150);
+        ColumnConstraints column4 = new ColumnConstraints(200);
         column3.setHgrow( Priority.SOMETIMES ); //let some columns grow to take any extra space
         column1.setHgrow( Priority.SOMETIMES );
 
@@ -114,7 +115,7 @@ public class AdventureGameView {
         row1.setVgrow( Priority.SOMETIMES );
         row3.setVgrow( Priority.SOMETIMES );
 
-        gridPane.getColumnConstraints().addAll( column1 , column2 , column1 );
+        gridPane.getColumnConstraints().addAll( column1 , column2 , column1 , column4);
         gridPane.getRowConstraints().addAll( row1 , row2 , row1 );
 
         // Buttons
@@ -182,6 +183,41 @@ public class AdventureGameView {
         textEntry.setSpacing(10);
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
+
+        // adding game mode functionality
+        RadioButton regMoveGameMode = new RadioButton("Regular Movement");
+        regMoveGameMode.setId("00");
+
+        RadioButton chaoticMoveGameMode = new RadioButton("Chaotic Movement");
+        chaoticMoveGameMode.setId("01");
+
+        RadioButton trollGameMode = new RadioButton("Always Trolled");
+        trollGameMode.setId("02");
+
+        this.movementGameModes = new ToggleGroup();
+        regMoveGameMode.setToggleGroup(this.movementGameModes);
+        chaoticMoveGameMode.setToggleGroup(this.movementGameModes);
+        trollGameMode.setToggleGroup(this.movementGameModes);
+        this.movementGameModes.selectToggle(regMoveGameMode);
+
+        //game mode changing text colour
+        Label gameModeTitle = new Label("Select Your Game Mode:");
+        gameModeTitle.setStyle("-fx-text-fill: white;");
+        gameModeTitle.setFont(new Font("Arial", 17));
+
+        regMoveGameMode.setStyle("-fx-text-fill: white;");
+        chaoticMoveGameMode.setStyle("-fx-text-fill: white;");
+        trollGameMode.setStyle("-fx-text-fill: white;");
+
+        // add game mode selection to GUI
+        VBox selectGameMode = new VBox();
+        selectGameMode.getChildren().add(gameModeTitle);
+        selectGameMode.getChildren().add(regMoveGameMode);
+        selectGameMode.getChildren().add(chaoticMoveGameMode);
+        selectGameMode.getChildren().add(trollGameMode);
+        selectGameMode.setAlignment(Pos.TOP_LEFT);
+
+        gridPane.add(selectGameMode, 3,0,1,1);
 
         // Render everything
         var scene = new Scene( gridPane ,  1200, 800);
