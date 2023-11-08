@@ -64,6 +64,7 @@ public class AdventureGameView {
     private ArrayList<Button> seenObjectButtons = new ArrayList<>();
 
     private ToggleGroup movementGameModes;
+    private Label gameModeLabel = new Label("Select Your Game Mode:");
 
     private final Button TEST_BUTTON = new Button(); //Button for checking class
 
@@ -201,17 +202,15 @@ public class AdventureGameView {
         this.movementGameModes.selectToggle(regMoveGameMode);
 
         //game mode changing text colour
-        Label gameModeTitle = new Label("Select Your Game Mode:");
-        gameModeTitle.setStyle("-fx-text-fill: white;");
-        gameModeTitle.setFont(new Font("Arial", 17));
-
+        this.gameModeLabel.setStyle("-fx-text-fill: white;");
+        this.gameModeLabel.setFont(new Font("Arial", 17));
         regMoveGameMode.setStyle("-fx-text-fill: white;");
         chaoticMoveGameMode.setStyle("-fx-text-fill: white;");
         trollGameMode.setStyle("-fx-text-fill: white;");
 
         // add game mode selection to GUI
         VBox selectGameMode = new VBox();
-        selectGameMode.getChildren().add(gameModeTitle);
+        selectGameMode.getChildren().add(this.gameModeLabel);
         selectGameMode.getChildren().add(regMoveGameMode);
         selectGameMode.getChildren().add(chaoticMoveGameMode);
         selectGameMode.getChildren().add(trollGameMode);
@@ -326,10 +325,10 @@ public class AdventureGameView {
             return;
         }
 
-        //try to move!
+        // check if movement needs to be set up
         if (!this.model.getActionMade()){
-            //TODO: fix this and get toggle group's selected ID
-            this.model.setMovementGameMode("00");
+            String gameModeID = ((RadioButton) this.movementGameModes.getSelectedToggle()).getId();
+            this.model.setMovementGameMode(gameModeID);
         }
         String output = this.model.interpretAction(text); //process the command!
 
@@ -470,6 +469,11 @@ public class AdventureGameView {
         roomPane.setPadding(new Insets(10));
         roomPane.setAlignment(Pos.TOP_CENTER);
         roomPane.setStyle("-fx-background-color: #000000;");
+
+        //check if player can change their game mode currently
+        if(this.model.getActionMade()){
+            this.movementGameModes.selectedToggleProperty();
+        }
 
         gridPane.add(roomPane, 1, 1);
         stage.sizeToScene();
