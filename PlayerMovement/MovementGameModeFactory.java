@@ -13,6 +13,18 @@ public class MovementGameModeFactory {
      * @return the class that will handle player movement
      */
     public MovementGameMode getMovementGameMode(String movementID){
-        throw new UnsupportedOperationException("Not yet implmented");
+        //IDs: 00 for RegularMovement
+        //     01 for ChaoticMovement
+        //     02 for AlwaysTrolled
+        //All other codes default to RegularMovement
+
+        switch (movementID){
+            case "01":
+                return new ChaoticMovement();
+            case "02":
+                return new AlwaysTrolled();
+            default:
+                return new RegularMovement();
+        }
     }
 }

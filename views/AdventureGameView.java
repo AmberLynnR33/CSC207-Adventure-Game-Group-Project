@@ -82,7 +82,7 @@ public class AdventureGameView {
     public void intiUI() {
 
         // setting up the stage
-        this.stage.setTitle("RICHA814's Adventure Game"); //Replace <YOUR UTORID> with your UtorID
+        this.stage.setTitle("Group 65's Adventure Game");
 
         //Inventory + Room items
         objectsInInventory.setSpacing(10);
@@ -182,7 +182,7 @@ public class AdventureGameView {
         gridPane.add( textEntry, 0, 2, 3, 1 );
 
         // Render everything
-        var scene = new Scene( gridPane ,  1000, 800);
+        var scene = new Scene( gridPane ,  1200, 800);
         scene.setFill(Color.BLACK);
         this.stage.setScene(scene);
         this.stage.setResizable(false);

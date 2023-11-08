@@ -118,6 +118,10 @@ public class AdventureGame implements Serializable {
      */
     public String interpretAction(String command){
 
+        //an action has been made, game mode is now solidified
+        this.actionMade = true;
+        //TODO: set up movement based on current game mode settings
+
         String[] inputArray = tokenize(command); //look up synonyms
 
         PassageTable motionTable = this.player.getCurrentRoom().getMotionTable(); //where can we move?
