@@ -12,7 +12,7 @@ public class MovementGameModeFactory {
      * @param movementID the ID corresponding to the game mode the user requested to play on
      * @return the class that will handle player movement
      */
-    public MovementGameMode getMovementGameMode(String movementID){
+    public static MovementGameMode getMovementGameMode(String movementID){
         //IDs: 00 for RegularMovement
         //     01 for ChaoticMovement
         //     02 for AlwaysTrolled

@@ -63,6 +63,8 @@ public class AdventureGameView {
     //Integer corresponds to index of the button in the following list
     private ArrayList<Button> seenObjectButtons = new ArrayList<>();
 
+    private ToggleGroup movementGameModes;
+
     private final Button TEST_BUTTON = new Button(); //Button for checking class
 
     /**
@@ -289,6 +291,10 @@ public class AdventureGameView {
         }
 
         //try to move!
+        if (!this.model.getActionMade()){
+            //TODO: fix this and get toggle group's selected ID
+            this.model.setMovementGameMode("00");
+        }
         String output = this.model.interpretAction(text); //process the command!
 
         if (output == null || (!output.equals("GAME OVER") && !output.equals("FORCED") && !output.equals("HELP"))) {

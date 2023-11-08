@@ -1,6 +1,7 @@
 package AdventureModel;
 
 import PlayerMovement.MovementGameMode;
+import PlayerMovement.MovementGameModeFactory;
 import PlayerMovement.RegularMovement;
 
 import java.io.*;
@@ -103,11 +104,33 @@ public class AdventureGame implements Serializable {
      */
     public boolean movePlayer(String direction) {
 
+        // in event that no game mode has been set up, assume regular movement occurs
         if (this.movementType == null) {
             this.movementType = new RegularMovement();
         }
+
+        // move player based on game mode
         return this.movementType.movePlayer(direction, this.player, this.rooms);
 
+    }
+
+    /**
+     * setMovementGameMode
+     * Sets up the game mode that the player has requested
+     * @param movementID the ID corresponding to the requested game mode
+     */
+    public void setMovementGameMode(String movementID){
+        this.actionMade = true;
+        this.movementType = MovementGameModeFactory.getMovementGameMode(movementID);
+    }
+
+    /**
+     * getActionMade
+     * getter method for actionMade
+     * @return the value stored in actionMade
+     */
+    public boolean getActionMade(){
+        return this.actionMade;
     }
 
     /**
@@ -117,10 +140,6 @@ public class AdventureGame implements Serializable {
      * @param command String representation of the command.
      */
     public String interpretAction(String command){
-
-        //an action has been made, game mode is now solidified
-        this.actionMade = true;
-        //TODO: set up movement based on current game mode settings
 
         String[] inputArray = tokenize(command); //look up synonyms
 
