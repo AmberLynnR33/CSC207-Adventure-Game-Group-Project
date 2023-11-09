@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import javafx.event.EventHandler; //you will need this too!
 import javafx.scene.AccessibleRole;
+import javafx.geometry.Orientation;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -63,6 +64,9 @@ public class AdventureGameView {
     //Integer corresponds to index of the button in the following list
     private ArrayList<Button> seenObjectButtons = new ArrayList<>();
 
+    private ToggleGroup movementGameModes;
+    private Label gameModeLabel = new Label("Select Your Game Mode:");
+
     private final Button TEST_BUTTON = new Button(); //Button for checking class
 
     /**
@@ -82,7 +86,7 @@ public class AdventureGameView {
     public void intiUI() {
 
         // setting up the stage
-        this.stage.setTitle("RICHA814's Adventure Game"); //Replace <YOUR UTORID> with your UtorID
+        this.stage.setTitle("Group 65's Adventure Game");
 
         //Inventory + Room items
         objectsInInventory.setSpacing(10);
@@ -102,8 +106,13 @@ public class AdventureGameView {
         ColumnConstraints column1 = new ColumnConstraints(150);
         ColumnConstraints column2 = new ColumnConstraints(650);
         ColumnConstraints column3 = new ColumnConstraints(150);
+        ColumnConstraints column4 = new ColumnConstraints(10);
+        ColumnConstraints column5 = new ColumnConstraints(200);
         column3.setHgrow( Priority.SOMETIMES ); //let some columns grow to take any extra space
         column1.setHgrow( Priority.SOMETIMES );
+
+        Separator separator = new Separator(Orientation.VERTICAL);
+        gridPane.add(separator, 3, 0, 1, GridPane.REMAINING);
 
         // Row constraints
         RowConstraints row1 = new RowConstraints();
@@ -112,7 +121,7 @@ public class AdventureGameView {
         row1.setVgrow( Priority.SOMETIMES );
         row3.setVgrow( Priority.SOMETIMES );
 
-        gridPane.getColumnConstraints().addAll( column1 , column2 , column1 );
+        gridPane.getColumnConstraints().addAll( column1 , column2 , column1 , column4);
         gridPane.getRowConstraints().addAll( row1 , row2 , row1 );
 
         // Buttons
@@ -181,8 +190,41 @@ public class AdventureGameView {
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
 
+        // adding game mode functionality
+        RadioButton regMoveGameMode = new RadioButton("Regular Movement");
+        regMoveGameMode.setId("00");
+
+        RadioButton chaoticMoveGameMode = new RadioButton("Curse of the Lost");
+        chaoticMoveGameMode.setId("01");
+
+        RadioButton trollGameMode = new RadioButton("Curse of the Troll");
+        trollGameMode.setId("02");
+
+        this.movementGameModes = new ToggleGroup();
+        regMoveGameMode.setToggleGroup(this.movementGameModes);
+        chaoticMoveGameMode.setToggleGroup(this.movementGameModes);
+        trollGameMode.setToggleGroup(this.movementGameModes);
+        this.movementGameModes.selectToggle(regMoveGameMode);
+
+        //game mode changing text colour
+        this.gameModeLabel.setStyle("-fx-text-fill: white;");
+        this.gameModeLabel.setFont(new Font("Arial", 17));
+        regMoveGameMode.setStyle("-fx-text-fill: white;");
+        chaoticMoveGameMode.setStyle("-fx-text-fill: white;");
+        trollGameMode.setStyle("-fx-text-fill: white;");
+
+        // add game mode selection to GUI
+        VBox selectGameMode = new VBox();
+        selectGameMode.getChildren().add(this.gameModeLabel);
+        selectGameMode.getChildren().add(regMoveGameMode);
+        selectGameMode.getChildren().add(chaoticMoveGameMode);
+        selectGameMode.getChildren().add(trollGameMode);
+        selectGameMode.setAlignment(Pos.CENTER_LEFT);
+
+        gridPane.add(selectGameMode, 4,0,1,1);
+
         // Render everything
-        var scene = new Scene( gridPane ,  1000, 800);
+        var scene = new Scene( gridPane ,  1210, 800);
         scene.setFill(Color.BLACK);
         this.stage.setScene(scene);
         this.stage.setResizable(false);
@@ -288,7 +330,11 @@ public class AdventureGameView {
             return;
         }
 
-        //try to move!
+        // check if movement needs to be set up
+        if (!this.model.getActionMade()){
+            String gameModeID = ((RadioButton) this.movementGameModes.getSelectedToggle()).getId();
+            this.model.setMovementGameMode(gameModeID);
+        }
         String output = this.model.interpretAction(text); //process the command!
 
         if (output == null || (!output.equals("GAME OVER") && !output.equals("FORCED") && !output.equals("HELP"))) {
@@ -428,6 +474,11 @@ public class AdventureGameView {
         roomPane.setPadding(new Insets(10));
         roomPane.setAlignment(Pos.TOP_CENTER);
         roomPane.setStyle("-fx-background-color: #000000;");
+
+        //check if player can change their game mode currently
+        if(this.model.getActionMade()){
+            this.movementGameModes.selectedToggleProperty();
+        }
 
         gridPane.add(roomPane, 1, 1);
         stage.sizeToScene();
