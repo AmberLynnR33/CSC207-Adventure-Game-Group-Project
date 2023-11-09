@@ -21,4 +21,10 @@ public interface MovementGameMode {
      * @return false, if move results in death or a win (and game is over).  Else, true.
      */
     public boolean movePlayer(String direction, Player player, HashMap<Integer, Room> roomMap);
+
+    /**
+     * gameModeName
+     * @return the name of the game mode
+     */
+    public String gameModeName();
 }

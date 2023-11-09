@@ -57,4 +57,13 @@ public class RegularMovement implements MovementGameMode{
         player.setCurrentRoom(room);
         return !player.getCurrentRoom().getMotionTable().getDirection().get(0).getDirection().equals("FORCED");
     }
+
+    /**
+     * gameModeName
+     * @return the name of the game mode
+     */
+    @Override
+    public String gameModeName() {
+        return "Regular Movement";
+    }
 }

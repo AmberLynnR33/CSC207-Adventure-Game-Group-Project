@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import javafx.event.EventHandler; //you will need this too!
 import javafx.scene.AccessibleRole;
+import javafx.geometry.Orientation;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -105,9 +106,13 @@ public class AdventureGameView {
         ColumnConstraints column1 = new ColumnConstraints(150);
         ColumnConstraints column2 = new ColumnConstraints(650);
         ColumnConstraints column3 = new ColumnConstraints(150);
-        ColumnConstraints column4 = new ColumnConstraints(200);
+        ColumnConstraints column4 = new ColumnConstraints(10);
+        ColumnConstraints column5 = new ColumnConstraints(200);
         column3.setHgrow( Priority.SOMETIMES ); //let some columns grow to take any extra space
         column1.setHgrow( Priority.SOMETIMES );
+
+        Separator separator = new Separator(Orientation.VERTICAL);
+        gridPane.add(separator, 3, 0, 1, GridPane.REMAINING);
 
         // Row constraints
         RowConstraints row1 = new RowConstraints();
@@ -189,10 +194,10 @@ public class AdventureGameView {
         RadioButton regMoveGameMode = new RadioButton("Regular Movement");
         regMoveGameMode.setId("00");
 
-        RadioButton chaoticMoveGameMode = new RadioButton("Chaotic Movement");
+        RadioButton chaoticMoveGameMode = new RadioButton("Curse of the Lost");
         chaoticMoveGameMode.setId("01");
 
-        RadioButton trollGameMode = new RadioButton("Always Trolled");
+        RadioButton trollGameMode = new RadioButton("Curse of the Troll");
         trollGameMode.setId("02");
 
         this.movementGameModes = new ToggleGroup();
@@ -214,12 +219,12 @@ public class AdventureGameView {
         selectGameMode.getChildren().add(regMoveGameMode);
         selectGameMode.getChildren().add(chaoticMoveGameMode);
         selectGameMode.getChildren().add(trollGameMode);
-        selectGameMode.setAlignment(Pos.TOP_LEFT);
+        selectGameMode.setAlignment(Pos.CENTER_LEFT);
 
-        gridPane.add(selectGameMode, 3,0,1,1);
+        gridPane.add(selectGameMode, 4,0,1,1);
 
         // Render everything
-        var scene = new Scene( gridPane ,  1200, 800);
+        var scene = new Scene( gridPane ,  1210, 800);
         scene.setFill(Color.BLACK);
         this.stage.setScene(scene);
         this.stage.setResizable(false);

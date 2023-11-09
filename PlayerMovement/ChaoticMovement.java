@@ -23,4 +23,13 @@ public class ChaoticMovement implements MovementGameMode{
     public boolean movePlayer(String direction, Player player, HashMap<Integer, Room> roomMap) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    /**
+     * gameModeName
+     * @return the name of the game mode
+     */
+    @Override
+    public String gameModeName() {
+        return "Curse of the Lost";
+    }
 }
