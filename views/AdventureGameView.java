@@ -67,7 +67,7 @@ public class AdventureGameView {
 
     private ToggleGroup movementGameModes = new ToggleGroup();
     private VBox gameModePanel;
-    private Label gameModeLabel = new Label("Select Your Game Mode:");
+    private Label gameModeLabel = new Label();
 
     private final Button TEST_BUTTON = new Button(); //Button for checking class
 
@@ -513,6 +513,7 @@ public class AdventureGameView {
         }else{
             this.removeCell(4, 0);
             this.setUpGameModes();
+            this.gameModeLabel.setText("Select Your Game Mode:");
         }
 
         gridPane.add(roomPane, 1, 1);

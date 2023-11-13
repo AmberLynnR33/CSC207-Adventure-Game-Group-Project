@@ -68,6 +68,10 @@ public class AdventureGame implements Serializable {
 
         // set up the player's current location
         this.player = new Player(this.rooms.get(1));
+
+        //reset game modes
+        this.movementType = null;
+        this.actionMade = false;
     }
 
     /**
