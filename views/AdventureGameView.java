@@ -65,6 +65,7 @@ public class AdventureGameView {
     private ArrayList<Button> seenObjectButtons = new ArrayList<>();
 
     private ToggleGroup movementGameModes;
+    private VBox gameModePanel;
     private Label gameModeLabel = new Label("Select Your Game Mode:");
 
     private final Button TEST_BUTTON = new Button(); //Button for checking class
@@ -190,38 +191,9 @@ public class AdventureGameView {
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
 
-        // adding game mode functionality
-        RadioButton regMoveGameMode = new RadioButton("Regular Movement");
-        regMoveGameMode.setId("00");
+        this.setUpGameModes();
 
-        RadioButton chaoticMoveGameMode = new RadioButton("Curse of the Lost");
-        chaoticMoveGameMode.setId("01");
-
-        RadioButton trollGameMode = new RadioButton("Curse of the Troll");
-        trollGameMode.setId("02");
-
-        this.movementGameModes = new ToggleGroup();
-        regMoveGameMode.setToggleGroup(this.movementGameModes);
-        chaoticMoveGameMode.setToggleGroup(this.movementGameModes);
-        trollGameMode.setToggleGroup(this.movementGameModes);
-        this.movementGameModes.selectToggle(regMoveGameMode);
-
-        //game mode changing text colour
-        this.gameModeLabel.setStyle("-fx-text-fill: white;");
-        this.gameModeLabel.setFont(new Font("Arial", 17));
-        regMoveGameMode.setStyle("-fx-text-fill: white;");
-        chaoticMoveGameMode.setStyle("-fx-text-fill: white;");
-        trollGameMode.setStyle("-fx-text-fill: white;");
-
-        // add game mode selection to GUI
-        VBox selectGameMode = new VBox();
-        selectGameMode.getChildren().add(this.gameModeLabel);
-        selectGameMode.getChildren().add(regMoveGameMode);
-        selectGameMode.getChildren().add(chaoticMoveGameMode);
-        selectGameMode.getChildren().add(trollGameMode);
-        selectGameMode.setAlignment(Pos.CENTER_LEFT);
-
-        gridPane.add(selectGameMode, 4,0,1,1);
+        gridPane.add(this.gameModePanel, 4,0,1,1);
 
         // Render everything
         var scene = new Scene( gridPane ,  1210, 800);
@@ -253,6 +225,22 @@ public class AdventureGameView {
     }
 
     /**
+     * makeRadioButtonAccessible
+     * Makes a radiobutton accessible for those using a screenreader
+     * @param inputButton radio button that will be traversed or read by a screenreader
+     * @param name the name of the radiobutton
+     * @param shortString short description of the button
+     * @param longString long description of the button
+     */
+    private static void makeRadioButtonAccessible(RadioButton inputButton, String name, String shortString, String longString){
+        inputButton.setAccessibleRole(AccessibleRole.RADIO_BUTTON);
+        inputButton.setAccessibleRoleDescription(name);
+        inputButton.setAccessibleText(shortString);
+        inputButton.setAccessibleHelp(longString);
+        inputButton.setFocusTraversable(true);
+    }
+
+    /**
      * customizeButton
      * __________________________
      *
@@ -264,6 +252,46 @@ public class AdventureGameView {
         inputButton.setPrefSize(w, h);
         inputButton.setFont(new Font("Arial", 16));
         inputButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+    }
+
+    private void setUpGameModes(){
+        // game mode buttons
+        RadioButton regMoveGameMode = new RadioButton("Regular Movement");
+        regMoveGameMode.setId("00");
+
+        RadioButton chaoticMoveGameMode = new RadioButton("Curse of the Lost");
+        chaoticMoveGameMode.setId("01");
+
+        RadioButton trollGameMode = new RadioButton("Curse of the Troll");
+        trollGameMode.setId("02");
+
+        //make accessible
+        makeRadioButtonAccessible(regMoveGameMode, "Regular Movement", "This button sets the game mode to Regular Movement", "This button enables the Regular Movement game mode. Select it to play your game with the standard movement of rooms.");
+        makeRadioButtonAccessible(chaoticMoveGameMode, "Curse of the Lost Movement", "This button sets the game mode to Curse of the Lost", "This button enables the Curse of the Lost game mode. Select it to play your game with random room movement.");
+        makeRadioButtonAccessible(regMoveGameMode, "Curse of the Troll", "This button sets the game mode to Curse of the Troll", "This button enables the Curse of the Troll game mode. Select it to encounter trolls when you move rooms.");
+        this.gameModeLabel.setFocusTraversable(true);
+
+        this.movementGameModes = new ToggleGroup();
+        regMoveGameMode.setToggleGroup(this.movementGameModes);
+        chaoticMoveGameMode.setToggleGroup(this.movementGameModes);
+        trollGameMode.setToggleGroup(this.movementGameModes);
+        this.movementGameModes.selectToggle(regMoveGameMode);
+
+        //game mode changing text colour
+        this.gameModeLabel.setStyle("-fx-text-fill: white;");
+        this.gameModeLabel.setFont(new Font("Arial", 17));
+        regMoveGameMode.setStyle("-fx-text-fill: white;");
+        chaoticMoveGameMode.setStyle("-fx-text-fill: white;");
+        trollGameMode.setStyle("-fx-text-fill: white;");
+
+        // add game mode selection to it's panel
+        this.gameModePanel = new VBox();
+        this.gameModePanel.getChildren().add(this.gameModeLabel);
+        this.gameModePanel.getChildren().add(regMoveGameMode);
+        this.gameModePanel.getChildren().add(chaoticMoveGameMode);
+        this.gameModePanel.getChildren().add(trollGameMode);
+        this.gameModePanel.setAlignment(Pos.CENTER_LEFT);
+
     }
 
     /**
@@ -477,7 +505,7 @@ public class AdventureGameView {
 
         //check if player can change their game mode currently
         if(this.model.getActionMade()){
-            this.movementGameModes.selectedToggleProperty();
+            this.movementGameModes.getToggles().clear();
         }
 
         gridPane.add(roomPane, 1, 1);
