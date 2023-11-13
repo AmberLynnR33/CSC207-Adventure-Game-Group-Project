@@ -134,6 +134,17 @@ public class AdventureGame implements Serializable {
     }
 
     /**
+     * getGameMode
+     * @return the name of the game mode this model is using, or null if no game mode is set
+     */
+    public String getGameMode(){
+        if (this.movementType == null){
+            return null;
+        }
+        return this.movementType.gameModeName();
+    }
+
+    /**
      * interpretAction
      * interpret the user's action.
      *

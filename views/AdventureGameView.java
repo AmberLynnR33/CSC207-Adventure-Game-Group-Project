@@ -29,6 +29,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class AdventureGameView.
@@ -64,7 +65,7 @@ public class AdventureGameView {
     //Integer corresponds to index of the button in the following list
     private ArrayList<Button> seenObjectButtons = new ArrayList<>();
 
-    private ToggleGroup movementGameModes;
+    private ToggleGroup movementGameModes = new ToggleGroup();
     private VBox gameModePanel;
     private Label gameModeLabel = new Label("Select Your Game Mode:");
 
@@ -191,10 +192,6 @@ public class AdventureGameView {
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
 
-        this.setUpGameModes();
-
-        gridPane.add(this.gameModePanel, 4,0,1,1);
-
         // Render everything
         var scene = new Scene( gridPane ,  1210, 800);
         scene.setFill(Color.BLACK);
@@ -284,6 +281,8 @@ public class AdventureGameView {
         chaoticMoveGameMode.setStyle("-fx-text-fill: white;");
         trollGameMode.setStyle("-fx-text-fill: white;");
 
+        this.gameModeLabel.setWrapText(true);
+
         // add game mode selection to it's panel
         this.gameModePanel = new VBox();
         this.gameModePanel.getChildren().add(this.gameModeLabel);
@@ -291,6 +290,8 @@ public class AdventureGameView {
         this.gameModePanel.getChildren().add(chaoticMoveGameMode);
         this.gameModePanel.getChildren().add(trollGameMode);
         this.gameModePanel.setAlignment(Pos.CENTER_LEFT);
+
+        this.gridPane.add(this.gameModePanel, 4,0,1,1);
 
     }
 
@@ -505,7 +506,13 @@ public class AdventureGameView {
 
         //check if player can change their game mode currently
         if(this.model.getActionMade()){
-            this.movementGameModes.getToggles().clear();
+            for (Toggle curToggle: this.movementGameModes.getToggles()){
+                this.gameModePanel.getChildren().remove((RadioButton) curToggle);
+            }
+            this.gameModeLabel.setText("Game Mode: " + this.model.getGameMode());
+        }else{
+            this.removeCell(4, 0);
+            this.setUpGameModes();
         }
 
         gridPane.add(roomPane, 1, 1);
@@ -708,7 +715,7 @@ public class AdventureGameView {
      */
     public void showInstructions() {
         //clear cell for writing
-        this.removeCell11();
+        this.removeCell(1, 1);
 
         if (helpToggle){
             this.updateScene(null);
@@ -734,21 +741,21 @@ public class AdventureGameView {
     }
 
     /**
-     * removeCell11
+     * removeCell
      *
-     * Removes all nodes currently in cell (1,1) of the grid pane
+     * Removes all nodes currently in cell (a, b) of the grid pane
      * This allows for redrawing
      */
-    private void removeCell11(){
+    private void removeCell(int a, int b){
         ObservableList<Node> allGridPaneItems = this.gridPane.getChildren();
-        ArrayList<Node> allInCell11 = new ArrayList<>();
+        ArrayList<Node> allInCell = new ArrayList<>();
 
         for (Node curItem: allGridPaneItems){
-            if (GridPane.getRowIndex(curItem) == 1 && GridPane.getColumnIndex(curItem) == 1){
-                allInCell11.add(curItem);
+            if (GridPane.getRowIndex(curItem) == a && GridPane.getColumnIndex(curItem) == b){
+                allInCell.add(curItem);
             }
         }
-        for(Node curItem: allInCell11){
+        for(Node curItem: allInCell){
             this.gridPane.getChildren().remove(curItem);
         }
     }
