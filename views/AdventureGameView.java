@@ -251,6 +251,10 @@ public class AdventureGameView {
         inputButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
     }
 
+    /**
+     * setUpGameModes
+     * sets up the game mode panel and adds it to the GUI
+     */
     private void setUpGameModes(){
         // game mode buttons
         RadioButton regMoveGameMode = new RadioButton("Regular Movement");

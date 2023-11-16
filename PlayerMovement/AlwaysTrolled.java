@@ -29,6 +29,6 @@ public class AlwaysTrolled implements MovementGameMode{
      */
     @Override
     public String gameModeName() {
-        return null;
+        return "Curse of the Troll";
     }
 }
