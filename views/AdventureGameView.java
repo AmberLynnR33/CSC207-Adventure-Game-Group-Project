@@ -27,6 +27,7 @@ import javafx.geometry.Orientation;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class AdventureGameView {
     VBox objectsInInventory = new VBox(); //to hold inventory items
     ImageView roomImageView; //to hold room image
     TextField inputTextField; //for user input
+    HBox commandButtons; //for user input by buttons
 
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
@@ -158,6 +160,12 @@ public class AdventureGameView {
         inputTextField.setAccessibleHelp("This is the area in which you can enter commands you would like to play.  Enter a command and hit return to continue.");
         addTextHandlingEvent(); //attach an event to this input field
 
+        //Command buttons
+        commandButtons = new HBox();
+        commandButtons.setSpacing(10);
+        commandButtons.setAlignment(Pos.CENTER);
+        updateCommandButtons();
+
         //labels for inventory and room items
         Label objLabel =  new Label("Objects in Room");
         objLabel.setAlignment(Pos.CENTER);
@@ -185,7 +193,7 @@ public class AdventureGameView {
         VBox textEntry = new VBox();
         textEntry.setStyle("-fx-background-color: #000000;");
         textEntry.setPadding(new Insets(20, 20, 20, 20));
-        textEntry.getChildren().addAll(commandLabel, inputTextField);
+        textEntry.getChildren().addAll(commandLabel, commandButtons, inputTextField);
         textEntry.setSpacing(10);
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
@@ -230,6 +238,31 @@ public class AdventureGameView {
         this.stage.setResizable(false);
         this.stage.show();
 
+    }
+
+    /**
+     * updateCommandButtons
+     * __________________________
+     *
+     */
+    private void updateCommandButtons() {
+        //clear out old buttons
+        this.commandButtons.getChildren().clear();
+        //add buttons for current commands
+        String[] possibleMoves = this.model.player.getCurrentRoom().getCommands().split(", ");
+        List<String> moves = new ArrayList<>(Arrays.stream(possibleMoves).distinct().toList());
+        moves.remove("FORCED");
+        for(String command: moves){
+            Button commandButton = new Button(command);
+            commandButton.setId(command);
+            customizeButton(commandButton, 100, 50);
+            makeButtonAccessible(commandButton, command + " Button", "This button uses the command "+command, "This button uses the command "+command);
+            commandButton.setOnAction(e -> {
+                stopArticulation(); //if speaking, stop
+                submitEvent(command);
+            });
+            this.commandButtons.getChildren().add(commandButton);
+        }
     }
 
 
@@ -463,7 +496,7 @@ public class AdventureGameView {
      * @param textToDisplay the text to display below the image.
      */
     public void updateScene(String textToDisplay) {
-
+        updateCommandButtons();
         getRoomImage(); //get the image of the current room
         formatText(textToDisplay); //format the text to display
         roomDescLabel.setPrefWidth(500);
