@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import javafx.event.EventHandler; //you will need this too!
 import javafx.scene.AccessibleRole;
+import javafx.geometry.Orientation;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class AdventureGameView {
     AdventureGame model; //model of the game
     Stage stage; //stage on which all is rendered
     Button saveButton, loadButton, helpButton; //buttons
+    Button zoomButton;
     Boolean helpToggle = false; //is help on display?
 
     GridPane gridPane = new GridPane(); //to hold images and buttons
@@ -63,7 +65,11 @@ public class AdventureGameView {
     //Integer corresponds to index of the button in the following list
     private ArrayList<Button> seenObjectButtons = new ArrayList<>();
 
+    private ToggleGroup movementGameModes;
+    private Label gameModeLabel = new Label("Select Your Game Mode:");
+
     private final Button TEST_BUTTON = new Button(); //Button for checking class
+
 
     /**
      * Adventure Game View Constructor
@@ -82,7 +88,7 @@ public class AdventureGameView {
     public void intiUI() {
 
         // setting up the stage
-        this.stage.setTitle("Adventure Game"); //Replace <YOUR UTORID> with your UtorID
+        this.stage.setTitle("Group 65's Adventure Game");
 
         //Inventory + Room items
         objectsInInventory.setSpacing(10);
@@ -102,8 +108,13 @@ public class AdventureGameView {
         ColumnConstraints column1 = new ColumnConstraints(150);
         ColumnConstraints column2 = new ColumnConstraints(650);
         ColumnConstraints column3 = new ColumnConstraints(150);
+        ColumnConstraints column4 = new ColumnConstraints(10);
+        ColumnConstraints column5 = new ColumnConstraints(200);
         column3.setHgrow( Priority.SOMETIMES ); //let some columns grow to take any extra space
         column1.setHgrow( Priority.SOMETIMES );
+
+        Separator separator = new Separator(Orientation.VERTICAL);
+        gridPane.add(separator, 3, 0, 1, GridPane.REMAINING);
 
         // Row constraints
         RowConstraints row1 = new RowConstraints();
@@ -112,7 +123,7 @@ public class AdventureGameView {
         row1.setVgrow( Priority.SOMETIMES );
         row3.setVgrow( Priority.SOMETIMES );
 
-        gridPane.getColumnConstraints().addAll( column1 , column2 , column1 );
+        gridPane.getColumnConstraints().addAll( column1 , column2 , column1 , column4);
         gridPane.getRowConstraints().addAll( row1 , row2 , row1 );
 
         // Buttons
@@ -133,6 +144,23 @@ public class AdventureGameView {
         customizeButton(helpButton, 200, 50);
         makeButtonAccessible(helpButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
+
+        zoomButton = new Button("Zoom");
+        zoomButton.setId("Zoom");
+        zoomButton.setPrefSize(30, 30);
+        zoomButton.setFont(new Font("Arial", 11));
+        zoomButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        Image zoomIcon = new Image("views/zoom-icon.png");
+        ImageView zoomIconView = new ImageView(zoomIcon);
+        zoomIconView.setFitHeight(30);
+        zoomIconView.setPreserveRatio(true);
+        zoomButton.setText("Zoom Option");
+        zoomButton.setGraphic(zoomIconView);
+        zoomButton.setAlignment(Pos.BASELINE_CENTER);
+        zoomButton.setWrapText(true);
+        zoomButton.setContentDisplay(ContentDisplay.TOP);
+        makeButtonAccessible(zoomButton, "Zoom Button", "This button gives zoom view of currrent room image", "This button gives zoom-able view of room image that player is currently in.");
+        addZoomEvent();
 
         HBox topButtons = new HBox();
         topButtons.getChildren().addAll(saveButton, helpButton, loadButton);
@@ -181,8 +209,42 @@ public class AdventureGameView {
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
 
+        // adding game mode functionality
+        RadioButton regMoveGameMode = new RadioButton("Regular Movement");
+        regMoveGameMode.setId("00");
+
+        RadioButton chaoticMoveGameMode = new RadioButton("Curse of the Lost");
+        chaoticMoveGameMode.setId("01");
+
+        RadioButton trollGameMode = new RadioButton("Curse of the Troll");
+        trollGameMode.setId("02");
+
+        this.movementGameModes = new ToggleGroup();
+        regMoveGameMode.setToggleGroup(this.movementGameModes);
+        chaoticMoveGameMode.setToggleGroup(this.movementGameModes);
+        trollGameMode.setToggleGroup(this.movementGameModes);
+        this.movementGameModes.selectToggle(regMoveGameMode);
+
+        //game mode changing text colour
+        this.gameModeLabel.setStyle("-fx-text-fill: white;");
+        this.gameModeLabel.setFont(new Font("Arial", 17));
+        regMoveGameMode.setStyle("-fx-text-fill: white;");
+        chaoticMoveGameMode.setStyle("-fx-text-fill: white;");
+        trollGameMode.setStyle("-fx-text-fill: white;");
+
+        // add game mode selection to GUI
+        VBox selectGameMode = new VBox();
+        selectGameMode.getChildren().add(this.gameModeLabel);
+        selectGameMode.getChildren().add(regMoveGameMode);
+        selectGameMode.getChildren().add(chaoticMoveGameMode);
+        selectGameMode.getChildren().add(trollGameMode);
+        selectGameMode.getChildren().add(zoomButton);
+        selectGameMode.setAlignment(Pos.CENTER_LEFT);
+
+        gridPane.add(selectGameMode, 4,0,1,1);
+
         // Render everything
-        var scene = new Scene( gridPane ,  1000, 800);
+        var scene = new Scene( gridPane ,  1210, 800);
         scene.setFill(Color.BLACK);
         this.stage.setScene(scene);
         this.stage.setResizable(false);
@@ -227,16 +289,16 @@ public class AdventureGameView {
     /**
      * addTextHandlingEvent
      * __________________________
-     * Add an event handler to the myTextField attribute 
+     * Add an event handler to the myTextField attribute
      *
-     * Your event handler should respond when users 
-     * hits the ENTER or TAB KEY. If the user hits 
+     * Your event handler should respond when users
+     * hits the ENTER or TAB KEY. If the user hits
      * the ENTER Key, strip white space from the
-     * input to myTextField and pass the stripped 
+     * input to myTextField and pass the stripped
      * string to submitEvent for processing.
      *
-     * If the user hits the TAB key, move the focus 
-     * of the scene onto any other node in the scene 
+     * If the user hits the TAB key, move the focus
+     * of the scene onto any other node in the scene
      * graph by invoking requestFocus method.
      */
     private void addTextHandlingEvent() {
@@ -288,7 +350,11 @@ public class AdventureGameView {
             return;
         }
 
-        //try to move!
+        // check if movement needs to be set up
+//        if (!this.model.getActionMade()){
+//            String gameModeID = ((RadioButton) this.movementGameModes.getSelectedToggle()).getId();
+//            this.model.setMovementGameMode(gameModeID);
+//        }
         String output = this.model.interpretAction(text); //process the command!
 
         if (output == null || (!output.equals("GAME OVER") && !output.equals("FORCED") && !output.equals("HELP"))) {
@@ -389,7 +455,7 @@ public class AdventureGameView {
      * __________________________
      *
      * update the text in the GUI (within roomDescLabel)
-     * to show all the moves that are possible from the 
+     * to show all the moves that are possible from the
      * current room.
      */
     private void showCommands() {
@@ -413,7 +479,7 @@ public class AdventureGameView {
      * below the image.
      * Otherwise, the current room description will be dispplayed
      * below the image.
-     * 
+     *
      * @param textToDisplay the text to display below the image.
      */
     public void updateScene(String textToDisplay) {
@@ -429,6 +495,11 @@ public class AdventureGameView {
         roomPane.setAlignment(Pos.TOP_CENTER);
         roomPane.setStyle("-fx-background-color: #000000;");
 
+        //check if player can change their game mode currently
+//        if(this.model.getActionMade()){
+//            this.movementGameModes.selectedToggleProperty();
+//        }
+
         gridPane.add(roomPane, 1, 1);
         stage.sizeToScene();
 
@@ -441,7 +512,7 @@ public class AdventureGameView {
      * __________________________
      *
      * Format text for display.
-     * 
+     *
      * @param textToDisplay the text to be formatted for display.
      */
     private void formatText(String textToDisplay) {
@@ -489,7 +560,7 @@ public class AdventureGameView {
      * The method should populate the objectsInRoom and objectsInInventory Vboxes.
      * Each Vbox should contain a collection of nodes (Buttons, ImageViews, you can decide)
      * Each node represents a different object.
-     * 
+     *
      * Images of each object are in the assets 
      * folders of the given adventure game.
      */
@@ -737,5 +808,10 @@ public class AdventureGameView {
             mediaPlayer.stop(); //shush!
             mediaPlaying = false;
         }
+    }
+    public void addZoomEvent() {
+        zoomButton.setOnMouseClicked(e -> {
+
+        });
     }
 }
