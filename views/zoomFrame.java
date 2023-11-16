@@ -11,8 +11,8 @@ import javax.swing.*;
 public class zoomFrame extends javax.swing.JFrame {
     public Image img;
     public BufferedImage bufferedImg;
-    public int w = 1000;
-    public int h = 1000;
+    public int w;
+    public int h;
     public Point pointView;
 
     public zoomFrame(String roomImageDir) {
@@ -24,12 +24,7 @@ public class zoomFrame extends javax.swing.JFrame {
         JLabel label1 = new JLabel();
         JButton zoomInButton = new JButton();
         JButton zoomOutButton = new JButton();
-
         ImageIcon img = new ImageIcon(roomImageDir);
-        ImageIcon icon = new ImageIcon(zoom(h, w, img.getImage()));
-        label1.setIcon(icon);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Room Visuals");
 
 
         label1.addMouseMotionListener(new MouseMotionAdapter(){
@@ -89,8 +84,8 @@ public class zoomFrame extends javax.swing.JFrame {
         zoomInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                h = h + 10;
-                w = w + 10;
+                h = h + 30;
+                w = w + 30;
                 ImageIcon icon = new ImageIcon(zoom(h, w, img.getImage()));
                 label1.setIcon(icon);
             }
@@ -100,8 +95,8 @@ public class zoomFrame extends javax.swing.JFrame {
         zoomOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                h = h - 10;
-                w = w - 10;
+                h = h - 30;
+                w = w - 30;
                 ImageIcon icon = new ImageIcon(zoom(h, w, img.getImage()));
                 label1.setIcon(icon);
             }
@@ -113,11 +108,11 @@ public class zoomFrame extends javax.swing.JFrame {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(zoomInButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(zoomOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(zoomOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, 0))
         );
 
@@ -131,11 +126,18 @@ public class zoomFrame extends javax.swing.JFrame {
                                                 .addComponent(zoomInButton)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(zoomOutButton))
-                                        .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pack();
         setLocationRelativeTo(null);
+
+        w = scrollPane1.getWidth();
+        h = scrollPane1.getHeight();
+        ImageIcon icon = new ImageIcon(zoom(h, w, img.getImage()));
+        label1.setIcon(icon);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Room Visuals");
     }
 
     private Image zoom(int h, int w, Image img) {
