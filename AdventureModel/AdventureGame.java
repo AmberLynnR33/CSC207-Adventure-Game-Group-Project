@@ -68,6 +68,10 @@ public class AdventureGame implements Serializable {
 
         // set up the player's current location
         this.player = new Player(this.rooms.get(1));
+
+        //reset game modes
+        this.movementType = null;
+        this.actionMade = false;
     }
 
     /**
@@ -131,6 +135,17 @@ public class AdventureGame implements Serializable {
      */
     public boolean getActionMade(){
         return this.actionMade;
+    }
+
+    /**
+     * getGameMode
+     * @return the name of the game mode this model is using, or null if no game mode is set
+     */
+    public String getGameMode(){
+        if (this.movementType == null){
+            return null;
+        }
+        return this.movementType.gameModeName();
     }
 
     /**
@@ -243,5 +258,6 @@ public class AdventureGame implements Serializable {
      * Getter method for helpText
      */
     public String getHelpText(){return this.helpText;}
+
 
 }

@@ -3,6 +3,7 @@ package PlayerMovement;
 import AdventureModel.Player;
 import AdventureModel.Room;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,7 +11,7 @@ import java.util.HashMap;
  * Interface PlayerMovement
  * Provides necessary methods that any game modes related to player movement must contain
  */
-public interface MovementGameMode {
+public interface MovementGameMode extends Serializable {
 
     /**
      * movePlayer
