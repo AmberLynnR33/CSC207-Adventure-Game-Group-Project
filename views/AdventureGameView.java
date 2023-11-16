@@ -262,6 +262,8 @@ public class AdventureGameView {
         RadioButton trollGameMode = new RadioButton("Curse of the Troll");
         trollGameMode.setId("02");
 
+        regMoveGameMode.fire();
+
         //make accessible
         makeRadioButtonAccessible(regMoveGameMode, "Regular Movement", "This button sets the game mode to Regular Movement", "This button enables the Regular Movement game mode. Select it to play your game with the standard movement of rooms.");
         makeRadioButtonAccessible(chaoticMoveGameMode, "Curse of the Lost Movement", "This button sets the game mode to Curse of the Lost", "This button enables the Curse of the Lost game mode. Select it to play your game with random room movement.");
