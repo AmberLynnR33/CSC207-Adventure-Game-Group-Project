@@ -265,14 +265,13 @@ public class AdventureGameView {
         //make accessible
         makeRadioButtonAccessible(regMoveGameMode, "Regular Movement", "This button sets the game mode to Regular Movement", "This button enables the Regular Movement game mode. Select it to play your game with the standard movement of rooms.");
         makeRadioButtonAccessible(chaoticMoveGameMode, "Curse of the Lost Movement", "This button sets the game mode to Curse of the Lost", "This button enables the Curse of the Lost game mode. Select it to play your game with random room movement.");
-        makeRadioButtonAccessible(regMoveGameMode, "Curse of the Troll", "This button sets the game mode to Curse of the Troll", "This button enables the Curse of the Troll game mode. Select it to encounter trolls when you move rooms.");
+        makeRadioButtonAccessible(trollGameMode, "Curse of the Troll", "This button sets the game mode to Curse of the Troll", "This button enables the Curse of the Troll game mode. Select it to encounter trolls when you move rooms.");
         this.gameModeLabel.setFocusTraversable(true);
 
         this.movementGameModes = new ToggleGroup();
         regMoveGameMode.setToggleGroup(this.movementGameModes);
         chaoticMoveGameMode.setToggleGroup(this.movementGameModes);
         trollGameMode.setToggleGroup(this.movementGameModes);
-        this.movementGameModes.selectToggle(regMoveGameMode);
 
         //game mode changing text colour
         this.gameModeLabel.setStyle("-fx-text-fill: white;");
@@ -511,7 +510,7 @@ public class AdventureGameView {
             }
             this.gameModeLabel.setText("Game Mode: " + this.model.getGameMode());
         }else{
-            this.removeCell(4, 0);
+            this.removeCell(0, 4);
             this.setUpGameModes();
             this.gameModeLabel.setText("Select Your Game Mode:");
         }
