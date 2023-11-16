@@ -26,6 +26,7 @@ import javafx.scene.AccessibleRole;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,13 +54,10 @@ public class AdventureGameView {
     VBox objectsInInventory = new VBox(); //to hold inventory items
     ImageView roomImageView; //to hold room image
     TextField inputTextField; //for user input
+    HBox commandButtons; //for user input by buttons
 
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
-
-
-    private ArrayList<Node> interactiveNodes; //for buttons, text and images that move on and off screen
-    private int curInteractive = -1; //current index traversing for interactiveNodes
 
     private PauseTransition forcedTransition; //the transition that occurs when in FORCED room
 
@@ -153,6 +151,12 @@ public class AdventureGameView {
         inputTextField.setAccessibleHelp("This is the area in which you can enter commands you would like to play.  Enter a command and hit return to continue.");
         addTextHandlingEvent(); //attach an event to this input field
 
+        //Command buttons
+        commandButtons = new HBox();
+        commandButtons.setSpacing(10);
+        commandButtons.setAlignment(Pos.CENTER);
+        updateCommandButtons();
+
         //labels for inventory and room items
         Label objLabel =  new Label("Objects in Room");
         objLabel.setAlignment(Pos.CENTER);
@@ -180,7 +184,7 @@ public class AdventureGameView {
         VBox textEntry = new VBox();
         textEntry.setStyle("-fx-background-color: #000000;");
         textEntry.setPadding(new Insets(20, 20, 20, 20));
-        textEntry.getChildren().addAll(commandLabel, inputTextField);
+        textEntry.getChildren().addAll(commandLabel, commandButtons, inputTextField);
         textEntry.setSpacing(10);
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
@@ -192,6 +196,31 @@ public class AdventureGameView {
         this.stage.setResizable(false);
         this.stage.show();
 
+    }
+
+    /**
+     * updateCommandButtons
+     * __________________________
+     *
+     */
+    private void updateCommandButtons() {
+        //clear out old buttons
+        this.commandButtons.getChildren().clear();
+        //add buttons for current commands
+        String[] possibleMoves = this.model.player.getCurrentRoom().getCommands().split(", ");
+        List<String> moves = new ArrayList<>(Arrays.stream(possibleMoves).distinct().toList());
+        moves.remove("FORCED");
+        for(String command: moves){
+            Button commandButton = new Button(command);
+            commandButton.setId(command);
+            customizeButton(commandButton, 100, 50);
+            makeButtonAccessible(commandButton, command + " Button", "This button uses the command "+command, "This button uses the command "+command);
+            commandButton.setOnAction(e -> {
+                stopArticulation(); //if speaking, stop
+                submitEvent(command);
+            });
+            this.commandButtons.getChildren().add(commandButton);
+        }
     }
 
 
@@ -256,67 +285,13 @@ public class AdventureGameView {
                     //clear the box for new input
                     inputTextField.setText("");
                 }else if(keyEvent.getCode() == KeyCode.TAB){
-                    setCurInteractive();
+                    saveButton.requestFocus();
                 }
                 keyEvent.consume();
             }
         };
 
         this.inputTextField.setOnKeyPressed(pressedButton);
-
-    }
-
-
-
-     //setInteractive
-
-    //Moves focus to a different interactive element.
-     //Useful for traversing using the keyboard.
-
-    private void setCurInteractive(){
-        if (this.interactiveNodes == null){
-            this.updateInteractiveNodes(false);
-        }else {
-            this.updateInteractiveNodes(true);
-        }
-
-        this.curInteractive++;
-
-        if (this.curInteractive >= this.interactiveNodes.size()){
-            this.curInteractive = 0;
-        }
-        this.interactiveNodes.get(this.curInteractive).requestFocus();
-    }
-
-    //updateInteractive
-
-    //allows the interactiveNodes to be updated, so they can be traversed via the keyboard
-    //isInitialized allows this.interactiveNodes to have the base buttons and textbox traversable
-    private void updateInteractiveNodes(boolean isInitialized){
-        if(!isInitialized){
-            this.interactiveNodes = new ArrayList<>();
-            this.interactiveNodes.add(this.inputTextField);
-            this.interactiveNodes.add(this.saveButton);
-            this.interactiveNodes.add(this.helpButton);
-            this.interactiveNodes.add(this.loadButton);
-        }
-        if(this.interactiveNodes.size() > 4) {
-            for (int i = 4; i <= interactiveNodes.size(); i++) {
-                this.interactiveNodes.remove(4);
-            }
-        }
-
-        for (Node curNode: this.objectsInRoom.getChildren()){
-            if (curNode.getClass() == this.TEST_BUTTON.getClass()){
-                this.interactiveNodes.add(curNode);
-            }
-        }
-
-        for (Node curNode: this.objectsInInventory.getChildren()){
-            if (curNode.getClass() == this.TEST_BUTTON.getClass()){
-                this.interactiveNodes.add(curNode);
-            }
-        }
 
     }
 
@@ -475,7 +450,7 @@ public class AdventureGameView {
      * @param textToDisplay the text to display below the image.
      */
     public void updateScene(String textToDisplay) {
-
+        updateCommandButtons();
         getRoomImage(); //get the image of the current room
         formatText(textToDisplay); //format the text to display
         roomDescLabel.setPrefWidth(500);
