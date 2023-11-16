@@ -10,6 +10,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -25,6 +29,8 @@ import javafx.event.EventHandler; //you will need this too!
 import javafx.scene.AccessibleRole;
 import javafx.geometry.Orientation;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -160,7 +166,7 @@ public class AdventureGameView {
         zoomButton.setWrapText(true);
         zoomButton.setContentDisplay(ContentDisplay.TOP);
         makeButtonAccessible(zoomButton, "Zoom Button", "This button gives zoom view of currrent room image", "This button gives zoom-able view of room image that player is currently in.");
-        addZoomEvent();
+        addZoomEvent(getRoomImageDir());
 
         HBox topButtons = new HBox();
         topButtons.getChildren().addAll(saveButton, helpButton, loadButton);
@@ -550,6 +556,11 @@ public class AdventureGameView {
         roomImageView.setAccessibleText(this.model.getPlayer().getCurrentRoom().getRoomDescription());
         roomImageView.setFocusTraversable(true);
     }
+    private String getRoomImageDir(){
+        int roomNumber = this.model.getPlayer().getCurrentRoom().getRoomNumber();
+        String roomImageDir = this.model.getDirectoryName() + "/room-images/" + roomNumber + ".png";
+        return roomImageDir;
+    }
 
     /**
      * updateItems
@@ -809,8 +820,31 @@ public class AdventureGameView {
             mediaPlaying = false;
         }
     }
-    public void addZoomEvent() {
+    public void addZoomEvent(String roomImageDir) {
         zoomButton.setOnMouseClicked(e -> {
+            try{
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
+                }
+            } catch (UnsupportedLookAndFeelException ex) {
+                throw new RuntimeException(ex);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            } catch (InstantiationException ex) {
+                throw new RuntimeException(ex);
+            } catch (IllegalAccessException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new zoomFrame(roomImageDir).setVisible(true);
+                }
+            });
 
         });
     }
