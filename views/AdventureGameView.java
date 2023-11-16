@@ -166,7 +166,7 @@ public class AdventureGameView {
         zoomButton.setWrapText(true);
         zoomButton.setContentDisplay(ContentDisplay.TOP);
         makeButtonAccessible(zoomButton, "Zoom Button", "This button gives zoom view of currrent room image", "This button gives zoom-able view of room image that player is currently in.");
-        addZoomEvent(getRoomImageDir());
+        addZoomEvent();
 
         HBox topButtons = new HBox();
         topButtons.getChildren().addAll(saveButton, helpButton, loadButton);
@@ -820,7 +820,7 @@ public class AdventureGameView {
             mediaPlaying = false;
         }
     }
-    public void addZoomEvent(String roomImageDir) {
+    public void addZoomEvent() {
         zoomButton.setOnMouseClicked(e -> {
             try{
                 for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -842,7 +842,7 @@ public class AdventureGameView {
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new zoomFrame(roomImageDir).setVisible(true);
+                    new zoomFrame(getRoomImageDir()).setVisible(true);
                 }
             });
 
