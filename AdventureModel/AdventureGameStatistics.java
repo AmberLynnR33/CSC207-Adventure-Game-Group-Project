@@ -24,7 +24,7 @@ public class AdventureGameStatistics implements Serializable {
      * __________________________
      * Creates an AdventureGameStatistics object assuming the player is in the starting room
      */
-    public AdventureGameStatistics(AdventureGame model){
+    private AdventureGameStatistics(AdventureGame model){
         this.model = model;
         this.totalRoomsVisited = 0;
         this.roomVisitedMost = model.getPlayer().getCurrentRoom();
@@ -83,6 +83,73 @@ public class AdventureGameStatistics implements Serializable {
             this.totalUniqueRoomsVisited += 1;
         }
 
+    }
+
+    /**
+     * getInstance
+     * __________________________
+     * Handles construction of a single AdventureGameStatistics model if not already created, and returns the
+     * current statistics of the game being played.
+     * @param model the game that the statistics relate to
+     * @return the current object
+     */
+    public AdventureGameStatistics getInstance(AdventureGame model){
+        if (this.instance == null){
+            this.instance = new AdventureGameStatistics(model);
+        }
+        return this.instance;
+    }
+
+    /**
+     * getTotalRooms
+     * __________________________
+     * Returns the rooms the player has been in. This number includes multiple visits to a single room.
+     * @return the total rooms the player has been inside
+     */
+    public int getTotalRoomsVisited(){
+        return this.totalRoomsVisited;
+    }
+
+    /**
+     * getTotalUniqueRoomsVisited
+     * __________________________
+     * Returns the rooms the player has been in. This number is not impacted by visiting one room multiple times.
+     * @return the unique rooms the player has been inside
+     */
+    public int getTotalUniqueRoomsVisited(){
+        return this.totalUniqueRoomsVisited;
+    }
+
+    /**
+     * getRoomVisitedMost
+     * __________________________
+     * Returns the room name associated with the room the player has entered the most number of times.
+     * If multiple rooms have been entered the same most number of times x,
+     * the first room that was visited x times is listed as the one visited the most.
+     * @return the name of the room that the player has entered the most number of times.
+     */
+    public String getRoomVisitedMost(){
+        return this.roomVisitedMost.getRoomName();
+    }
+
+    /**
+     * getTotalRooms
+     * __________________________
+     * Returns the number of rooms the game associated with these statistics has.
+     * @return the total number of rooms in the game.
+     */
+    public int getTotalRooms(){
+        return this.totalRooms;
+    }
+
+    /**
+     * getTotalObjects
+     * __________________________
+     * Returns the number of objects across all rooms in the game associated with these statistics.
+     * @return the total number of objects in the game.
+     */
+    public int getTotalObjects(){
+        return this.totalObjects;
     }
 
 
