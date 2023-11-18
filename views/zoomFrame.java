@@ -136,7 +136,6 @@ public class zoomFrame extends javax.swing.JFrame {
         h = scrollPane1.getHeight();
         ImageIcon icon = new ImageIcon(zoom(h, w, img.getImage()));
         label1.setIcon(icon);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Room Visuals");
     }
 
