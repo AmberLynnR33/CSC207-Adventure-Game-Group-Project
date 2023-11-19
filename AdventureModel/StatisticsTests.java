@@ -56,7 +56,7 @@ public class StatisticsTests {
 
         assertEquals(2, stats.getTotalRoomsVisited());
         assertEquals(2, stats.getTotalUniqueRoomsVisited());
-        assertEquals(model.getPlayer().getCurrentRoom().getRoomName(), stats.getRoomVisitedMost());
+        assertEquals(model.getRooms().get(1).getRoomName(), stats.getRoomVisitedMost());
     }
 
     @Test

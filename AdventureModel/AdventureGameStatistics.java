@@ -85,7 +85,7 @@ public class AdventureGameStatistics implements Serializable {
         Room curRoom = this.model.getPlayer().getCurrentRoom();
 
         // only need to update stats if setting up or moved rooms
-        if (this.lastVisited == null || this.lastVisited == curRoom) {
+        if (this.lastVisited == null || this.lastVisited != curRoom) {
 
             //update this room visit
             this.totalRoomsVisited += 1;
@@ -164,7 +164,7 @@ public class AdventureGameStatistics implements Serializable {
     /**
      * resetInstance
      * __________________________
-     * Resets the statistics. This method should only be used for testing purposes
+     * Resets the statistics so a new game can have appropriate statistics.
      */
     protected static void resetInstance(){
         AdventureGameStatistics.instance = null;
