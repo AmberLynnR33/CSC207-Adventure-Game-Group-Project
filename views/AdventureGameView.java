@@ -225,39 +225,11 @@ public class AdventureGameView {
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
 
-        // adding game mode functionality
-        RadioButton regMoveGameMode = new RadioButton("Regular Movement");
-        regMoveGameMode.setId("00");
-
-        RadioButton chaoticMoveGameMode = new RadioButton("Curse of the Lost");
-        chaoticMoveGameMode.setId("01");
-
-        RadioButton trollGameMode = new RadioButton("Curse of the Troll");
-        trollGameMode.setId("02");
-
-        this.movementGameModes = new ToggleGroup();
-        regMoveGameMode.setToggleGroup(this.movementGameModes);
-        chaoticMoveGameMode.setToggleGroup(this.movementGameModes);
-        trollGameMode.setToggleGroup(this.movementGameModes);
-        this.movementGameModes.selectToggle(regMoveGameMode);
-
-        //game mode changing text colour
-        this.gameModeLabel.setStyle("-fx-text-fill: white;");
-        this.gameModeLabel.setFont(new Font("Arial", 17));
-        regMoveGameMode.setStyle("-fx-text-fill: white;");
-        chaoticMoveGameMode.setStyle("-fx-text-fill: white;");
-        trollGameMode.setStyle("-fx-text-fill: white;");
-
-        // add game mode selection to GUI
-        VBox selectGameMode = new VBox();
-        selectGameMode.getChildren().add(this.gameModeLabel);
-        selectGameMode.getChildren().add(regMoveGameMode);
-        selectGameMode.getChildren().add(chaoticMoveGameMode);
-        selectGameMode.getChildren().add(trollGameMode);
-        selectGameMode.getChildren().add(zoomButton);
-        selectGameMode.setAlignment(Pos.CENTER_LEFT);
-
-        gridPane.add(selectGameMode, 4,0,1,1);
+        // add zoom Option button to GUI
+        VBox zoomOption = new VBox();
+        zoomOption.getChildren().add(zoomButton);
+        zoomOption.setAlignment(Pos.CENTER_LEFT);
+        gridPane.add(zoomOption, 4,1,1,1);
 
         // Render everything
         var scene = new Scene( gridPane ,  1210, 800);
@@ -346,7 +318,7 @@ public class AdventureGameView {
     /**
      * setUpGameModes
      * sets up the game mode panel and adds it to the GUI
-     */
+     * */
     private void setUpGameModes(){
         // game mode buttons
         RadioButton regMoveGameMode = new RadioButton("Regular Movement");
@@ -386,6 +358,7 @@ public class AdventureGameView {
         this.gameModePanel.getChildren().add(regMoveGameMode);
         this.gameModePanel.getChildren().add(chaoticMoveGameMode);
         this.gameModePanel.getChildren().add(trollGameMode);
+        this.gameModePanel.getChildren().add(zoomButton);
         this.gameModePanel.setAlignment(Pos.CENTER_LEFT);
 
         this.gridPane.add(this.gameModePanel, 4,0,1,1);
