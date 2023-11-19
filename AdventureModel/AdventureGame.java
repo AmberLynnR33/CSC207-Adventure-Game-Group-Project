@@ -1,5 +1,9 @@
 package AdventureModel;
 
+import PlayerMovement.MovementGameMode;
+import PlayerMovement.MovementGameModeFactory;
+import PlayerMovement.RegularMovement;
+
 import java.io.*;
 import java.util.*;
 
@@ -13,6 +17,9 @@ public class AdventureGame implements Serializable {
     private HashMap<String,String> synonyms = new HashMap<>(); //A HashMap to store synonyms of commands.
     private final String[] actionVerbs = {"QUIT","INVENTORY","TAKE","DROP"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
     public Player player; //The Player of the game.
+
+    private MovementGameMode movementType; //the game mode for player movement
+    private boolean actionMade = false; //checks if the player can set game mode
 
     /**
      * Adventure Game Constructor
@@ -61,6 +68,10 @@ public class AdventureGame implements Serializable {
 
         // set up the player's current location
         this.player = new Player(this.rooms.get(1));
+
+        //reset game modes
+        this.movementType = null;
+        this.actionMade = false;
     }
 
     /**
@@ -97,37 +108,44 @@ public class AdventureGame implements Serializable {
      */
     public boolean movePlayer(String direction) {
 
-        direction = direction.toUpperCase();
-        PassageTable motionTable = this.player.getCurrentRoom().getMotionTable(); //where can we move?
-        if (!motionTable.optionExists(direction)) return true; //no move
-
-        ArrayList<Passage> possibilities = new ArrayList<>();
-        for (Passage entry : motionTable.getDirection()) {
-            if (entry.getDirection().equals(direction)) { //this is the right direction
-                possibilities.add(entry); // are there possibilities?
-            }
+        // in event that no game mode has been set up, assume regular movement occurs
+        if (this.movementType == null) {
+            this.movementType = new RegularMovement();
         }
 
-        //try the blocked passages first
-        Passage chosen = null;
-        for (Passage entry : possibilities) {
-            System.out.println(entry.getIsBlocked());
-            System.out.println(entry.getKeyName());
+        // move player based on game mode
+        return this.movementType.movePlayer(direction, this.player, this.rooms);
 
-            if (chosen == null && entry.getIsBlocked()) {
-                if (this.player.getInventory().contains(entry.getKeyName())) {
-                    chosen = entry; //we can make it through, given our stuff
-                    break;
-                }
-            } else { chosen = entry; } //the passage is unlocked
+    }
+
+    /**
+     * setMovementGameMode
+     * Sets up the game mode that the player has requested
+     * @param movementID the ID corresponding to the requested game mode
+     */
+    public void setMovementGameMode(String movementID){
+        this.actionMade = true;
+        this.movementType = MovementGameModeFactory.getMovementGameMode(movementID);
+    }
+
+    /**
+     * getActionMade
+     * getter method for actionMade
+     * @return the value stored in actionMade
+     */
+    public boolean getActionMade(){
+        return this.actionMade;
+    }
+
+    /**
+     * getGameMode
+     * @return the name of the game mode this model is using, or null if no game mode is set
+     */
+    public String getGameMode(){
+        if (this.movementType == null){
+            return null;
         }
-
-        if (chosen == null) return true; //doh, we just can't move.
-
-        int roomNumber = chosen.getDestinationRoom();
-        Room room = this.rooms.get(roomNumber);
-        this.player.setCurrentRoom(room);
-        return !this.player.getCurrentRoom().getMotionTable().getDirection().get(0).getDirection().equals("FORCED");
+        return this.movementType.gameModeName();
     }
 
     /**
@@ -240,5 +258,6 @@ public class AdventureGame implements Serializable {
      * Getter method for helpText
      */
     public String getHelpText(){return this.helpText;}
+
 
 }
