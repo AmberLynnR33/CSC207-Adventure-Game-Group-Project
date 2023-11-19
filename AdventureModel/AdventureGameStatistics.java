@@ -6,7 +6,7 @@ public class AdventureGameStatistics implements Serializable {
 
     private final AdventureGame model; //game connected too
 
-    private AdventureGameStatistics instance; //this object
+    private static AdventureGameStatistics instance; //this object
 
     private int totalRoomsVisited; //total rooms the player has been inside, including visiting multiple times
 
@@ -18,6 +18,8 @@ public class AdventureGameStatistics implements Serializable {
 
     private int totalRooms; //total rooms in the game associated with the model
     private int totalObjects; //the total objects in the game associated with the model
+
+    private Room lastVisited; //the room last visited, to check if stats need to be updated
 
     /**
      * Constructor
@@ -34,6 +36,21 @@ public class AdventureGameStatistics implements Serializable {
 
         this.setUpRoomsVisited();
         this.updateStatistics();
+    }
+
+    /**
+     * getInstance
+     * __________________________
+     * Handles construction of a single AdventureGameStatistics model if not already created, and returns the
+     * current statistics of the game being played.
+     * @param model the game that the statistics relate to
+     * @return the current object
+     */
+    public static AdventureGameStatistics getInstance(AdventureGame model){
+        if (instance == null){
+            instance = new AdventureGameStatistics(model);
+        }
+        return instance;
     }
 
     /**
@@ -67,37 +84,29 @@ public class AdventureGameStatistics implements Serializable {
 
         Room curRoom = this.model.getPlayer().getCurrentRoom();
 
-        //update this room visit
-        this.totalRoomsVisited += 1;
+        // only need to update stats if setting up or moved rooms
+        if (this.lastVisited == null || this.lastVisited == curRoom) {
 
-        int curTimesVisited = this.roomVisitedAmount.get(curRoom) + 1;
-        this.roomVisitedAmount.put(curRoom, curTimesVisited);
+            //update this room visit
+            this.totalRoomsVisited += 1;
 
-        //check if this is the new most visited room
-        if (this.roomVisitedAmount.get(this.roomVisitedMost) < curTimesVisited){
-            this.roomVisitedMost = curRoom;
+            int curTimesVisited = this.roomVisitedAmount.get(curRoom) + 1;
+            this.roomVisitedAmount.put(curRoom, curTimesVisited);
+
+            //check if this is the new most visited room
+            if (this.roomVisitedAmount.get(this.roomVisitedMost) < curTimesVisited) {
+                this.roomVisitedMost = curRoom;
+            }
+
+            //check if this was a new room visited
+            if (curTimesVisited == 1) {
+                this.totalUniqueRoomsVisited += 1;
+            }
+
+            //lastly, make this the last visited room
+            this.lastVisited = curRoom;
         }
 
-        //check if this was a new room visited
-        if (curTimesVisited == 1){
-            this.totalUniqueRoomsVisited += 1;
-        }
-
-    }
-
-    /**
-     * getInstance
-     * __________________________
-     * Handles construction of a single AdventureGameStatistics model if not already created, and returns the
-     * current statistics of the game being played.
-     * @param model the game that the statistics relate to
-     * @return the current object
-     */
-    public AdventureGameStatistics getInstance(AdventureGame model){
-        if (this.instance == null){
-            this.instance = new AdventureGameStatistics(model);
-        }
-        return this.instance;
     }
 
     /**
@@ -152,5 +161,13 @@ public class AdventureGameStatistics implements Serializable {
         return this.totalObjects;
     }
 
+    /**
+     * resetInstance
+     * __________________________
+     * Resets the statistics. This method should only be used for testing purposes
+     */
+    protected static void resetInstance(){
+        AdventureGameStatistics.instance = null;
+    }
 
 }
