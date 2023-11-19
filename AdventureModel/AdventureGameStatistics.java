@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 public class AdventureGameStatistics implements Serializable {
 
-    private final AdventureGame model; //game connected too
+    private AdventureGame model; //game connected too
 
     private static AdventureGameStatistics instance; //this object
 
