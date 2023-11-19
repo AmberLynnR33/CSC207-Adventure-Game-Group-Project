@@ -33,8 +33,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class AdventureGameView.
@@ -61,6 +63,7 @@ public class AdventureGameView {
     VBox objectsInInventory = new VBox(); //to hold inventory items
     ImageView roomImageView; //to hold room image
     TextField inputTextField; //for user input
+    HBox commandButtons; //for user input by buttons
 
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
@@ -71,8 +74,9 @@ public class AdventureGameView {
     //Integer corresponds to index of the button in the following list
     private ArrayList<Button> seenObjectButtons = new ArrayList<>();
 
-    private ToggleGroup movementGameModes;
-    private Label gameModeLabel = new Label("Select Your Game Mode:");
+    private ToggleGroup movementGameModes = new ToggleGroup();
+    private VBox gameModePanel;
+    private Label gameModeLabel = new Label();
 
     private final Button TEST_BUTTON = new Button(); //Button for checking class
 
@@ -183,6 +187,12 @@ public class AdventureGameView {
         inputTextField.setAccessibleHelp("This is the area in which you can enter commands you would like to play.  Enter a command and hit return to continue.");
         addTextHandlingEvent(); //attach an event to this input field
 
+        //Command buttons
+        commandButtons = new HBox();
+        commandButtons.setSpacing(10);
+        commandButtons.setAlignment(Pos.CENTER);
+        updateCommandButtons();
+
         //labels for inventory and room items
         Label objLabel =  new Label("Objects in Room");
         objLabel.setAlignment(Pos.CENTER);
@@ -210,7 +220,7 @@ public class AdventureGameView {
         VBox textEntry = new VBox();
         textEntry.setStyle("-fx-background-color: #000000;");
         textEntry.setPadding(new Insets(20, 20, 20, 20));
-        textEntry.getChildren().addAll(commandLabel, inputTextField);
+        textEntry.getChildren().addAll(commandLabel, commandButtons, inputTextField);
         textEntry.setSpacing(10);
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
@@ -258,6 +268,31 @@ public class AdventureGameView {
 
     }
 
+    /**
+     * updateCommandButtons
+     * __________________________
+     *
+     */
+    private void updateCommandButtons() {
+        //clear out old buttons
+        this.commandButtons.getChildren().clear();
+        //add buttons for current commands
+        String[] possibleMoves = this.model.player.getCurrentRoom().getCommands().split(", ");
+        List<String> moves = new ArrayList<>(Arrays.stream(possibleMoves).distinct().toList());
+        moves.remove("FORCED");
+        for(String command: moves){
+            Button commandButton = new Button(command);
+            commandButton.setId(command);
+            customizeButton(commandButton, 100, 50);
+            makeButtonAccessible(commandButton, command + " Button", "This button uses the command "+command, "This button uses the command "+command);
+            commandButton.setOnAction(e -> {
+                stopArticulation(); //if speaking, stop
+                submitEvent(command);
+            });
+            this.commandButtons.getChildren().add(commandButton);
+        }
+    }
+
 
     /**
      * makeButtonAccessible
@@ -279,6 +314,22 @@ public class AdventureGameView {
     }
 
     /**
+     * makeRadioButtonAccessible
+     * Makes a radiobutton accessible for those using a screenreader
+     * @param inputButton radio button that will be traversed or read by a screenreader
+     * @param name the name of the radiobutton
+     * @param shortString short description of the button
+     * @param longString long description of the button
+     */
+    private static void makeRadioButtonAccessible(RadioButton inputButton, String name, String shortString, String longString){
+        inputButton.setAccessibleRole(AccessibleRole.RADIO_BUTTON);
+        inputButton.setAccessibleRoleDescription(name);
+        inputButton.setAccessibleText(shortString);
+        inputButton.setAccessibleHelp(longString);
+        inputButton.setFocusTraversable(true);
+    }
+
+    /**
      * customizeButton
      * __________________________
      *
@@ -290,6 +341,55 @@ public class AdventureGameView {
         inputButton.setPrefSize(w, h);
         inputButton.setFont(new Font("Arial", 16));
         inputButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+    }
+
+    /**
+     * setUpGameModes
+     * sets up the game mode panel and adds it to the GUI
+     */
+    private void setUpGameModes(){
+        // game mode buttons
+        RadioButton regMoveGameMode = new RadioButton("Regular Movement");
+        regMoveGameMode.setId("00");
+
+        RadioButton chaoticMoveGameMode = new RadioButton("Curse of the Lost");
+        chaoticMoveGameMode.setId("01");
+
+        RadioButton trollGameMode = new RadioButton("Curse of the Troll");
+        trollGameMode.setId("02");
+
+        regMoveGameMode.fire();
+
+        //make accessible
+        makeRadioButtonAccessible(regMoveGameMode, "Regular Movement", "This button sets the game mode to Regular Movement", "This button enables the Regular Movement game mode. Select it to play your game with the standard movement of rooms.");
+        makeRadioButtonAccessible(chaoticMoveGameMode, "Curse of the Lost Movement", "This button sets the game mode to Curse of the Lost", "This button enables the Curse of the Lost game mode. Select it to play your game with random room movement.");
+        makeRadioButtonAccessible(trollGameMode, "Curse of the Troll", "This button sets the game mode to Curse of the Troll", "This button enables the Curse of the Troll game mode. Select it to encounter trolls when you move rooms.");
+        this.gameModeLabel.setFocusTraversable(true);
+
+        this.movementGameModes = new ToggleGroup();
+        regMoveGameMode.setToggleGroup(this.movementGameModes);
+        chaoticMoveGameMode.setToggleGroup(this.movementGameModes);
+        trollGameMode.setToggleGroup(this.movementGameModes);
+
+        //game mode changing text colour
+        this.gameModeLabel.setStyle("-fx-text-fill: white;");
+        this.gameModeLabel.setFont(new Font("Arial", 17));
+        regMoveGameMode.setStyle("-fx-text-fill: white;");
+        chaoticMoveGameMode.setStyle("-fx-text-fill: white;");
+        trollGameMode.setStyle("-fx-text-fill: white;");
+
+        this.gameModeLabel.setWrapText(true);
+
+        // add game mode selection to it's panel
+        this.gameModePanel = new VBox();
+        this.gameModePanel.getChildren().add(this.gameModeLabel);
+        this.gameModePanel.getChildren().add(regMoveGameMode);
+        this.gameModePanel.getChildren().add(chaoticMoveGameMode);
+        this.gameModePanel.getChildren().add(trollGameMode);
+        this.gameModePanel.setAlignment(Pos.CENTER_LEFT);
+
+        this.gridPane.add(this.gameModePanel, 4,0,1,1);
+
     }
 
     /**
@@ -357,10 +457,10 @@ public class AdventureGameView {
         }
 
         // check if movement needs to be set up
-//        if (!this.model.getActionMade()){
-//            String gameModeID = ((RadioButton) this.movementGameModes.getSelectedToggle()).getId();
-//            this.model.setMovementGameMode(gameModeID);
-//        }
+        if (!this.model.getActionMade()){
+            String gameModeID = ((RadioButton) this.movementGameModes.getSelectedToggle()).getId();
+            this.model.setMovementGameMode(gameModeID);
+        }
         String output = this.model.interpretAction(text); //process the command!
 
         if (output == null || (!output.equals("GAME OVER") && !output.equals("FORCED") && !output.equals("HELP"))) {
@@ -489,7 +589,7 @@ public class AdventureGameView {
      * @param textToDisplay the text to display below the image.
      */
     public void updateScene(String textToDisplay) {
-
+        updateCommandButtons();
         getRoomImage(); //get the image of the current room
         formatText(textToDisplay); //format the text to display
         roomDescLabel.setPrefWidth(500);
@@ -502,9 +602,16 @@ public class AdventureGameView {
         roomPane.setStyle("-fx-background-color: #000000;");
 
         //check if player can change their game mode currently
-//        if(this.model.getActionMade()){
-//            this.movementGameModes.selectedToggleProperty();
-//        }
+        if(this.model.getActionMade()){
+            for (Toggle curToggle: this.movementGameModes.getToggles()){
+                this.gameModePanel.getChildren().remove((RadioButton) curToggle);
+            }
+            this.gameModeLabel.setText("Game Mode: " + this.model.getGameMode());
+        }else{
+            this.removeCell(0, 4);
+            this.setUpGameModes();
+            this.gameModeLabel.setText("Select Your Game Mode:");
+        }
 
         gridPane.add(roomPane, 1, 1);
         stage.sizeToScene();
@@ -711,7 +818,7 @@ public class AdventureGameView {
      */
     public void showInstructions() {
         //clear cell for writing
-        this.removeCell11();
+        this.removeCell(1, 1);
 
         if (helpToggle){
             this.updateScene(null);
@@ -737,21 +844,21 @@ public class AdventureGameView {
     }
 
     /**
-     * removeCell11
+     * removeCell
      *
-     * Removes all nodes currently in cell (1,1) of the grid pane
+     * Removes all nodes currently in cell (a, b) of the grid pane
      * This allows for redrawing
      */
-    private void removeCell11(){
+    private void removeCell(int a, int b){
         ObservableList<Node> allGridPaneItems = this.gridPane.getChildren();
-        ArrayList<Node> allInCell11 = new ArrayList<>();
+        ArrayList<Node> allInCell = new ArrayList<>();
 
         for (Node curItem: allGridPaneItems){
-            if (GridPane.getRowIndex(curItem) == 1 && GridPane.getColumnIndex(curItem) == 1){
-                allInCell11.add(curItem);
+            if (GridPane.getRowIndex(curItem) == a && GridPane.getColumnIndex(curItem) == b){
+                allInCell.add(curItem);
             }
         }
-        for(Node curItem: allInCell11){
+        for(Node curItem: allInCell){
             this.gridPane.getChildren().remove(curItem);
         }
     }
