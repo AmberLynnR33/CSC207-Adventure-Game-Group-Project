@@ -24,7 +24,11 @@ public class AdventureGameApp extends  Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
+<<<<<<< HEAD
         this.model = new AdventureGame("MediumGame"); //change the name of the game if you want to try something bigger!
+=======
+        this.model = new AdventureGame("TinyGame"); //change the name of the game if you want to try something bigger!
+>>>>>>> af0c951bed54dd0681ff3c1d8357cf7d45a5c707
         this.view = new AdventureGameView(model, primaryStage);
     }
 

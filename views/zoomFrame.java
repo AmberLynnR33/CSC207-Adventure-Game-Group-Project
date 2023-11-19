@@ -98,6 +98,8 @@ public class zoomFrame extends javax.swing.JFrame {
                 if ((h > 31) && (w > 31)){
                     h = h - 30;
                     w = w - 30;}
+                h = h - 30;
+                w = w - 30;
                 ImageIcon icon = new ImageIcon(zoom(h, w, img.getImage()));
                 label1.setIcon(icon);
             }
