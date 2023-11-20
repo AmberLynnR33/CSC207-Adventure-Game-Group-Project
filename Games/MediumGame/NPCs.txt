@@ -1,0 +1,29 @@
+Muhammad Ahmad Bajwa
+3
+---
+Hey there adventurer! You need to pick up a lantern.
+-
+TAKEN LAMP
+---
+Hey there adventurer! Try exploring the grates and the caves down south.
+-
+VISITED ROOM 21
+---
+Hey there adventurer! It seems like you're trying to cross the chasm.
+In nature's grasp, where giants sleep,
+A rocky chasm, dark and deep.
+To bridge the gap, a secret found,
+A wand of wonder, strength unbound.
+
+What am I? A rod so slight,
+Yet magic dwells within its light.
+Wave me high, the chasm clears,
+The path revealed, conquer fears.
+
+What am I that points the way?
+A staff, a wand, come seize the day.
+No mortal might, no bridge of stone,
+But magic's touch to call your own.
+-
+VISITED ROOM 24
+---

@@ -6,7 +6,7 @@ import java.util.List;
 public class ProgressionPublisher {
     private List<ProgressionObserver> subscribers;
     public ProgressionPublisher(){
-        subscribers = new ArrayList<NPC.ProgressionObserver>();
+        subscribers = new ArrayList<ProgressionObserver>();
     }
     public void subscribe(ProgressionObserver newObserver){
         subscribers.add(newObserver);

@@ -1,5 +1,6 @@
 package AdventureModel;
 
+import NPC.NPCRoom;
 import PlayerMovement.MovementGameMode;
 import PlayerMovement.MovementGameModeFactory;
 import PlayerMovement.RegularMovement;
@@ -15,7 +16,8 @@ public class AdventureGame implements Serializable {
     private String helpText; //A variable to store the Help text of the game. This text is displayed when the user types "HELP" command.
     private final HashMap<Integer, Room> rooms; //A list of all the rooms in the game.
     private HashMap<String,String> synonyms = new HashMap<>(); //A HashMap to store synonyms of commands.
-    private final String[] actionVerbs = {"QUIT","INVENTORY","TAKE","DROP"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
+    private final String[] actionVerbs = {"QUIT","INVENTORY","TAKE","DROP","TALK"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
+
     public Player player; //The Player of the game.
 
     private MovementGameMode movementType; //the game mode for player movement
@@ -187,6 +189,14 @@ public class AdventureGame implements Serializable {
                     return "YOU HAVE DROPPED:\n " + inputArray[1];
                 } else {
                     return "THIS OBJECT IS NOT IN YOUR INVENTORY:\n " + inputArray[1];
+                }
+            }
+            else if(inputArray[0].equals("TALK")){
+                if(this.player.getCurrentRoom() instanceof NPCRoom){
+                    return ((NPCRoom) this.player.getCurrentRoom()).getNPCDialogue();
+                }
+                else{
+                    return "THERE IS NOBODY TO TALK TO.\n";
                 }
             }
         }
