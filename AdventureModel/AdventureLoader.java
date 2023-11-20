@@ -1,8 +1,14 @@
 package AdventureModel;
 
+import views.AdventureGameView;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * Class AdventureLoader. Loads an adventure from files.
@@ -11,6 +17,7 @@ public class AdventureLoader {
 
     private AdventureGame game; //the game to return
     private String adventureName; //the name of the adventure
+
 
     /**
      * Adventure Loader Constructor
@@ -93,8 +100,13 @@ public class AdventureLoader {
      */
     public void parseObjects() throws IOException {
 
+        String objectTypeFileName = this.adventureName + "/objectTypes.txt";
+        BufferedReader buff = new BufferedReader(new FileReader(objectTypeFileName));
+        ArrayList<String> objectTypes = new ArrayList<>();
+        while (buff.ready()) objectTypes.add(buff.readLine());
+        Random rand = new Random();
         String objectFileName = this.adventureName + "/objects.txt";
-        BufferedReader buff = new BufferedReader(new FileReader(objectFileName));
+        buff = new BufferedReader(new FileReader(objectFileName));
 
         while (buff.ready()) {
             String objectName = buff.readLine();
@@ -105,10 +117,13 @@ public class AdventureLoader {
                 System.out.println("Formatting Error!");
             int i = Integer.parseInt(objectLocation);
             Room location = this.game.getRooms().get(i);
-            AdventureObject object = new AdventureObject(objectName, objectDescription, location);
+            String type = objectTypes.get(rand.nextInt(objectTypes.size()));
+            AdventureObject object = null;
+            if (Objects.equals(type, "Runner")) object = new AdventureObject(objectName, objectDescription, location, new AdventureObjectRunner());
+            else if (Objects.equals(type, "Puzzle")) object = new AdventureObject(objectName, objectDescription, location, new AdventureObjectPuzzle());
+            else if (Objects.equals(type, "Basic")) object = new AdventureObject(objectName, objectDescription, location, new AdventureObjectBasic());
             location.addGameObject(object);
         }
-
     }
 
      /**

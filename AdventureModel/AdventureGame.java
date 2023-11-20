@@ -1,5 +1,7 @@
 package AdventureModel;
 
+import views.AdventureGameView;
+
 import java.io.*;
 import java.util.*;
 
@@ -136,7 +138,7 @@ public class AdventureGame implements Serializable {
      *
      * @param command String representation of the command.
      */
-    public String interpretAction(String command){
+    public String interpretAction(String command, AdventureGameView viewgame){
 
         String[] inputArray = tokenize(command); //look up synonyms
 
@@ -157,8 +159,8 @@ public class AdventureGame implements Serializable {
             else if(inputArray[0].equals("DROP") && inputArray.length < 2) return "THE DROP COMMAND REQUIRES AN OBJECT";
             else if(inputArray[0].equals("TAKE") && inputArray.length == 2) {
                 if(this.player.getCurrentRoom().checkIfObjectInRoom(inputArray[1])) {
-                    this.player.takeObject(inputArray[1]);
-                    return "YOU HAVE TAKEN:\n " + inputArray[1];
+                    if (this.player.takeObject(inputArray[1], viewgame)) return "YOU HAVE TAKEN:\n " + inputArray[1];
+                    return null;
                 } else {
                     return "THIS OBJECT IS NOT HERE:\n " + inputArray[1];
                 }
