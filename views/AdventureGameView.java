@@ -55,6 +55,8 @@ public class AdventureGameView {
     Stage stage; //stage on which all is rendered
     Button saveButton, loadButton, helpButton; //buttons
     Button zoomButton;
+
+    Button statsButton;
     Boolean helpToggle = false; //is help on display?
 
     GridPane gridPane = new GridPane(); //to hold images and buttons
@@ -172,6 +174,15 @@ public class AdventureGameView {
         makeButtonAccessible(zoomButton, "Zoom Button", "This button gives zoom view of currrent room image", "This button gives zoom-able view of room image that player is currently in.");
         addZoomEvent();
 
+        // statistics button
+        statsButton = new Button("Statistics");
+        statsButton.setId("Statistics");
+        statsButton.setPrefSize(120,60);
+        statsButton.setFont(new Font("Arial", 17));
+        statsButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        makeButtonAccessible(statsButton, "Statistics Button", "This button gives statistics of the current game.", "THis button gives statistics related to the overall game and visited rooms. Click it to see these numbers.");
+        addStatsEvent();
+
         HBox topButtons = new HBox();
         topButtons.getChildren().addAll(saveButton, helpButton, loadButton);
         topButtons.setSpacing(10);
@@ -225,11 +236,13 @@ public class AdventureGameView {
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
 
-        // add zoom Option button to GUI
-        VBox zoomOption = new VBox();
-        zoomOption.getChildren().add(zoomButton);
-        zoomOption.setAlignment(Pos.CENTER_LEFT);
-        gridPane.add(zoomOption, 4,1,1,1);
+        // adding extra features panel
+        VBox extraFeatures = new VBox();
+        extraFeatures.getChildren().add(zoomButton);
+        extraFeatures.getChildren().add(statsButton);
+        extraFeatures.setAlignment(Pos.CENTER_LEFT);
+        extraFeatures.setSpacing(10);
+        gridPane.add(extraFeatures, 4,1,1,1);
 
         // Render everything
         var scene = new Scene( gridPane ,  1210, 800);
@@ -866,6 +879,13 @@ public class AdventureGameView {
         loadButton.setOnAction(e -> {
             gridPane.requestFocus();
             LoadView loadView = new LoadView(this);
+        });
+    }
+
+    public void addStatsEvent(){
+        statsButton.setOnAction(e ->{
+            gridPane.requestFocus();
+            StatisticsView statsView = new StatisticsView(this, this.model);
         });
     }
 
