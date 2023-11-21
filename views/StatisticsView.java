@@ -60,13 +60,24 @@ public class StatisticsView {
         gameObj.setFont(new Font("Arial", 16));
         gameObj.setStyle("-fx-background-color: #121212; -fx-text-fill: white;");
 
+        Button closeStatsPanel = new Button("Close Window");
+        AdventureGameView.makeButtonAccessible(closeStatsPanel, "Close Statistics Panel.", "This button closes the Statistics popup.", "This button closes the statistics window. Click it to go back to your game.");
+        closeStatsPanel.setFont(new Font("Arial", 16));
+        closeStatsPanel.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        closeStatsPanel.setOnAction(e -> dialog.close());
 
         //Add accessibility
         headerLabel.setFocusTraversable(true);
-
+        roomsVisited.setFocusTraversable(true);
+        uniqueRoomsVisited.setFocusTraversable(true);
+        mostVisited.setFocusTraversable(true);
+        gameStats.setFocusTraversable(true);
+        gameRooms.setFocusTraversable(true);
+        gameObj.setFocusTraversable(true);
 
 
         //add to GUI
+        statsInfo.getChildren().add(closeStatsPanel);
         statsInfo.getChildren().add(headerLabel);
         statsInfo.getChildren().add(roomsVisited);
         statsInfo.getChildren().add(uniqueRoomsVisited);
