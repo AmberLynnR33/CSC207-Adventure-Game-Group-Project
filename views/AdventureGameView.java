@@ -10,6 +10,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -25,6 +29,8 @@ import javafx.event.EventHandler; //you will need this too!
 import javafx.scene.AccessibleRole;
 import javafx.geometry.Orientation;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +54,7 @@ public class AdventureGameView {
     AdventureGame model; //model of the game
     Stage stage; //stage on which all is rendered
     Button saveButton, loadButton, helpButton; //buttons
+    Button zoomButton;
     Boolean helpToggle = false; //is help on display?
 
     GridPane gridPane = new GridPane(); //to hold images and buttons
@@ -72,6 +79,7 @@ public class AdventureGameView {
     private Label gameModeLabel = new Label();
 
     private final Button TEST_BUTTON = new Button(); //Button for checking class
+
 
     /**
      * Adventure Game View Constructor
@@ -147,6 +155,23 @@ public class AdventureGameView {
         makeButtonAccessible(helpButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
 
+        zoomButton = new Button("Zoom");
+        zoomButton.setId("Zoom");
+        zoomButton.setPrefSize(30, 30);
+        zoomButton.setFont(new Font("Arial", 11));
+        zoomButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        Image zoomIcon = new Image("views/zoom-icon.png");
+        ImageView zoomIconView = new ImageView(zoomIcon);
+        zoomIconView.setFitHeight(30);
+        zoomIconView.setPreserveRatio(true);
+        zoomButton.setText("Zoom Option");
+        zoomButton.setGraphic(zoomIconView);
+        zoomButton.setAlignment(Pos.BASELINE_CENTER);
+        zoomButton.setWrapText(true);
+        zoomButton.setContentDisplay(ContentDisplay.TOP);
+        makeButtonAccessible(zoomButton, "Zoom Button", "This button gives zoom view of currrent room image", "This button gives zoom-able view of room image that player is currently in.");
+        addZoomEvent();
+
         HBox topButtons = new HBox();
         topButtons.getChildren().addAll(saveButton, helpButton, loadButton);
         topButtons.setSpacing(10);
@@ -199,6 +224,12 @@ public class AdventureGameView {
         textEntry.setSpacing(10);
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
+
+        // add zoom Option button to GUI
+        VBox zoomOption = new VBox();
+        zoomOption.getChildren().add(zoomButton);
+        zoomOption.setAlignment(Pos.CENTER_LEFT);
+        gridPane.add(zoomOption, 4,1,1,1);
 
         // Render everything
         var scene = new Scene( gridPane ,  1210, 800);
@@ -287,7 +318,7 @@ public class AdventureGameView {
     /**
      * setUpGameModes
      * sets up the game mode panel and adds it to the GUI
-     */
+     * */
     private void setUpGameModes(){
         // game mode buttons
         RadioButton regMoveGameMode = new RadioButton("Regular Movement");
@@ -327,6 +358,7 @@ public class AdventureGameView {
         this.gameModePanel.getChildren().add(regMoveGameMode);
         this.gameModePanel.getChildren().add(chaoticMoveGameMode);
         this.gameModePanel.getChildren().add(trollGameMode);
+        this.gameModePanel.getChildren().add(zoomButton);
         this.gameModePanel.setAlignment(Pos.CENTER_LEFT);
 
         this.gridPane.add(this.gameModePanel, 4,0,1,1);
@@ -336,16 +368,16 @@ public class AdventureGameView {
     /**
      * addTextHandlingEvent
      * __________________________
-     * Add an event handler to the myTextField attribute 
+     * Add an event handler to the myTextField attribute
      *
-     * Your event handler should respond when users 
-     * hits the ENTER or TAB KEY. If the user hits 
+     * Your event handler should respond when users
+     * hits the ENTER or TAB KEY. If the user hits
      * the ENTER Key, strip white space from the
-     * input to myTextField and pass the stripped 
+     * input to myTextField and pass the stripped
      * string to submitEvent for processing.
      *
-     * If the user hits the TAB key, move the focus 
-     * of the scene onto any other node in the scene 
+     * If the user hits the TAB key, move the focus
+     * of the scene onto any other node in the scene
      * graph by invoking requestFocus method.
      */
     private void addTextHandlingEvent() {
@@ -502,7 +534,7 @@ public class AdventureGameView {
      * __________________________
      *
      * update the text in the GUI (within roomDescLabel)
-     * to show all the moves that are possible from the 
+     * to show all the moves that are possible from the
      * current room.
      */
     private void showCommands() {
@@ -526,7 +558,7 @@ public class AdventureGameView {
      * below the image.
      * Otherwise, the current room description will be dispplayed
      * below the image.
-     * 
+     *
      * @param textToDisplay the text to display below the image.
      */
     public void updateScene(String textToDisplay) {
@@ -566,7 +598,7 @@ public class AdventureGameView {
      * __________________________
      *
      * Format text for display.
-     * 
+     *
      * @param textToDisplay the text to be formatted for display.
      */
     private void formatText(String textToDisplay) {
@@ -604,6 +636,11 @@ public class AdventureGameView {
         roomImageView.setAccessibleText(this.model.getPlayer().getCurrentRoom().getRoomDescription());
         roomImageView.setFocusTraversable(true);
     }
+    private String getRoomImageDir(){
+        int roomNumber = this.model.getPlayer().getCurrentRoom().getRoomNumber();
+        String roomImageDir = this.model.getDirectoryName() + "/room-images/" + roomNumber + ".png";
+        return roomImageDir;
+    }
 
     /**
      * updateItems
@@ -614,7 +651,7 @@ public class AdventureGameView {
      * The method should populate the objectsInRoom and objectsInInventory Vboxes.
      * Each Vbox should contain a collection of nodes (Buttons, ImageViews, you can decide)
      * Each node represents a different object.
-     * 
+     *
      * Images of each object are in the assets 
      * folders of the given adventure game.
      */
@@ -862,5 +899,33 @@ public class AdventureGameView {
             mediaPlayer.stop(); //shush!
             mediaPlaying = false;
         }
+    }
+    public void addZoomEvent() {
+        zoomButton.setOnMouseClicked(e -> {
+            try{
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
+                }
+            } catch (UnsupportedLookAndFeelException ex) {
+                throw new RuntimeException(ex);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            } catch (InstantiationException ex) {
+                throw new RuntimeException(ex);
+            } catch (IllegalAccessException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new zoomFrame(getRoomImageDir()).setVisible(true);
+                }
+            });
+
+        });
     }
 }
