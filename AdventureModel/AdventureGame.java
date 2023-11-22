@@ -3,6 +3,8 @@ package AdventureModel;
 import PlayerMovement.MovementGameMode;
 import PlayerMovement.MovementGameModeFactory;
 import PlayerMovement.RegularMovement;
+import views.AdventureGameView;
+
 
 import java.io.*;
 import java.util.*;
