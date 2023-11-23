@@ -51,9 +51,10 @@ public class AdventureLoader {
             // now we make the NPC object
             NPC npc = new NPC(name);
 
-            buff.readLine();
             // now we need to get the dialogues
             while(buff.ready()){
+                buff.readLine();//read out the ---
+
                 String advice = "";
                 String line = buff.readLine();
                 while (!line.equals("-")) {

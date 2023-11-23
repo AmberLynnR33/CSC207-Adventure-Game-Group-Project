@@ -19,7 +19,7 @@ public class NPC implements ProgressionObserver{
 
     public void addAdvice(String message, String completionEvent){
         Advice newAdvice = new Advice(message, completionEvent);
-        dialouges.add(newAdvice);
+        dialouges.add(0, newAdvice);
     }
     class Advice{
         String message;

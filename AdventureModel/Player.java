@@ -39,6 +39,7 @@ public class Player implements Serializable {
             AdventureObject object1 = this.currentRoom.getObject(object);
             this.currentRoom.removeGameObject(object1);
             this.addToInventory(object1);
+            //publish that the player has taken the item
             return true;
         } else {
             return false;

@@ -128,6 +128,25 @@ public class Room implements Serializable {
     }
 
     /**
+     * This method tells whether there is an npc in the room.
+     * @return True iff the room has an NPC
+     */
+    public boolean hasNPC(){
+        return this.npc != null;
+    }
+
+    /**
+     * This method gets the current npc dialogue
+     * @return the message most relevent to the player's game progress
+     */
+    public String getNPCDialogue(){
+        if(hasNPC()) {
+            return this.npc.getAdvice();
+        }
+        return "NO NPC HERE";
+    }
+
+    /**
      * This method removes a game object from the room.
      *
      * @param object to be removed from the room.

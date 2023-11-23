@@ -1,6 +1,7 @@
 package AdventureModel;
 
 import NPC.NPCRoom;
+import NPC.ProgressionPublisher;
 import PlayerMovement.MovementGameMode;
 import PlayerMovement.MovementGameModeFactory;
 import PlayerMovement.RegularMovement;
@@ -22,6 +23,7 @@ public class AdventureGame implements Serializable {
 
     private MovementGameMode movementType; //the game mode for player movement
     private boolean actionMade = false; //checks if the player can set game mode
+    
 
     /**
      * Adventure Game Constructor
@@ -169,7 +171,8 @@ public class AdventureGame implements Serializable {
                 else return "FORCED";
             } //something is up here! We are dead or we won.
             return null;
-        } else if(Arrays.asList(this.actionVerbs).contains(inputArray[0])) {
+        }
+        else if(Arrays.asList(this.actionVerbs).contains(inputArray[0])) {
             if(inputArray[0].equals("QUIT")) { return "GAME OVER"; } //time to stop!
             else if(inputArray[0].equals("INVENTORY") && this.player.getInventory().size() == 0) return "INVENTORY IS EMPTY";
             else if(inputArray[0].equals("INVENTORY") && this.player.getInventory().size() > 0) return "THESE OBJECTS ARE IN YOUR INVENTORY:\n" + this.player.getInventory().toString();
@@ -192,8 +195,8 @@ public class AdventureGame implements Serializable {
                 }
             }
             else if(inputArray[0].equals("TALK")){
-                if(this.player.getCurrentRoom() instanceof NPCRoom){
-                    return ((NPCRoom) this.player.getCurrentRoom()).getNPCDialogue();
+                if(this.player.getCurrentRoom().hasNPC()){
+                    return this.player.getCurrentRoom().getNPCDialogue();
                 }
                 else{
                     return "THERE IS NOBODY TO TALK TO.\n";
