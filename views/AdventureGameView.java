@@ -51,8 +51,8 @@ import java.util.Objects;
  */
 public class AdventureGameView {
 
-    AdventureGame model; //model of the game
-    Stage stage; //stage on which all is rendered
+    public AdventureGame model; //model of the game
+   public  Stage stage; //stage on which all is rendered
     Button saveButton, loadButton, helpButton; //buttons
     Button zoomButton;
     Boolean helpToggle = false; //is help on display?
@@ -79,6 +79,7 @@ public class AdventureGameView {
     private Label gameModeLabel = new Label();
 
     private final Button TEST_BUTTON = new Button(); //Button for checking class
+    public static AdventureGameView game;
 
 
     /**
@@ -89,6 +90,7 @@ public class AdventureGameView {
     public AdventureGameView(AdventureGame model, Stage stage) {
         this.model = model;
         this.stage = stage;
+        AdventureGameView.game = this;
         intiUI();
     }
 
@@ -434,7 +436,7 @@ public class AdventureGameView {
             String gameModeID = ((RadioButton) this.movementGameModes.getSelectedToggle()).getId();
             this.model.setMovementGameMode(gameModeID);
         }
-        String output = this.model.interpretAction(text); //process the command!
+        String output = this.model.interpretAction(text, this); //process the command!
 
         if (output == null || (!output.equals("GAME OVER") && !output.equals("FORCED") && !output.equals("HELP"))) {
             updateScene(output);
@@ -475,7 +477,7 @@ public class AdventureGameView {
         int curRoom = this.model.getPlayer().getCurrentRoom().getRoomNumber();
 
         for (Passage curPassage : allMoves) {
-            String actionDetails = this.model.interpretAction(curPassage.getDirection());
+            String actionDetails = this.model.interpretAction(curPassage.getDirection(), this);
 
             if (actionDetails == null){
                 //check if moved rooms
