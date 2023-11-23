@@ -1,9 +1,9 @@
 Muhammad Ahmad Bajwa
 3
 ---
-Hey there adventurer! You need to pick up a lantern.
+Hey there adventurer! You need to pick up some KEYS.
 -
-TAKEN LAMP
+TAKEN KEYS
 ---
 Hey there adventurer! Try exploring the grates and the caves down south.
 -
@@ -19,11 +19,6 @@ What am I? A rod so slight,
 Yet magic dwells within its light.
 Wave me high, the chasm clears,
 The path revealed, conquer fears.
-
-What am I that points the way?
-A staff, a wand, come seize the day.
-No mortal might, no bridge of stone,
-But magic's touch to call your own.
 -
 VISITED ROOM 24
 ---

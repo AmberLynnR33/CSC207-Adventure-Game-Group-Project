@@ -1,6 +1,7 @@
 package AdventureModel;
 
 import NPC.NPCRoom;
+import NPC.ProgressionObserver;
 import NPC.ProgressionPublisher;
 import PlayerMovement.MovementGameMode;
 import PlayerMovement.MovementGameModeFactory;
@@ -23,7 +24,8 @@ public class AdventureGame implements Serializable {
 
     private MovementGameMode movementType; //the game mode for player movement
     private boolean actionMade = false; //checks if the player can set game mode
-    
+
+    private final ProgressionPublisher progressionPublisher = new ProgressionPublisher(); //publishes when the player picks up items or enters rooms
 
     /**
      * Adventure Game Constructor
@@ -170,6 +172,7 @@ public class AdventureGame implements Serializable {
                     return "GAME OVER";
                 else return "FORCED";
             } //something is up here! We are dead or we won.
+            this.progressionPublisher.notifyAll("VISITED ROOM "+this.player.getCurrentRoom().getRoomNumber());// update that the player has reached a room
             return null;
         }
         else if(Arrays.asList(this.actionVerbs).contains(inputArray[0])) {
@@ -181,6 +184,7 @@ public class AdventureGame implements Serializable {
             else if(inputArray[0].equals("TAKE") && inputArray.length == 2) {
                 if(this.player.getCurrentRoom().checkIfObjectInRoom(inputArray[1])) {
                     this.player.takeObject(inputArray[1]);
+                    progressionPublisher.notifyAll("TAKEN "+ inputArray[1]);     //publish the take
                     return "YOU HAVE TAKEN:\n " + inputArray[1];
                 } else {
                     return "THIS OBJECT IS NOT HERE:\n " + inputArray[1];
@@ -271,6 +275,17 @@ public class AdventureGame implements Serializable {
      * Getter method for helpText
      */
     public String getHelpText(){return this.helpText;}
+
+    /**
+     * method for subscribing to progressionPublisher
+     * @param sub ProgressionObserver
+     */
+    public void subscribeProgression(ProgressionObserver sub){
+        if(this.progressionPublisher == null){
+            throw new RuntimeException("NO PROGRESSION OBSERVER");
+        }
+        this.progressionPublisher.subscribe(sub);
+    }
 
 
 }
