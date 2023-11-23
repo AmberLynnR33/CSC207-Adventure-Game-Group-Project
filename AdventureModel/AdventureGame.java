@@ -27,6 +27,8 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     private MovementGameMode movementType; //the game mode for player movement
     private boolean actionMade = false; //checks if the player can set game mode
     private final List<ProgressionObserver> progressionSubscribers = new ArrayList<ProgressionObserver>(); //the objects that observe player progression (NPC)
+    public AdventureGameStatistics gameStats;
+
     /**
      * Adventure Game Constructor
      * __________________________
@@ -78,6 +80,10 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
         //reset game modes
         this.movementType = null;
         this.actionMade = false;
+
+        //reset the stats
+        AdventureGameStatistics.resetInstance();
+        this.gameStats = AdventureGameStatistics.getInstance(this);
     }
 
     /**
@@ -120,8 +126,12 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
         }
 
         // move player based on game mode
-        return this.movementType.movePlayer(direction, this.player, this.rooms);
+        boolean movementDetails = this.movementType.movePlayer(direction, this.player, this.rooms);
 
+        //need to update stats!
+        this.gameStats.updateStatistics();
+
+        return movementDetails;
     }
 
     /**
