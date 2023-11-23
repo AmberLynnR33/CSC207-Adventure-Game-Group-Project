@@ -1,7 +1,10 @@
 package AdventureModel;
 
+import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import views.AdventureGameView;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StatisticsTests {
@@ -62,17 +65,20 @@ public class StatisticsTests {
     @Test
     public void changeMostVisited(){
         AdventureGame model = new AdventureGame("TinyGame");
+        Stage testStage = new Stage();
+        AdventureGameView view = new AdventureGameView(model, testStage);
         AdventureGameStatistics stats = AdventureGameStatistics.getInstance(model);
 
         model.movePlayer("WEST"); //2
         model.movePlayer("WEST"); //3
-        model.interpretAction("TAKE BOOK");
+        model.interpretAction("TAKE BOOK", view);
         model.movePlayer("XYZZY"); //2
 
         assertEquals(4, stats.getTotalRoomsVisited());
         assertEquals(3, stats.getTotalUniqueRoomsVisited());
         assertEquals(model.getPlayer().getCurrentRoom().getRoomName(), stats.getRoomVisitedMost());
 
+        testStage.close();
     }
 
 }
