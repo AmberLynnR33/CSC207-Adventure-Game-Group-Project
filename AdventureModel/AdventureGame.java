@@ -1,5 +1,8 @@
 package AdventureModel;
 
+import NPC.NPCRoom;
+import NPC.ProgressionObserver;
+import NPC.ProgressionPublisher;
 import PlayerMovement.MovementGameMode;
 import PlayerMovement.MovementGameModeFactory;
 import PlayerMovement.RegularMovement;
@@ -12,17 +15,18 @@ import java.util.*;
 /**
  * Class AdventureGame.  Handles all the necessary tasks to run the Adventure game.
  */
-public class AdventureGame implements Serializable {
+public class AdventureGame implements Serializable, ProgressionPublisher {
     private final String directoryName; //An attribute to store the Introductory text of the game.
     private String helpText; //A variable to store the Help text of the game. This text is displayed when the user types "HELP" command.
     private final HashMap<Integer, Room> rooms; //A list of all the rooms in the game.
     private HashMap<String,String> synonyms = new HashMap<>(); //A HashMap to store synonyms of commands.
-    private final String[] actionVerbs = {"QUIT","INVENTORY","TAKE","DROP"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
+    private final String[] actionVerbs = {"QUIT","INVENTORY","TAKE","DROP","TALK"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
+
     public Player player; //The Player of the game.
 
     private MovementGameMode movementType; //the game mode for player movement
     private boolean actionMade = false; //checks if the player can set game mode
-
+    private final List<ProgressionObserver> progressionSubscribers = new ArrayList<ProgressionObserver>(); //the objects that observe player progression (NPC)
     public AdventureGameStatistics gameStats;
 
     /**
@@ -178,8 +182,10 @@ public class AdventureGame implements Serializable {
                     return "GAME OVER";
                 else return "FORCED";
             } //something is up here! We are dead or we won.
+            notifyAll("VISITED ROOM "+this.player.getCurrentRoom().getRoomNumber());// update that the player has reached a room
             return null;
-        } else if(Arrays.asList(this.actionVerbs).contains(inputArray[0])) {
+        }
+        else if(Arrays.asList(this.actionVerbs).contains(inputArray[0])) {
             if(inputArray[0].equals("QUIT")) { return "GAME OVER"; } //time to stop!
             else if(inputArray[0].equals("INVENTORY") && this.player.getInventory().size() == 0) return "INVENTORY IS EMPTY";
             else if(inputArray[0].equals("INVENTORY") && this.player.getInventory().size() > 0) return "THESE OBJECTS ARE IN YOUR INVENTORY:\n" + this.player.getInventory().toString();
@@ -187,7 +193,10 @@ public class AdventureGame implements Serializable {
             else if(inputArray[0].equals("DROP") && inputArray.length < 2) return "THE DROP COMMAND REQUIRES AN OBJECT";
             else if(inputArray[0].equals("TAKE") && inputArray.length == 2) {
                 if(this.player.getCurrentRoom().checkIfObjectInRoom(inputArray[1])) {
-                    if (this.player.takeObject(inputArray[1], viewgame)) return "YOU HAVE TAKEN:\n " + inputArray[1];
+                    if (this.player.takeObject(inputArray[1], viewgame)){
+                        notifyAll("TAKEN "+ inputArray[1]);     //publish the take
+                        return "YOU HAVE TAKEN:\n " + inputArray[1];
+                    } 
                     return null;
                 } else {
                     return "THIS OBJECT IS NOT HERE:\n " + inputArray[1];
@@ -199,6 +208,14 @@ public class AdventureGame implements Serializable {
                     return "YOU HAVE DROPPED:\n " + inputArray[1];
                 } else {
                     return "THIS OBJECT IS NOT IN YOUR INVENTORY:\n " + inputArray[1];
+                }
+            }
+            else if(inputArray[0].equals("TALK")){
+                if(this.player.getCurrentRoom().hasNPC()){
+                    return this.player.getCurrentRoom().getNPCDialogue();
+                }
+                else{
+                    return "THERE IS NOBODY TO TALK TO.\n";
                 }
             }
         }
@@ -270,6 +287,23 @@ public class AdventureGame implements Serializable {
      * Getter method for helpText
      */
     public String getHelpText(){return this.helpText;}
+
+    /**
+     * method for subscribing to progressionPublisher
+     * @param sub ProgressionObserver
+     */
+    public void subscribe(ProgressionObserver sub){
+        progressionSubscribers.add(sub);
+    }
+    public void unsubscribe(ProgressionObserver exObserver) {
+        progressionSubscribers.remove(exObserver);
+    }
+    public void notifyAll(String event) {
+        for (ProgressionObserver observer : progressionSubscribers) {
+            observer.update(event);
+        }
+    }
+
 
 
 }

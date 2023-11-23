@@ -1,0 +1,28 @@
+Muhammad Ahmad Bajwa
+3
+---
+Hey there adventurer! You need to pick up some KEYS.
+-
+TAKEN KEYS
+---
+Hey there adventurer! Try exploring the grates and the caves down south.
+-
+VISITED ROOM 21
+---
+Hey there adventurer! It seems like you're trying to cross the chasm.
+In nature's grasp, where giants sleep,
+A rocky chasm, dark and deep.
+To bridge the gap, a secret found,
+A wand of wonder, strength unbound.
+
+What am I? A rod so slight,
+Yet magic dwells within its light.
+Wave me high, the chasm clears,
+The path revealed, conquer fears.
+-
+VISITED ROOM 24
+---
+Adventurer! It seems like you are fully prepared to complete your journey.
+I have no more advice to give you.
+-
+END GAME
