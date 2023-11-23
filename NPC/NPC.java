@@ -1,9 +1,10 @@
 package NPC;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NPC implements ProgressionObserver{
+public class NPC implements ProgressionObserver, Serializable {
     String name;
     private List<Advice> dialouges; //A priority list of NPC advice. Highest priority is last and Advice is removed if its completionEvent is done.
     public NPC(String name){

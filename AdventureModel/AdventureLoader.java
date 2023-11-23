@@ -74,7 +74,7 @@ public class AdventureLoader {
                 npc.addAdvice(advice, completionEvent);
             }
             this.game.getRooms().get(roomNumber).addNPC(npc);
-            this.game.subscribeProgression(npc);
+            this.game.subscribe(npc);
         }
     }
      /**

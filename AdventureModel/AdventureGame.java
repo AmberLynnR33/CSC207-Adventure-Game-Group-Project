@@ -15,7 +15,7 @@ import java.util.*;
 /**
  * Class AdventureGame.  Handles all the necessary tasks to run the Adventure game.
  */
-public class AdventureGame implements Serializable {
+public class AdventureGame implements Serializable, ProgressionPublisher {
     private final String directoryName; //An attribute to store the Introductory text of the game.
     private String helpText; //A variable to store the Help text of the game. This text is displayed when the user types "HELP" command.
     private final HashMap<Integer, Room> rooms; //A list of all the rooms in the game.
@@ -26,9 +26,7 @@ public class AdventureGame implements Serializable {
 
     private MovementGameMode movementType; //the game mode for player movement
     private boolean actionMade = false; //checks if the player can set game mode
-
-    private final ProgressionPublisher progressionPublisher = new ProgressionPublisher(); //publishes when the player picks up items or enters rooms
-
+    private final List<ProgressionObserver> progressionSubscribers = new ArrayList<ProgressionObserver>(); //the objects that observe player progression (NPC)
     /**
      * Adventure Game Constructor
      * __________________________
@@ -174,7 +172,7 @@ public class AdventureGame implements Serializable {
                     return "GAME OVER";
                 else return "FORCED";
             } //something is up here! We are dead or we won.
-            this.progressionPublisher.notifyAll("VISITED ROOM "+this.player.getCurrentRoom().getRoomNumber());// update that the player has reached a room
+            notifyAll("VISITED ROOM "+this.player.getCurrentRoom().getRoomNumber());// update that the player has reached a room
             return null;
         }
         else if(Arrays.asList(this.actionVerbs).contains(inputArray[0])) {
@@ -186,7 +184,7 @@ public class AdventureGame implements Serializable {
             else if(inputArray[0].equals("TAKE") && inputArray.length == 2) {
                 if(this.player.getCurrentRoom().checkIfObjectInRoom(inputArray[1])) {
                     if (this.player.takeObject(inputArray[1], viewgame)){
-                        progressionPublisher.notifyAll("TAKEN "+ inputArray[1]);     //publish the take
+                        notifyAll("TAKEN "+ inputArray[1]);     //publish the take
                         return "YOU HAVE TAKEN:\n " + inputArray[1];
                     } 
                     return null;
@@ -284,12 +282,18 @@ public class AdventureGame implements Serializable {
      * method for subscribing to progressionPublisher
      * @param sub ProgressionObserver
      */
-    public void subscribeProgression(ProgressionObserver sub){
-        if(this.progressionPublisher == null){
-            throw new RuntimeException("NO PROGRESSION OBSERVER");
-        }
-        this.progressionPublisher.subscribe(sub);
+    public void subscribe(ProgressionObserver sub){
+        progressionSubscribers.add(sub);
     }
+    public void unsubscribe(ProgressionObserver exObserver) {
+        progressionSubscribers.remove(exObserver);
+    }
+    public void notifyAll(String event) {
+        for (ProgressionObserver observer : progressionSubscribers) {
+            observer.update(event);
+        }
+    }
+
 
 
 }
