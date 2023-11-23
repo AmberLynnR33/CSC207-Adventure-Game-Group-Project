@@ -2,6 +2,7 @@ package AdventureModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import NPC.NPC;
 
 /**
  * This class contains the information about a 
@@ -41,6 +42,11 @@ public class Room implements Serializable {
     private boolean isVisited;
 
     /**
+     * The NPC in the room. null if there is no NPC
+     */
+    private NPC npc;
+
+    /**
      * AdvGameRoom constructor.
      *
      * @param roomName: The name of the room.
@@ -53,6 +59,7 @@ public class Room implements Serializable {
         this.roomDescription = roomDescription;
         this.adventureName = adventureName;
         this.isVisited = false;
+        this.npc = null;
     }
 
 
@@ -93,6 +100,11 @@ public class Room implements Serializable {
             allMoves = allMoves.concat(curPassage.getDirection());
         }
 
+        //Add TALK if there is an NPC
+        if(this.npc != null) {
+            allMoves = allMoves.concat(", TALK");
+        }
+
         //ensure to remove the comma and space at start of string
         return allMoves.isEmpty()?allMoves:allMoves.substring(2);
     }
@@ -104,6 +116,15 @@ public class Room implements Serializable {
      */
     public void addGameObject(AdventureObject object){
         this.objectsInRoom.add(object);
+    }
+
+    /**
+     * This method adds an NPC to the room.
+     *
+     * @param npc to be added to the room.
+     */
+    public void addNPC(NPC npc){
+        this.npc = npc;
     }
 
     /**

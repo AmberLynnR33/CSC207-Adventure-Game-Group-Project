@@ -3,6 +3,7 @@ package AdventureModel;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import NPC.NPC;
 
 /**
  * Class AdventureLoader. Loads an adventure from files.
@@ -29,11 +30,44 @@ public class AdventureLoader {
      */
     public void loadGame() throws IOException {
         parseRooms();
+        parseNPC();
         parseObjects();
         parseSynonyms();
         this.game.setHelpText(parseOtherFile("help"));
     }
 
+    /**
+     * NPC file
+     */
+    private void parseNPC() throws IOException{
+        String npcFileName = this.adventureName + "/NPCs.txt";
+        BufferedReader buff = new BufferedReader(new FileReader(npcFileName));
+
+        while (buff.ready()) {
+
+            String name = buff.readLine(); // first line is the NPC name
+            int roomNumber = Integer.parseInt(buff.readLine());//room the NPC is in
+
+            // now we make the NPC object
+            NPC npc = new NPC(name);
+
+            buff.readLine();
+            // now we need to get the dialogues
+            while(buff.ready()){
+                String advice = "";
+                String line = buff.readLine();
+                while (!line.equals("-")) {
+                    advice += line + "\n";
+                    line = buff.readLine();
+                }
+                advice += "\n";
+                String completionEvent = buff.readLine();
+
+                npc.addAdvice(advice, completionEvent);
+            }
+            this.game.getRooms().get(roomNumber).addNPC(npc);
+        }
+    }
      /**
      * Parse Rooms File
      */

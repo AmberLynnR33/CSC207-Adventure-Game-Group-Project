@@ -27,3 +27,7 @@ But magic's touch to call your own.
 -
 VISITED ROOM 24
 ---
+Adventurer! It seems like you are fully prepared to complete your journey.
+I have no more advice to give you.
+-
+END GAME
