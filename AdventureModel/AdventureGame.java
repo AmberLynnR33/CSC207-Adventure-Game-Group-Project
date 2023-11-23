@@ -23,6 +23,8 @@ public class AdventureGame implements Serializable {
     private MovementGameMode movementType; //the game mode for player movement
     private boolean actionMade = false; //checks if the player can set game mode
 
+    public AdventureGameStatistics gameStats;
+
     /**
      * Adventure Game Constructor
      * __________________________
@@ -74,6 +76,10 @@ public class AdventureGame implements Serializable {
         //reset game modes
         this.movementType = null;
         this.actionMade = false;
+
+        //reset the stats
+        AdventureGameStatistics.resetInstance();
+        this.gameStats = AdventureGameStatistics.getInstance(this);
     }
 
     /**
@@ -116,8 +122,12 @@ public class AdventureGame implements Serializable {
         }
 
         // move player based on game mode
-        return this.movementType.movePlayer(direction, this.player, this.rooms);
+        boolean movementDetails = this.movementType.movePlayer(direction, this.player, this.rooms);
 
+        //need to update stats!
+        this.gameStats.updateStatistics();
+
+        return movementDetails;
     }
 
     /**
