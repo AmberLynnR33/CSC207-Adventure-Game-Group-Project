@@ -1,15 +1,27 @@
 package PlayerMovement;
 
+import AdventureModel.Passage;
 import AdventureModel.Player;
 import AdventureModel.Room;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Class ChaoticMovement
  * Game mode that moves the player to a randomized room instead of the room they specify
  */
 public class ChaoticMovement implements MovementGameMode{
+
+    private RegularMovement movingRooms; //Moves the player after the random direction is selected
+
+    public ChaoticMovement(){
+        super();
+        this.movingRooms = new RegularMovement();
+    }
+
     /**
      * movePlayer
      * Attempt to move the player to another room
@@ -21,7 +33,25 @@ public class ChaoticMovement implements MovementGameMode{
      */
     @Override
     public boolean movePlayer(String direction, Player player, HashMap<Integer, Room> roomMap) {
-        throw new UnsupportedOperationException("Not yet implemented");
+
+        List<Passage> directionsCanMove = new ArrayList<>();
+
+        //get all possible directions the player can go
+        for (Passage curPasssage: player.getCurrentRoom().getMotionTable().passageTable) {
+            if (curPasssage.getIsBlocked()) {
+                if (player.checkIfObjectInInventory(curPasssage.getKeyName())) {
+                    directionsCanMove.add(curPasssage);
+                }
+            } else {
+                directionsCanMove.add(curPasssage);
+            }
+        }
+
+        Double indexMovingTo = Math.floor(Math.random() * (directionsCanMove.size()));
+
+        return this.movingRooms.movePlayer(directionsCanMove.get(indexMovingTo.intValue()).getDirection(),
+                player, roomMap);
+        
     }
 
     /**
