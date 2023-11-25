@@ -81,7 +81,7 @@ public class AdventureObject implements Serializable {
         return this.location;
     }
 
-    private void setInteractBehavior(InteractBehavior type) {
+    public void setInteractBehavior(InteractBehavior type) {
         this.interactBehavior = type;
     }
 

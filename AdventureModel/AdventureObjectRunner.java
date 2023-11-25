@@ -14,14 +14,16 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
 
-public class AdventureObjectRunner implements InteractBehavior {
+public class AdventureObjectRunner implements InteractBehavior, Serializable {
     public Boolean interact(Player p, AdventureObject obj, AdventureGameView game){
         Random rand = new Random();
-        Integer num = rand.nextInt(4);
-        if (num == 0) return true;
+        Integer num = rand.nextInt(5);
+        if (num <= 1) return true;
         PassageTable paths = p.getCurrentRoom().getMotionTable();
         while (true){
             num = rand.nextInt(paths.passageTable.size());
@@ -40,14 +42,16 @@ public class AdventureObjectRunner implements InteractBehavior {
             text.setTextFill(Color.web("#ffffff"));
             text.setTextAlignment(TextAlignment.CENTER);
             text.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-            ImageView goblinBoy = new ImageView(new Image(game.model.getDirectoryName() + "/goblins/goblin1.png"));
+            text.setPrefHeight(50);
+            num = rand.nextInt(3); num ++;
+            ImageView goblinBoy = new ImageView(new Image(game.model.getDirectoryName() + "/goblins/goblin" + num + ".png"));
             goblinBoy.setPreserveRatio(true); goblinBoy.setFitWidth(400); goblinBoy.setFitHeight(400);
             VBox box = new VBox(20);
             box.setPadding(new Insets(20, 20, 20, 20));
             box.setStyle("-fx-background-color: #121212;");
             box.setAlignment(Pos.CENTER);
             box.getChildren().addAll(text, goblinBoy);
-            Scene goblinScene = new Scene(box, 500, 450);
+            Scene goblinScene = new Scene(box, 450, 500);
             goblin.setScene(goblinScene);
             goblin.show();
             return false;
