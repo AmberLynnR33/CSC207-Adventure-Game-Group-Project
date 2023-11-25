@@ -1,4 +1,5 @@
 package AdventureModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.io.BufferedReader;
@@ -8,6 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
@@ -20,7 +23,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import views.AdventureGameView;
 
-public class AdventureObjectPuzzle implements InteractBehavior {
+public class AdventureObjectPuzzle implements InteractBehavior, Serializable {
     public Boolean interact(Player p, AdventureObject obj, AdventureGameView game){
         ArrayList<String> puzzles = new ArrayList<>();
         try {
@@ -50,22 +53,24 @@ public class AdventureObjectPuzzle implements InteractBehavior {
         scrambledWord.setTextAlignment(TextAlignment.CENTER);
         scrambledWord.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         Label text = new Label("The " + obj.getName() + " is locked in a chest you must decode the word to open it.");
-        text.setWrapText(true);
+        text.setWrapText(true); text.setPrefHeight(50);
         text.setStyle("-fx-background-color: transparent;");
         text.setTextFill(Color.web("#ffffff"));
         text.setTextAlignment(TextAlignment.CENTER);
         text.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-        TextField answer = new TextField("");
+        TextField answer = new TextField(""); answer.setPrefHeight(50);
+        ImageView tressureChest = new ImageView(new Image(game.model.getDirectoryName() + "/tressureChest.png"));
+        tressureChest.setPreserveRatio(true); tressureChest.setFitWidth(350); tressureChest.setFitHeight(350);
         VBox box = new VBox(20);
         box.setPadding(new Insets(20, 20, 20, 20));
         box.setStyle("-fx-background-color: #121212;");
         box.setAlignment(Pos.CENTER);
-        box.getChildren().addAll(text, scrambledWord, answer);
-        Scene chestScene = new Scene(box, 500, 450);
+        box.getChildren().addAll(text, scrambledWord, answer, tressureChest);
+        Scene chestScene = new Scene(box, 450, 500);
         chest.setScene(chestScene);
         answer.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent key) -> {
             if (key.getCode().equals(KeyCode.ENTER)) {
-                if (answer.getText().strip().toLowerCase().equals(new String(puzzle))){
+                if (answer.getText().strip().equalsIgnoreCase(new String(puzzle))){
                     solved[0] = true;
                     chest.close();
                 }
@@ -73,6 +78,9 @@ public class AdventureObjectPuzzle implements InteractBehavior {
             }
         });
         chest.showAndWait();
+        if (solved[0]){
+            obj.setInteractBehavior(new AdventureObjectBasic());
+        }
         return solved[0];
     }
 }

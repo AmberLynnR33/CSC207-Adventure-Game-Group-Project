@@ -455,7 +455,7 @@ public class AdventureGameView {
     }
 
     private void instantiatePause(){
-        this.forcedTransition = new PauseTransition(Duration.seconds(6));
+        this.forcedTransition = new PauseTransition(Duration.seconds(3));
         this.forcedTransition.setOnFinished(event ->{
             this.forcedMoveRoom();
         });
