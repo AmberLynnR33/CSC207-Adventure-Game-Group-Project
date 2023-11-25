@@ -36,6 +36,11 @@ public class ChaoticMovement implements MovementGameMode{
 
         List<Passage> directionsCanMove = new ArrayList<>();
 
+        //if a forced room, should use RegularMovement's implementation
+        if (player.getCurrentRoom().getMotionTable().passageTable.get(0).getDirection().equals("FORCED")){
+            return this.movingRooms.movePlayer(direction, player, roomMap);
+        }
+
         //get all possible directions the player can go
         for (Passage curPasssage: player.getCurrentRoom().getMotionTable().passageTable) {
             if (curPasssage.getIsBlocked()) {
@@ -51,7 +56,7 @@ public class ChaoticMovement implements MovementGameMode{
 
         return this.movingRooms.movePlayer(directionsCanMove.get(indexMovingTo.intValue()).getDirection(),
                 player, roomMap);
-        
+
     }
 
     /**
