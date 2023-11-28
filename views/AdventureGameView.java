@@ -223,12 +223,28 @@ public class AdventureGameView {
         updateScene(""); //method displays an image and whatever text is supplied
         updateItems(); //update items shows inventory and objects in rooms
 
+        this.objectsInRoom.setFocusTraversable(true);
+        this.objectsInInventory.setFocusTraversable(true);
+
         // adding extra features panel
         VBox extraFeatures = new VBox();
         extraFeatures.getChildren().addAll(this.zoomButton, this.statsButton);
         extraFeatures.setAlignment(Pos.CENTER);
         extraFeatures.setSpacing(10);
         gridPane.add(extraFeatures, 4,1,1,1);
+
+        //make object boxes traversable
+        this.objectsInRoom.setAccessibleRole(AccessibleRole.SCROLL_PANE);
+        this.objectsInRoom.setAccessibleRoleDescription("Panel containing objects in this room");
+        this.objectsInRoom.setAccessibleText("This panel contains the objects in this room");
+        this.objectsInRoom.setAccessibleHelp("The following buttons are the objects in this room. Continue traversing to hear more about these objects.");
+
+        this.objectsInInventory.setAccessibleRole(AccessibleRole.SCROLL_PANE);
+        this.objectsInInventory.setAccessibleRoleDescription("Panel containing objects in your inventory");
+        this.objectsInInventory.setAccessibleText("This panel contains the objects in your inventory");
+        this.objectsInInventory.setAccessibleHelp("The following buttons are the objects in your inventory. Continue traversing to hear more about these objects.");
+
+        this.setTraversablePath(this.loadButton, this.gameModeLabel);
 
         // adding the text area and submit button to a VBox
         VBox textEntry = new VBox();
@@ -405,7 +421,7 @@ public class AdventureGameView {
                     //clear the box for new input
                     inputTextField.setText("");
                 }else if(keyEvent.getCode() == KeyCode.TAB){
-                    saveButton.requestFocus();
+                    objectsInRoom.requestFocus();
                 }
                 keyEvent.consume();
             }
@@ -704,6 +720,10 @@ public class AdventureGameView {
                 //configure button
                 curButton = this.configureButton(curObj, false);
                 this.objectsInRoom.getChildren().add(curButton);
+
+                makeButtonAccessible(curButton, curObj.getName() + " Button",
+                        "This button corresponds to a " + curObj.getName() + " object in the current room.",
+                        "Clicking this button adds " + curObj.getName() + " to your inventory.");
             }
         }
         //write some code here to add images of objects in a player's inventory room to the objectsInInventory Vbox
@@ -716,6 +736,10 @@ public class AdventureGameView {
                 //configure each button
                 curButton = this.configureButton(curObj, true);
                 this.objectsInInventory.getChildren().add(curButton);
+
+                makeButtonAccessible(curButton, curObj.getName() + " Button",
+                        "This button corresponds to a " + curObj.getName() + " object in your inventory.",
+                        "Clicking this button removes " + curObj.getName() + " from your inventory.");
             }
         }
 
@@ -747,14 +771,8 @@ public class AdventureGameView {
         //please use setAccessibleText to add "alt" descriptions to your images!
 
         if (inInven){
-            makeButtonAccessible(objectButton, curObject.getName() + " Button",
-                    "This button corresponds to a " + curObject.getName() + " object in your inventory.",
-                    "Clicking this button removes " + curObject.getName() + "from your inventory.");
             this.setInventoryButtonHandler(objectButton);
         }else{
-            makeButtonAccessible(objectButton, curObject.getName() + " Button",
-                    "This button corresponds to a " + curObject.getName() + " object in the current room.",
-                    "Clicking this button adds " + curObject.getName() + "to your inventory.");
             this.setRoomButtonHandler(objectButton);
         }
         return objectButton;
@@ -762,29 +780,15 @@ public class AdventureGameView {
 
     private void setInventoryButtonHandler(Button inventoryButton){
         inventoryButton.setOnAction(e -> {
-            gridPane.requestFocus();
-            this.objectsInInventory.getChildren().remove(inventoryButton);
-            this.objectsInRoom.getChildren().add(inventoryButton);
             this.submitEvent("DROP " + inventoryButton.getText());
-
-            //Update alt text of button
-            makeButtonAccessible(inventoryButton, inventoryButton.getText() + " Button",
-                    "This button corresponds to a " + inventoryButton.getText() + " object in the current room.",
-                    "Clicking this button adds " + inventoryButton.getText() + "to your inventory.");
+            this.updateItems();
         });
     }
 
     private void setRoomButtonHandler(Button roomButton){
         roomButton.setOnAction(e -> {
-            gridPane.requestFocus();
-            this.objectsInRoom.getChildren().remove(roomButton);
-            this.objectsInInventory.getChildren().add(roomButton);
             this.submitEvent("TAKE " + roomButton.getText());
-
-            //Update alt text of button
-            makeButtonAccessible(roomButton, roomButton.getText() + " Button",
-                    "This button corresponds to a " + roomButton.getText() + " object in your inventory.",
-                    "Clicking this button removes " + roomButton.getText() + "from your inventory.");
+            this.updateItems();
         });
     }
 
