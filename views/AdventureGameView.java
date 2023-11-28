@@ -365,6 +365,7 @@ public class AdventureGameView {
         this.setTraversablePath(this.gameModeLabel, regMoveGameMode);
         this.setTraversablePath(regMoveGameMode, chaoticMoveGameMode);
         this.setTraversablePath(chaoticMoveGameMode, trollGameMode);
+        this.setTraversablePath(trollGameMode, this.objectsInRoom);
 
         //turn into toggles so only one can be selected
         this.movementGameModes = new ToggleGroup();
@@ -421,7 +422,7 @@ public class AdventureGameView {
                     //clear the box for new input
                     inputTextField.setText("");
                 }else if(keyEvent.getCode() == KeyCode.TAB){
-                    objectsInRoom.requestFocus();
+                    saveButton.requestFocus();
                 }
                 keyEvent.consume();
             }
@@ -480,7 +481,7 @@ public class AdventureGameView {
         if (!this.model.getActionMade()){
             String gameModeID = ((RadioButton) this.movementGameModes.getSelectedToggle()).getId();
             this.model.setMovementGameMode(gameModeID);
-            this.setTraversablePath(this.gameModeLabel, this.zoomButton);
+            this.setTraversablePath(this.gameModeLabel, this.objectsInRoom);
         }
         String output = this.model.interpretAction(text, this); //process the command!
 
@@ -741,6 +742,13 @@ public class AdventureGameView {
                         "This button corresponds to a " + curObj.getName() + " object in your inventory.",
                         "Clicking this button removes " + curObj.getName() + " from your inventory.");
             }
+        }
+
+        if (!this.objectsInInventory.getChildren().isEmpty()){
+            Node lastButton = this.objectsInInventory.getChildren().get(this.objectsInInventory.getChildren().size() - 1);
+            this.setTraversablePath(lastButton, this.zoomButton);
+        }else{
+            this.setTraversablePath(this.objectsInInventory, this.zoomButton);
         }
 
         ScrollPane scO = new ScrollPane(objectsInRoom);
