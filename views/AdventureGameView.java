@@ -1,6 +1,7 @@
 package views;
 
 import AdventureModel.*;
+import NPC.Dialogue;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -890,6 +891,23 @@ public class AdventureGameView {
         mediaPlayer.play();
         mediaPlaying = true;
 
+    }
+
+    /**
+     * This method articulates the NPC message
+     */
+    public void articulateNPC(Dialogue dialogue) {
+        String adventureName = this.model.getDirectoryName();
+
+        String musicFile = "./" + adventureName + "/sounds/" + dialogue.NPCName+ dialogue.id + ".wav";
+        musicFile = musicFile.replace(" ","-");
+        //System.out.println(musicFile);
+
+        Media sound = new Media(new File(musicFile).toURI().toString());
+
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+        mediaPlaying = true;
     }
 
     /**

@@ -1,6 +1,6 @@
 package AdventureModel;
 
-import NPC.NPCRoom;
+import NPC.Dialogue;
 import NPC.ProgressionObserver;
 import NPC.ProgressionPublisher;
 import PlayerMovement.MovementGameMode;
@@ -202,7 +202,9 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
             }
             else if(inputArray[0].equals("TALK")){
                 if(this.player.getCurrentRoom().hasNPC()){
-                    return this.player.getCurrentRoom().getNPCDialogue();
+                    Dialogue dialogue = this.player.getCurrentRoom().getNPCDialogue();
+                    viewgame.articulateNPC(dialogue);
+                    return dialogue.message;
                 }
                 else{
                     return "THERE IS NOBODY TO TALK TO.\n";

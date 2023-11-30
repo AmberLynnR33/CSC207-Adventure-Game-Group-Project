@@ -3,6 +3,7 @@ package AdventureModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import NPC.NPC;
+import NPC.Dialogue;
 
 /**
  * This class contains the information about a 
@@ -139,11 +140,11 @@ public class Room implements Serializable {
      * This method gets the current npc dialogue
      * @return the message most relevent to the player's game progress
      */
-    public String getNPCDialogue(){
+    public Dialogue getNPCDialogue(){
         if(hasNPC()) {
-            return this.npc.getAdvice();
+            return this.npc.getDialogue();
         }
-        return "NO NPC HERE";
+        return new Dialogue("No NPC Here", "None", "NO NPC", -1);
     }
 
     /**
