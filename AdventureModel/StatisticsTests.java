@@ -66,7 +66,7 @@ public class StatisticsTests {
 
         model.movePlayer("WEST"); //2
         model.movePlayer("WEST"); //3
-        model.interpretAction("TAKE BOOK");
+        model.interpretAction("TAKE BOOK", );
         model.movePlayer("XYZZY"); //2
 
         assertEquals(4, stats.getTotalRoomsVisited());
