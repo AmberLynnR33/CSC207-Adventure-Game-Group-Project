@@ -682,8 +682,10 @@ public class AdventureGameView {
 
         //set accessible text
         roomImageView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        roomImageView.setAccessibleText(this.model.getPlayer().getCurrentRoom().getRoomDescription());
+        roomImageView.setAccessibleText("Image description: " + this.model.getPlayer().getCurrentRoom().getRoomDescription());
         roomImageView.setFocusTraversable(true);
+
+        this.setTraversablePath(this.roomImageView, this.objectsInInventory);
     }
     private String getRoomImageDir(){
         int roomNumber = this.model.getPlayer().getCurrentRoom().getRoomNumber();
@@ -744,8 +746,19 @@ public class AdventureGameView {
             }
         }
 
+        if (!this.objectsInRoom.getChildren().isEmpty()){
+            Node firstButton = this.objectsInRoom.getChildren().get(0);
+            Node lastButton = this.objectsInRoom.getChildren().get(this.objectsInRoom.getChildren().size() - 1);
+            this.setTraversablePath(this.objectsInRoom, firstButton);
+            this.setTraversablePath(lastButton, this.roomImageView);
+        }else{
+            this.setTraversablePath(this.objectsInRoom, this.roomImageView);
+        }
+
         if (!this.objectsInInventory.getChildren().isEmpty()){
+            Node firstButton = this.objectsInInventory.getChildren().get(0);
             Node lastButton = this.objectsInInventory.getChildren().get(this.objectsInInventory.getChildren().size() - 1);
+            this.setTraversablePath(this.objectsInInventory, firstButton);
             this.setTraversablePath(lastButton, this.zoomButton);
         }else{
             this.setTraversablePath(this.objectsInInventory, this.zoomButton);
