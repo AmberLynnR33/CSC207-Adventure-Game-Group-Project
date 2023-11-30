@@ -56,6 +56,9 @@ public class AdventureGameView {
     Button saveButton, loadButton, helpButton; //buttons
     Button zoomButton;
 
+    Button distanceButton;
+    Button displacementButton;
+
     Button statsButton;
     Boolean helpToggle = false; //is help on display?
 
@@ -176,6 +179,41 @@ public class AdventureGameView {
         makeButtonAccessible(zoomButton, "Zoom Button", "This button gives zoom view of currrent room image", "This button gives zoom-able view of room image that player is currently in.");
         addZoomEvent();
 
+        distanceButton = new Button("Distance");
+        distanceButton.setId("distance");
+        distanceButton.setPrefSize(30, 30);
+        distanceButton.setFont(new Font("Arial", 11));
+        distanceButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        Image distanceIcon = new Image("visualPaths/distance.png");
+        ImageView distanceIconView = new ImageView(distanceIcon);
+        distanceIconView.setFitHeight(30);
+        distanceIconView.setPreserveRatio(true);
+        distanceButton.setText("Show all the roads you have traveled");
+        zoomButton.setGraphic(distanceIconView);
+        zoomButton.setAlignment(Pos.BASELINE_CENTER);
+        zoomButton.setWrapText(true);
+        zoomButton.setContentDisplay(ContentDisplay.TOP);
+        makeButtonAccessible(zoomButton, "Distance Button", "This button displays view of all the rooms traveled thus far, repetition included.", "This button displays view of all the rooms traveled thus far, repetition included.");
+        addDistanceEvent();
+
+        displacementButton = new Button("Show progress thus far");
+        displacementButton = new Button("Displacement");
+        displacementButton.setId("displacement");
+        displacementButton.setPrefSize(30, 30);
+        displacementButton.setFont(new Font("Arial", 11));
+        displacementButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        Image displacementIcon = new Image("visualPaths/displacement.png");
+        ImageView displacementIconView = new ImageView(displacementIcon);
+        displacementIconView.setFitHeight(30);
+        displacementIconView.setPreserveRatio(true);
+        displacementButton.setText("Show all the roads you have traveled");
+        displacementButton.setGraphic(displacementIconView);
+        displacementButton.setAlignment(Pos.BASELINE_CENTER);
+        displacementButton.setWrapText(true);
+        displacementButton.setContentDisplay(ContentDisplay.TOP);
+        makeButtonAccessible(displacementButton, "Displacement Button", "This button displays view of all the rooms traveled thus far, repetition not included.", "This button displays view of all the rooms traveled thus far, repetition not included.");
+        addDisplacementEvent();
+
         // statistics button
         statsButton = new Button("Statistics");
         statsButton.setId("Statistics");
@@ -247,12 +285,27 @@ public class AdventureGameView {
         gridPane.add(extraFeatures, 4,1,1,1);
 
         // Render everything
-        var scene = new Scene( gridPane ,  1210, 800);
+        var scene = new Scene( gridPane,  1210, 800);
         scene.setFill(Color.BLACK);
         this.stage.setScene(scene);
         this.stage.setResizable(false);
         this.stage.show();
 
+    }
+
+    private void addDisplacementEvent() {
+        distanceButton.setOnAction(e ->{
+            gridPane.requestFocus();
+            DisplacementView displacementView = new DisplacementView(this, this.model);
+        });
+    }
+
+
+    private void addDistanceEvent() {
+        distanceButton.setOnAction(e ->{
+            gridPane.requestFocus();
+            DistanceView distanceView = new DistanceView(this, this.model);
+        });
     }
 
     /**
