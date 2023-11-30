@@ -2,6 +2,7 @@ package PlayerMovement;
 
 import AdventureModel.Player;
 import AdventureModel.Room;
+import views.AdventureGameView;
 
 import java.util.HashMap;
 
@@ -20,7 +21,7 @@ public class ChaoticMovement implements MovementGameMode{
      * @return false, if move results in death or a win (and game is over).  Else, true.
      */
     @Override
-    public boolean movePlayer(String direction, Player player, HashMap<Integer, Room> roomMap) {
+    public boolean movePlayer(String direction, Player player, HashMap<Integer, Room> roomMap, AdventureGameView view) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 

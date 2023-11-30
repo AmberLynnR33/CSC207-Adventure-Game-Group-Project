@@ -118,7 +118,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
      * @param direction the move command
      * @return false, if move results in death or a win (and game is over).  Else, true.
      */
-    public boolean movePlayer(String direction) {
+    public boolean movePlayer(String direction, AdventureGameView gameView) {
 
         // in event that no game mode has been set up, assume regular movement occurs
         if (this.movementType == null) {
@@ -126,7 +126,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
         }
 
         // move player based on game mode
-        boolean movementDetails = this.movementType.movePlayer(direction, this.player, this.rooms);
+        boolean movementDetails = this.movementType.movePlayer(direction, this.player, this.rooms, gameView);
 
         //need to update stats!
         this.gameStats.updateStatistics();
@@ -177,7 +177,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
         PassageTable motionTable = this.player.getCurrentRoom().getMotionTable(); //where can we move?
 
         if (motionTable.optionExists(inputArray[0])) {
-            if (!movePlayer(inputArray[0])) {
+            if (!movePlayer(inputArray[0], viewgame)) {
                 if (this.player.getCurrentRoom().getMotionTable().getDirection().get(0).getDestinationRoom() == 0)
                     return "GAME OVER";
                 else return "FORCED";
