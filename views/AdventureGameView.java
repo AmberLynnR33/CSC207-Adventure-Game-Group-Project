@@ -834,6 +834,17 @@ public class AdventureGameView {
 
         if (helpToggle){
             this.updateScene(null);
+
+            //update traverse
+            if (!this.objectsInRoom.getChildren().isEmpty()){
+                Node lastButton = this.objectsInRoom.getChildren().get(this.objectsInRoom.getChildren().size() - 1);
+                this.setTraversablePath(lastButton, this.roomImageView);
+            }else{
+                this.setTraversablePath(this.objectsInRoom, this.roomImageView);
+            }
+
+            this.setTraversablePath(this.roomImageView, this.objectsInInventory);
+
         }else{
             Label helpText = new Label(this.model.getHelpText());
 
@@ -846,6 +857,16 @@ public class AdventureGameView {
             ScrollPane instructionsBox = new ScrollPane(helpText);
             instructionsBox.setFitToWidth(true);
             instructionsBox.setStyle("-fx-background: #000000; -fx-background-color:transparent;");
+
+            //traverse for scrollpane
+            if (!this.objectsInRoom.getChildren().isEmpty()){
+                Node lastButton = this.objectsInRoom.getChildren().get(this.objectsInRoom.getChildren().size() - 1);
+                this.setTraversablePath(lastButton, helpText);
+            }else{
+                this.setTraversablePath(this.objectsInRoom, helpText);
+            }
+
+            this.setTraversablePath(helpText, this.objectsInInventory);
 
             gridPane.add(instructionsBox, 1, 1);
             stage.sizeToScene();
