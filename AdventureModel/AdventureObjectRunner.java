@@ -22,8 +22,8 @@ import java.util.Random;
 public class AdventureObjectRunner implements InteractBehavior, Serializable {
     public Boolean interact(Player p, AdventureObject obj, AdventureGameView game){
         Random rand = new Random();
-        Integer num = rand.nextInt(5);
-        if (num <= 1) return true;
+        Integer num = rand.nextInt(10);
+        if (num <= 3) return true;
         PassageTable paths = p.getCurrentRoom().getMotionTable();
         while (true){
             num = rand.nextInt(paths.passageTable.size());

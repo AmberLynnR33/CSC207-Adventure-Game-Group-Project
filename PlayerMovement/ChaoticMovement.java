@@ -3,6 +3,7 @@ package PlayerMovement;
 import AdventureModel.Passage;
 import AdventureModel.Player;
 import AdventureModel.Room;
+import views.AdventureGameView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

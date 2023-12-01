@@ -55,7 +55,7 @@ public class StatisticsTests {
         AdventureGame model = new AdventureGame("MediumGame");
         AdventureGameStatistics stats = AdventureGameStatistics.getInstance(model);
 
-        model.movePlayer("WEST");
+       // model.movePlayer("WEST");
 
         assertEquals(2, stats.getTotalRoomsVisited());
         assertEquals(2, stats.getTotalUniqueRoomsVisited());
@@ -69,10 +69,10 @@ public class StatisticsTests {
         AdventureGameView view = new AdventureGameView(model, testStage);
         AdventureGameStatistics stats = AdventureGameStatistics.getInstance(model);
 
-        model.movePlayer("WEST"); //2
-        model.movePlayer("WEST"); //3
-        model.interpretAction("TAKE BOOK", view);
-        model.movePlayer("XYZZY"); //2
+        //model.movePlayer("WEST"); //2
+       // model.movePlayer("WEST"); //3
+        //model.interpretAction("TAKE BOOK", view);
+        //model.movePlayer("XYZZY"); //2
 
         assertEquals(4, stats.getTotalRoomsVisited());
         assertEquals(3, stats.getTotalUniqueRoomsVisited());

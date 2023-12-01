@@ -2,6 +2,7 @@ package PlayerMovement;
 
 import AdventureModel.Player;
 import AdventureModel.Room;
+import views.AdventureGameView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public interface MovementGameMode extends Serializable {
      * @param roomMap a mapping of all rooms in the game by their room numbers
      * @return false, if move results in death or a win (and game is over).  Else, true.
      */
-    public boolean movePlayer(String direction, Player player, HashMap<Integer, Room> roomMap);
+    public boolean movePlayer(String direction, Player player, HashMap<Integer, Room> roomMap, AdventureGameView view);
 
     /**
      * gameModeName
