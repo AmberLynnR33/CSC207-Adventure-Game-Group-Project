@@ -25,8 +25,8 @@ DOWN       1
 3
 Inside building
 You are inside a building, a well house for a large spring.
-The exit door is to the south.  There is another room to
-the north, but the door is barred by a shimmering curtain.
+The exit door is to the south.  The grounds keeper greets
+you with an enigmatic grin.
 -----
 SOUTH      1
 WEST       4
@@ -161,8 +161,7 @@ You are in a splendid chamber thirty feet high.  The walls
 are frozen rivers of orange stone.  A narrow canyon and a
 good passage exit from east and west sides of the chamber.
 High in the cavern, you see a little bird flying around
-the rocks.  It takes one look at the black rod and quickly
-flies out of sight.
+the rocks. The grounds keeper wanders around in serene comfort.
 -----
 EAST      13
 WEST      16
