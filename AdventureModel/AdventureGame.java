@@ -286,14 +286,23 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * method for subscribing to progressionPublisher
-     * @param sub ProgressionObserver
+     * @param sub ProgressionObserver to subscribe
      */
     public void subscribe(ProgressionObserver sub){
         progressionSubscribers.add(sub);
     }
-    public void unsubscribe(ProgressionObserver exObserver) {
-        progressionSubscribers.remove(exObserver);
+    /**
+     * method for unsubscribing to progressionPublisher
+     * @param observer ProgressionObserver to unsubscribe
+     */
+    public void unsubscribe(ProgressionObserver observer) {
+        progressionSubscribers.remove(observer);
     }
+
+    /**
+     * pushes an update to all Progression Observers
+     * @param event string that indicates a task completed by the player
+     */
     public void notifyAll(String event) {
         for (ProgressionObserver observer : progressionSubscribers) {
             observer.update(event);

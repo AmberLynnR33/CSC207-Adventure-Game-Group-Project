@@ -44,7 +44,7 @@ public class AdventureLoader {
     }
 
     /**
-     * NPC file
+     * Parse NPC file
      */
     private void parseNPC() throws IOException{
         String npcFileName = this.adventureName + "/NPCs.txt";
