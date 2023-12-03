@@ -50,8 +50,11 @@ import java.util.List;
  */
 public class AdventureGameView {
 
+    /** Model of the game*/
     public AdventureGame model; //model of the game
-   public  Stage stage; //stage on which all is rendered
+    /** Stage on which all is rendered*/
+    public  Stage stage; //stage on which all is rendered
+    /** Buttons*/
     Button saveButton, loadButton, helpButton; //buttons
     Button zoomButton;
 
@@ -76,12 +79,14 @@ public class AdventureGameView {
     private Label gameModeLabel = new Label();
 
     private final Button TEST_BUTTON = new Button(); //Button for checking class
+
+    /** The current view of the game*/
     public static AdventureGameView game;
 
 
     /**
      * Adventure Game View Constructor
-     * __________________________
+     *
      * Initializes attributes
      */
     public AdventureGameView(AdventureGame model, Stage stage) {
@@ -293,7 +298,7 @@ public class AdventureGameView {
 
     /**
      * makeButtonAccessible
-     * __________________________
+     *
      * For information about ARIA standards, see
      * https://www.w3.org/WAI/standards-guidelines/aria/
      *
@@ -328,7 +333,7 @@ public class AdventureGameView {
 
     /**
      * customizeButton
-     * __________________________
+     *
      *
      * @param inputButton the button to make stylish :)
      * @param w width
@@ -397,7 +402,7 @@ public class AdventureGameView {
 
     /**
      * addTextHandlingEvent
-     * __________________________
+     *
      * Add an event handler to the myTextField attribute
      *
      * Your event handler should respond when users
@@ -434,8 +439,8 @@ public class AdventureGameView {
     }
 
     /**
-     * setTraversablePath
-     * __________________________
+     * Set the path tab traversal should take from atNode to toNode
+     *
      * @param atNode the node that currently has focus when using tab traversing
      * @param toNode the node that should next need focused on when tab traversing is used
      */
@@ -455,7 +460,7 @@ public class AdventureGameView {
 
     /**
      * submitEvent
-     * __________________________
+     *
      *
      * @param text the command that needs to be processed
      */
@@ -502,6 +507,9 @@ public class AdventureGameView {
         }
     }
 
+    /**
+     * Create the pause between forced rooms so the audio has time to play
+     */
     private void instantiatePause(){
         this.forcedTransition = new PauseTransition(Duration.seconds(3));
         this.forcedTransition.setOnFinished(event ->{
@@ -509,6 +517,9 @@ public class AdventureGameView {
         });
     }
 
+    /**
+     * Update the necessary features when a forced room is encountered
+     */
     private void handleForced(){
         this.updateScene("");
         this.updateItems();
@@ -517,6 +528,9 @@ public class AdventureGameView {
         this.forcedTransition.play();
     }
 
+    /**
+     * Move to the appropriate room when a forced room is encountered
+     */
     private void forcedMoveRoom(){
 
         List<Passage> allMoves = this.model.getPlayer().getCurrentRoom().getMotionTable().passageTable;
@@ -554,9 +568,9 @@ public class AdventureGameView {
 
     }
 
-    //lockCommands
-    //stop the ability for the player to enter commands or take/drop objects during forced rooms,
-    //or when the game is over
+    /**
+     * stop the player's ability to enter commands or take/drop objects during forced rooms, or when the game is over
+     */
     private void lockCommands(){
 
         this.inputTextField.setEditable(false);
@@ -581,7 +595,7 @@ public class AdventureGameView {
 
     /**
      * showCommands
-     * __________________________
+     *
      *
      * update the text in the GUI (within roomDescLabel)
      * to show all the moves that are possible from the
@@ -601,7 +615,7 @@ public class AdventureGameView {
 
     /**
      * updateScene
-     * __________________________
+     *
      *
      * Show the current room, and print some text below it.
      * If the input parameter is not null, it will be displayed
@@ -645,7 +659,7 @@ public class AdventureGameView {
 
     /**
      * formatText
-     * __________________________
+     *
      *
      * Format text for display.
      *
@@ -665,7 +679,7 @@ public class AdventureGameView {
 
     /**
      * getRoomImage
-     * __________________________
+     *
      *
      * Get the image for the current room and place 
      * it in the roomImageView 
@@ -696,7 +710,7 @@ public class AdventureGameView {
 
     /**
      * updateItems
-     * __________________________
+     *
      *
      * This method is partially completed, but you are asked to finish it off.
      *
@@ -778,6 +792,12 @@ public class AdventureGameView {
 
     }
 
+    /**
+     * Create a new button corresponding to an object in the room or inventory
+     * @param curObject the object that the button corresponds to
+     * @param inInven true if object is in the inventory, false if the object is in the current room
+     * @return the button corresponding to curObject
+     */
     private Button configureButton(AdventureObject curObject, boolean inInven){
         Image objImage = new Image(this.model.getDirectoryName() +
                 "/objectImages/" + curObject.getName().toUpperCase() + ".jpg",
@@ -800,6 +820,10 @@ public class AdventureGameView {
         return objectButton;
     }
 
+    /**
+     * Handles event when dropping an object
+     * @param inventoryButton the object to add the handler to
+     */
     private void setInventoryButtonHandler(Button inventoryButton){
         inventoryButton.setOnAction(e -> {
             this.submitEvent("DROP " + inventoryButton.getText());
@@ -807,6 +831,10 @@ public class AdventureGameView {
         });
     }
 
+    /**
+     * Handles event when picking up an object
+     * @param roomButton the object to add the handler to
+     */
     private void setRoomButtonHandler(Button roomButton){
         roomButton.setOnAction(e -> {
             this.submitEvent("TAKE " + roomButton.getText());
@@ -929,6 +957,9 @@ public class AdventureGameView {
         });
     }
 
+    /**
+     * Handles the event related to the statistics button
+     */
     public void addStatsEvent(){
         statsButton.setOnAction(e ->{
             gridPane.requestFocus();
@@ -984,6 +1015,10 @@ public class AdventureGameView {
             mediaPlaying = false;
         }
     }
+
+    /**
+     * Handles the event realted to the zoom button
+     */
     public void addZoomEvent() {
         zoomButton.setOnMouseClicked(e -> {
             try{

@@ -2,6 +2,10 @@ package AdventureModel;
 
 import java.io.Serializable;
 import java.util.HashMap;
+
+/**
+ * Class AdventureGameStatistics.  Stores various statistics about the current game and rooms the player has accessed.
+ */
 public class AdventureGameStatistics implements Serializable {
 
     private AdventureGame model; //game connected too
@@ -23,7 +27,7 @@ public class AdventureGameStatistics implements Serializable {
 
     /**
      * Constructor
-     * __________________________
+     *
      * Creates an AdventureGameStatistics object assuming the player is in the starting room
      */
     private AdventureGameStatistics(AdventureGame model){
@@ -40,7 +44,7 @@ public class AdventureGameStatistics implements Serializable {
 
     /**
      * getInstance
-     * __________________________
+     *
      * Handles construction of a single AdventureGameStatistics model if not already created, and returns the
      * current statistics of the game being played.
      * @param model the game that the statistics relate to
@@ -55,7 +59,7 @@ public class AdventureGameStatistics implements Serializable {
 
     /**
      * setUpRoomsVisited
-     * __________________________
+     *
      * Sets up the attributes relating to visiting rooms
      */
     private void setUpRoomsVisited(){
@@ -76,9 +80,8 @@ public class AdventureGameStatistics implements Serializable {
 
     /**
      * updateStatistics
-     * __________________________
-     * Update the statistics of the AdventureGame associated with this object
-     * Precondition: the player is in a different room then they were when this method was last called.
+     *
+     * Update the statistics of the AdventureGame associated with this object, if the player moved rooms
      */
     public void updateStatistics(){
 
@@ -111,7 +114,7 @@ public class AdventureGameStatistics implements Serializable {
 
     /**
      * getTotalRooms
-     * __________________________
+     *
      * Returns the rooms the player has been in. This number includes multiple visits to a single room.
      * @return the total rooms the player has been inside
      */
@@ -121,7 +124,7 @@ public class AdventureGameStatistics implements Serializable {
 
     /**
      * getTotalUniqueRoomsVisited
-     * __________________________
+     *
      * Returns the rooms the player has been in. This number is not impacted by visiting one room multiple times.
      * @return the unique rooms the player has been inside
      */
@@ -131,7 +134,7 @@ public class AdventureGameStatistics implements Serializable {
 
     /**
      * getRoomVisitedMost
-     * __________________________
+     *
      * Returns the room name associated with the room the player has entered the most number of times.
      * If multiple rooms have been entered the same most number of times x,
      * the first room that was visited x times is listed as the one visited the most.
@@ -143,7 +146,7 @@ public class AdventureGameStatistics implements Serializable {
 
     /**
      * getTotalRooms
-     * __________________________
+     *
      * Returns the number of rooms the game associated with these statistics has.
      * @return the total number of rooms in the game.
      */
@@ -153,7 +156,7 @@ public class AdventureGameStatistics implements Serializable {
 
     /**
      * getTotalObjects
-     * __________________________
+     *
      * Returns the number of objects across all rooms in the game associated with these statistics.
      * @return the total number of objects in the game.
      */
@@ -163,7 +166,7 @@ public class AdventureGameStatistics implements Serializable {
 
     /**
      * resetInstance
-     * __________________________
+     *
      * Resets the statistics so a new game can have appropriate statistics.
      */
     protected static void resetInstance(){
