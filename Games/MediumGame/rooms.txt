@@ -30,9 +30,7 @@ the north, but the door is barred by a shimmering curtain.
 -----
 SOUTH      1
 WEST       4
-OUT        6/KEYS
 OUT        1
-NORTH     30
 XYZZY     12/LAMP
 XYZZY     10
 PLUGH     12/LAMP
