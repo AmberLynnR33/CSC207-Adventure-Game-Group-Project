@@ -2,7 +2,7 @@ package PlayerMovement;
 
 /**
  * Class MovementGameModeFactory
- * Creates the appropriate class to move the player throughout their playthrough of the game
+ * Creates the appropriate class to move the player throughout their play through of the game
  */
 public class MovementGameModeFactory {
 
