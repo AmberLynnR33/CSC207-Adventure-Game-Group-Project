@@ -20,19 +20,30 @@ import javafx.scene.image.ImageView;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
-
+/**
+ * Class AdventureObjectPuzzle
+ * Object types that has a chance to run to a different room
+ */
 public class AdventureObjectRunner implements InteractBehavior, Serializable {
-    public Boolean interact(Player p, AdventureObject obj, AdventureGameView view){
+    /**
+     * interact
+     * Attempt to pick up object
+     * @param obj the object they are trying to pick up
+     * @param player the player that is picking up an object
+     * @param view the AdventureGameView object use for gui
+     * @return true if the player can pick up the object false otherwise
+     */
+    public Boolean interact(Player player, AdventureObject obj, AdventureGameView view){
         Random rand = new Random();
         Integer num = rand.nextInt(10);
         if (num <= 3) return true;
-        PassageTable paths = p.getCurrentRoom().getMotionTable();
+        PassageTable paths = player.getCurrentRoom().getMotionTable();
         while (true){
             num = rand.nextInt(paths.passageTable.size());
             Passage path = paths.passageTable.get(num);
-            if (path.getIsBlocked()) if (!p.getInventory().contains(path.getKeyName())) continue;
+            if (path.getIsBlocked()) if (!player.getInventory().contains(path.getKeyName())) continue;
             if (Objects.equals(view.model.getRooms().get(path.getDestinationRoom()).getMotionTable().passageTable.get(0).getDirection(), "FORCED")) continue;
-            p.getCurrentRoom().removeGameObject(obj);
+            player.getCurrentRoom().removeGameObject(obj);
             view.model.getRooms().get(path.getDestinationRoom()).addGameObject(obj);
             final Stage goblin = new Stage();
             goblin.initModality(Modality.APPLICATION_MODAL);

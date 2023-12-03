@@ -24,9 +24,20 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import views.AdventureGameView;
-
+/**
+ * Class AdventureObjectPuzzle
+ * Object types that needs the player to solve a word puzzle to obtain
+ */
 public class AdventureObjectPuzzle implements InteractBehavior, Serializable {
-    public Boolean interact(Player p, AdventureObject obj, AdventureGameView view){
+    /**
+     * interact
+     * Attempt to pick up object
+     * @param obj the object they are trying to pick up
+     * @param player the player that is picking up an object
+     * @param view the AdventureGameView object use for gui
+     * @return true if the player can pick up the object false otherwise
+     */
+    public Boolean interact(Player player, AdventureObject obj, AdventureGameView view){
         ArrayList<String> puzzles = new ArrayList<>();
         try {
             BufferedReader buff = new BufferedReader(new FileReader(view.model.getDirectoryName() + "/puzzles.txt"));

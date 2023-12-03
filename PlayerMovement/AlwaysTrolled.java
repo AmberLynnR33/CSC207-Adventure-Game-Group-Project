@@ -28,6 +28,7 @@ import java.util.HashMap;
 
 /**
  * Class AlwaysTrolled
+ * player must face a troll every time they move
  */
 public class AlwaysTrolled implements MovementGameMode{
     /**
@@ -36,7 +37,8 @@ public class AlwaysTrolled implements MovementGameMode{
      *
      * @param direction the direction the player requests to move
      * @param player    the player that is moving rooms
-     * @param roomMap a mapping of all rooms in the game by their room numbers
+     * @param roomMap a mapping of all rooms in the game by their room number
+     * @param view the AdventureGameView object use for gui
      * @return false, if move results in death or a win (and game is over).  Else, true.
      */
     @Override

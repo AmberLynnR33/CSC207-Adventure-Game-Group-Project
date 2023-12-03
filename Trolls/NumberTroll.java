@@ -1,17 +1,13 @@
 package Trolls;
 
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.awt.*;
 import java.util.Random;
-import java.util.Scanner;
 
 public class NumberTroll implements Troll{
     public int num; //current Num
@@ -25,6 +21,13 @@ public class NumberTroll implements Troll{
     int[] pass = {0};
     public Stage box;
 
+    /**
+     * Class NumberTroll
+     * The player plays the troll's game
+     * @param dialogue the label the troll prints to
+     * @param answer the text field that the troll reads player answer from
+     * @param box the pop-up window the troll is displayed in
+     */
     public NumberTroll (javafx.scene.control.Label dialogue, TextField answer, Stage box) {
         Random r = new Random();
         this.num = r.nextInt(1001);
@@ -74,7 +77,7 @@ public class NumberTroll implements Troll{
     }
     /**
      * giveInstructions
-     * _________________________
+     * @param lab print text to a label
      * All Trolls should explain how their game is played
      */
     public void giveInstructions (Label lab) { lab.setText(this.instructions); }
