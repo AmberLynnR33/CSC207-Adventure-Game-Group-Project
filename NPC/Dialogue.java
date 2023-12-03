@@ -1,6 +1,8 @@
 package NPC;
 
-public class Dialogue{
+import java.io.Serializable;
+
+public class Dialogue implements Serializable {
     public int id;
     public String NPCName;
     public String message;

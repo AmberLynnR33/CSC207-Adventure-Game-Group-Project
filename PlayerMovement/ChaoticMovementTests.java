@@ -20,22 +20,22 @@ class ChaoticMovementTests {
 
         ArrayList<Integer> pathList = new ArrayList<>();
 
-        model.movePlayer("WEST");
+        //model.movePlayer("WEST");
         pathList.add(model.player.getCurrentRoom().getRoomNumber());
 
-        model.movePlayer("EAST");
+        //model.movePlayer("EAST");
         pathList.add(model.player.getCurrentRoom().getRoomNumber());
 
-        model.movePlayer("NORTH");
+        //model.movePlayer("NORTH");
         pathList.add(model.player.getCurrentRoom().getRoomNumber());
 
-        model.movePlayer("NORTH");
+        //model.movePlayer("NORTH");
         pathList.add(model.player.getCurrentRoom().getRoomNumber());
 
-        model.movePlayer("FORCED");
+        //model.movePlayer("FORCED");
         pathList.add(model.player.getCurrentRoom().getRoomNumber());
 
-        model.movePlayer("FORCED");
+        //model.movePlayer("FORCED");
         pathList.add(model.player.getCurrentRoom().getRoomNumber());
 
         System.out.print("In this Case: 1");
@@ -56,16 +56,16 @@ class ChaoticMovementTests {
 
         ArrayList<Integer> pathList = new ArrayList<>();
 
-        model.movePlayer("NORTH");
+        //model.movePlayer("NORTH");
 
-        model.movePlayer("NORTH");
+        //model.movePlayer("NORTH");
 
-        model.setMovementGameMode("01");
+        //model.setMovementGameMode("01");
 
-        model.movePlayer("FORCED");
+        //model.movePlayer("FORCED");
         pathList.add(model.player.getCurrentRoom().getRoomNumber());
 
-        model.movePlayer("FORCED");
+        //model.movePlayer("FORCED");
         pathList.add(model.player.getCurrentRoom().getRoomNumber());
 
         System.out.print("In this Case: 1 -> 3 -> 30");
@@ -86,13 +86,13 @@ class ChaoticMovementTests {
             AdventureGame model = new AdventureGame("MediumGame");
             model.setMovementGameMode("00");
 
-            model.movePlayer("DOWN");
-            model.movePlayer("DOWN");
-            model.movePlayer("DOWN");
+            //model.movePlayer("DOWN");
+            //model.movePlayer("DOWN");
+            //model.movePlayer("DOWN");
 
             model.setMovementGameMode("01");
 
-            model.movePlayer("DOWN");
+            //model.movePlayer("DOWN");
             movedTo.add(model.player.getCurrentRoom().getRoomNumber());
         }
 

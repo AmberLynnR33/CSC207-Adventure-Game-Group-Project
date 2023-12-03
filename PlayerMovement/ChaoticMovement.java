@@ -33,13 +33,13 @@ public class ChaoticMovement implements MovementGameMode{
      * @return false, if move results in death or a win (and game is over).  Else, true.
      */
     @Override
-    public boolean movePlayer(String direction, Player player, HashMap<Integer, Room> roomMap) {
+    public boolean movePlayer(String direction, Player player, HashMap<Integer, Room> roomMap, AdventureGameView view) {
 
         List<Passage> directionsCanMove = new ArrayList<>();
 
         //if a forced room, should use RegularMovement's implementation
         if (player.getCurrentRoom().getMotionTable().passageTable.get(0).getDirection().equals("FORCED")){
-            return this.movingRooms.movePlayer(direction, player, roomMap);
+            return this.movingRooms.movePlayer(direction, player, roomMap, view);
         }
 
         //get all possible directions the player can go
@@ -56,7 +56,7 @@ public class ChaoticMovement implements MovementGameMode{
         Double indexMovingTo = Math.floor(Math.random() * (directionsCanMove.size()));
 
         return this.movingRooms.movePlayer(directionsCanMove.get(indexMovingTo.intValue()).getDirection(),
-                player, roomMap);
+                player, roomMap, view);
 
     }
 
