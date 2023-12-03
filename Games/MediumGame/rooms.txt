@@ -70,7 +70,6 @@ NORTH      5
 UP         5
 DOWN       8/KEYS
 DOWN       7
-WEST       7
 
 7
 Above locked grate
