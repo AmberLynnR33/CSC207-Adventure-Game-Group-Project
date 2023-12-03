@@ -267,7 +267,6 @@ public class AdventureGameView {
 
     /**
      * updateCommandButtons
-     * __________________________
      *
      */
     private void updateCommandButtons() {
