@@ -22,7 +22,7 @@ public class NPC implements ProgressionObserver, Serializable {
         Advice newAdvice = new Advice(message, completionEvent);
         dialouges.add(0, newAdvice);
     }
-    class Advice{
+    class Advice implements Serializable {
         String message;
         String completionEvent;
 

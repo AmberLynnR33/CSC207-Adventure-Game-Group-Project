@@ -13,7 +13,7 @@ import java.util.HashMap;
  * Class RegularMovement
  * Game mode that moves the player in the direction they request
  */
-public class RegularMovement implements MovementGameMode{
+public class RegularMovement implements MovementGameMode {
 
     /**
      * movePlayer

@@ -7,6 +7,7 @@ import java.io.FileReader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -18,16 +19,17 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import views.AdventureGameView;
 
 public class AdventureObjectPuzzle implements InteractBehavior, Serializable {
-    public Boolean interact(Player p, AdventureObject obj, AdventureGameView game){
+    public Boolean interact(Player p, AdventureObject obj, AdventureGameView view){
         ArrayList<String> puzzles = new ArrayList<>();
         try {
-            BufferedReader buff = new BufferedReader(new FileReader(game.model.getDirectoryName() + "/puzzles.txt"));
+            BufferedReader buff = new BufferedReader(new FileReader(view.model.getDirectoryName() + "/puzzles.txt"));
             while (buff.ready()) puzzles.add(buff.readLine());
         } catch (Exception ignored){}
         Random rand = new Random();
@@ -45,7 +47,13 @@ public class AdventureObjectPuzzle implements InteractBehavior, Serializable {
         final boolean[] solved = {false};
         final Stage chest = new Stage();
         chest.initModality(Modality.APPLICATION_MODAL);
-        chest.initOwner(game.stage);
+        chest.initOwner(view.stage);
+        Button close = new Button("Close Window");
+        close.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        close.setPrefSize(200, 25);
+        close.setFont(new Font(16));
+        close.setOnAction(e -> chest.close());
+        view.makeButtonAccessible(close, "close window", "This is a button to close the puzzle game window", "Use this button to close the puzzle game window.");
         Label scrambledWord = new Label(new String(scramblePuzzle));
         scrambledWord.setWrapText(true);
         scrambledWord.setStyle("-fx-background-color: transparent;");
@@ -59,14 +67,14 @@ public class AdventureObjectPuzzle implements InteractBehavior, Serializable {
         text.setTextAlignment(TextAlignment.CENTER);
         text.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         TextField answer = new TextField(""); answer.setPrefHeight(50);
-        ImageView tressureChest = new ImageView(new Image(game.model.getDirectoryName() + "/tressureChest.png"));
-        tressureChest.setPreserveRatio(true); tressureChest.setFitWidth(350); tressureChest.setFitHeight(350);
+        ImageView tressureChest = new ImageView(new Image(view.model.getDirectoryName() + "/tressureChest.png"));
+        tressureChest.setPreserveRatio(true); tressureChest.setFitWidth(400); tressureChest.setFitHeight(350);
         VBox box = new VBox(20);
         box.setPadding(new Insets(20, 20, 20, 20));
         box.setStyle("-fx-background-color: #121212;");
         box.setAlignment(Pos.CENTER);
-        box.getChildren().addAll(text, scrambledWord, answer, tressureChest);
-        Scene chestScene = new Scene(box, 450, 500);
+        box.getChildren().addAll(close, text, scrambledWord, answer, tressureChest);
+        Scene chestScene = new Scene(box, 450, 550);
         chest.setScene(chestScene);
         answer.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent key) -> {
             if (key.getCode().equals(KeyCode.ENTER)) {

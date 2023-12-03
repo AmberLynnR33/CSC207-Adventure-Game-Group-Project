@@ -6,9 +6,10 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import javax.swing.*;
 
-public class zoomFrame extends javax.swing.JFrame {
+public class zoomFrame extends javax.swing.JFrame implements Serializable {
     public Image img;
     public BufferedImage bufferedImg;
     public int w;

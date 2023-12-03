@@ -11,10 +11,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class StatisticsView {
+public class StatisticsView implements Serializable {
 
     private AdventureGameView mainView;
     private AdventureGame model;

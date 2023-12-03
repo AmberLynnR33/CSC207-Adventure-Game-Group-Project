@@ -41,22 +41,20 @@ public class NumberTroll implements Troll{
                 if (pass[0] == 0) {
                     try {
                         guess = Integer.parseInt(text.getText().strip());
+                        if (guess == this.num) {
+                            lab.setText("Curses, you got lucky this time. \n You MAY PASS.");
+                            pass[0] = 1;
+                            PauseTransition pause = new PauseTransition(Duration.seconds(3));
+                            pause.setOnFinished(event -> {
+                                box.close();
+                            });
+                            pause.play();
+                        } else if (guess < this.num) lab.setText(guess + ": WRONG! \n My number is bigger.");
+                        else lab.setText(guess + ": WRONG! \n My number is smaller.");
+
                     } catch (Exception e) {
-                        lab.setText("Silly human that is not a number, I would know. " +
+                        lab.setText("Silly human that is not a number, I would know. \n" +
                                 "But it still counts as one of your guesses.");
-                    }
-                    if (guess == this.num) {
-                        lab.setText("Curses, you got lucky this time. \n You MAY PASS.");
-                        pass[0] = 1;
-                        PauseTransition pause = new PauseTransition(Duration.seconds(3));
-                        pause.setOnFinished(event -> {
-                            box.close();
-                        });
-                        pause.play();
-                    } else if (guess < this.num) {
-                        lab.setText(guess + ": WRONG! \n My number is bigger.");
-                    } else {
-                        lab.setText(guess + ": WRONG! \n My number is smaller.");
                     }
                     if (count == guessLimit && pass[0] == 0) {
                         lab.setText("You have no more guesses. The correct number was: " + this.num +
