@@ -18,6 +18,10 @@ public class ChaoticMovement implements MovementGameMode{
 
     private RegularMovement movingRooms; //Moves the player after the random direction is selected
 
+    /**
+     * Constructor
+     * Initializes attributes
+     */
     public ChaoticMovement(){
         super();
         this.movingRooms = new RegularMovement();

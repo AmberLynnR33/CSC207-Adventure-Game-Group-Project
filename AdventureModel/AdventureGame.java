@@ -22,16 +22,16 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     private HashMap<String,String> synonyms = new HashMap<>(); //A HashMap to store synonyms of commands.
     private final String[] actionVerbs = {"QUIT","INVENTORY","TAKE","DROP","TALK"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
 
-    public Player player; //The Player of the game.
-
+    /**The Player of the game.*/
+    public Player player;
     private MovementGameMode movementType; //the game mode for player movement
     private boolean actionMade = false; //checks if the player can set game mode
     private final List<ProgressionObserver> progressionSubscribers = new ArrayList<ProgressionObserver>(); //the objects that observe player progression (NPC)
+    /**The statistics of the current game*/
     public AdventureGameStatistics gameStats;
 
     /**
      * Adventure Game Constructor
-     * __________________________
      * Initializes attributes
      *
      * @param name the name of the adventure
@@ -64,7 +64,6 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * setUpGame
-     * __________________________
      *
      * @throws IOException in the case of a file I/O error
      */
@@ -87,8 +86,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     }
 
     /**
-     * tokenize
-     * __________________________
+     * tokenize_
      *
      * @param input string from the command line
      * @return a string array of tokens that represents the command.
@@ -110,9 +108,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     }
 
     /**
-     * movePlayer
-     * __________________________
-     * Moves the player in the given direction, if possible.
+     * Moves the player using the current game mode, possibly in the direction specified.
      * Return false if the player wins or dies as a result of the move.
      *
      * @param direction the move command
@@ -135,7 +131,6 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     }
 
     /**
-     * setMovementGameMode
      * Sets up the game mode that the player has requested
      * @param movementID the ID corresponding to the requested game mode
      */
@@ -145,7 +140,6 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     }
 
     /**
-     * getActionMade
      * getter method for actionMade
      * @return the value stored in actionMade
      */
@@ -154,7 +148,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     }
 
     /**
-     * getGameMode
+     * Return the string representation of the current game mode
      * @return the name of the game mode this model is using, or null if no game mode is set
      */
     public String getGameMode(){
@@ -226,7 +220,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * getDirectoryName
-     * __________________________
+     *
      * Getter method for directory 
      * @return directoryName
      */
@@ -236,7 +230,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * getInstructions
-     * __________________________
+     *
      * Getter method for instructions 
      * @return helpText
      */
@@ -246,7 +240,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * getPlayer
-     * __________________________
+     *
      * Getter method for Player 
      */
     public Player getPlayer() {
@@ -255,7 +249,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * getRooms
-     * __________________________
+     *
      * Getter method for rooms 
      * @return map of key value pairs (integer to room)
      */
@@ -265,7 +259,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * getSynonyms
-     * __________________________
+     *
      * Getter method for synonyms 
      * @return map of key value pairs (synonym to command)
      */
@@ -275,7 +269,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * setHelpText
-     * __________________________
+     *
      * Setter method for helpText
      * @param help which is text to set
      */
@@ -285,7 +279,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * setHelpText
-     * __________________________
+     *
      * Getter method for helpText
      */
     public String getHelpText(){return this.helpText;}
