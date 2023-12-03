@@ -36,7 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import javax.swing.*;
+import javax.swing.*;
 
 /**
  * Class AdventureGameView.
@@ -164,16 +165,16 @@ public class AdventureGameView {
 
         zoomButton = new Button("Zoom");
         zoomButton.setId("Zoom");
-        zoomButton.setPrefSize(30, 30);
-        zoomButton.setFont(new Font("Arial", 11));
+        zoomButton.setPrefSize(50, 50);
+        zoomButton.setFont(new Font("Arial", 15));
         zoomButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         Image zoomIcon = new Image("views/zoom-icon.png");
         ImageView zoomIconView = new ImageView(zoomIcon);
-        zoomIconView.setFitHeight(30);
+        zoomIconView.setFitHeight(50);
         zoomIconView.setPreserveRatio(true);
         zoomButton.setText("Zoom Option");
         zoomButton.setGraphic(zoomIconView);
-        zoomButton.setAlignment(Pos.BASELINE_CENTER);
+        zoomButton.setAlignment(Pos.BOTTOM_CENTER);
         zoomButton.setWrapText(true);
         zoomButton.setContentDisplay(ContentDisplay.TOP);
         makeButtonAccessible(zoomButton, "Zoom Button", "This button gives zoom view of currrent room image", "This button gives zoom-able view of room image that player is currently in.");
@@ -181,32 +182,32 @@ public class AdventureGameView {
 
         distanceButton = new Button("Distance");
         distanceButton.setId("distance");
-        distanceButton.setPrefSize(30, 30);
-        distanceButton.setFont(new Font("Arial", 11));
+        distanceButton.setPrefSize(60, 60);
+        distanceButton.setFont(new Font("Arial", 12));
         distanceButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         Image distanceIcon = new Image("visualPaths/distance.png");
         ImageView distanceIconView = new ImageView(distanceIcon);
-        distanceIconView.setFitHeight(30);
+        distanceIconView.setFitHeight(60);
         distanceIconView.setPreserveRatio(true);
-        distanceButton.setText("Show all the roads you have traveled");
-        zoomButton.setGraphic(distanceIconView);
-        zoomButton.setAlignment(Pos.BASELINE_CENTER);
-        zoomButton.setWrapText(true);
-        zoomButton.setContentDisplay(ContentDisplay.TOP);
-        makeButtonAccessible(zoomButton, "Distance Button", "This button displays view of all the rooms traveled thus far, repetition included.", "This button displays view of all the rooms traveled thus far, repetition included.");
+        distanceButton.setText("Journey thus far");
+        distanceButton.setGraphic(distanceIconView);
+        distanceButton.setAlignment(Pos.BASELINE_CENTER);
+        distanceButton.setWrapText(true);
+        distanceButton.setContentDisplay(ContentDisplay.TOP);
+        makeButtonAccessible(distanceButton, "Distance Button", "This button displays view of all the rooms traveled thus far, repetition included.", "This button displays view of all the rooms traveled thus far, repetition included.");
         addDistanceEvent();
 
         displacementButton = new Button("Show progress thus far");
         displacementButton = new Button("Displacement");
         displacementButton.setId("displacement");
-        displacementButton.setPrefSize(30, 30);
-        displacementButton.setFont(new Font("Arial", 11));
+        displacementButton.setPrefSize(49, 49);
+        displacementButton.setFont(new Font("Arial", 12));
         displacementButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         Image displacementIcon = new Image("visualPaths/displacement.png");
         ImageView displacementIconView = new ImageView(displacementIcon);
-        displacementIconView.setFitHeight(30);
+        displacementIconView.setFitHeight(49);
         displacementIconView.setPreserveRatio(true);
-        displacementButton.setText("Show all the roads you have traveled");
+        displacementButton.setText("Progress thus far");
         displacementButton.setGraphic(displacementIconView);
         displacementButton.setAlignment(Pos.BASELINE_CENTER);
         displacementButton.setWrapText(true);
@@ -279,6 +280,8 @@ public class AdventureGameView {
         // adding extra features panel
         VBox extraFeatures = new VBox();
         extraFeatures.getChildren().add(zoomButton);
+        extraFeatures.getChildren().add(distanceButton);
+        extraFeatures.getChildren().add(displacementButton);
         extraFeatures.getChildren().add(statsButton);
         extraFeatures.setAlignment(Pos.CENTER_LEFT);
         extraFeatures.setSpacing(10);
@@ -294,7 +297,7 @@ public class AdventureGameView {
     }
 
     private void addDisplacementEvent() {
-        distanceButton.setOnAction(e ->{
+        displacementButton.setOnAction(e ->{
             gridPane.requestFocus();
             DisplacementView displacementView = new DisplacementView(this, this.model);
         });
@@ -302,11 +305,37 @@ public class AdventureGameView {
 
 
     private void addDistanceEvent() {
-        distanceButton.setOnAction(e ->{
+        distanceButton.setOnAction(e -> {
             gridPane.requestFocus();
             DistanceView distanceView = new DistanceView(this, this.model);
         });
+//                try{
+//                    for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                        if ("Nimbus".equals(info.getName())) {
+//                            javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                            break;
+//                        }
+//                    }
+//                } catch (UnsupportedLookAndFeelException ex) {
+//                    throw new RuntimeException(ex);
+//                } catch (ClassNotFoundException ex) {
+//                    throw new RuntimeException(ex);
+//                } catch (InstantiationException ex) {
+//                    throw new RuntimeException(ex);
+//                } catch (IllegalAccessException ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//
+//                EventQueue.invokeLater(new Runnable() {
+//                    private AdventureGame model;
+//
+//                    @Override
+//                    public void run() {
+//                        new DistanceView(this, this.model);
+//                    }
+//                });
     }
+
 
     /**
      * updateCommandButtons
