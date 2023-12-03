@@ -15,6 +15,11 @@ public class NPC implements ProgressionObserver, Serializable {
      * A priority queue of NPC advice. Highest priority is last and Advice is removed if its completionEvent is done.
      */
     private List<Dialogue> dialouges;
+
+    /**
+     * Makes an NPC with the given name
+     * @param name name of NPC
+     */
     public NPC(String name){
         this.name = name;
         this.dialouges = new ArrayList<Dialogue>();

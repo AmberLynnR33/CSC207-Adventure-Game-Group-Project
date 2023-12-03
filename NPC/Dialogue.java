@@ -25,6 +25,13 @@ public class Dialogue implements Serializable {
      */
     public String completionEvent;
 
+    /**
+     * constructs a dialogue
+     * @param message message said to the player
+     * @param completionEvent string indicating when the message is no longer relevent
+     * @param NPCName name of the NPC
+     * @param id id number for sound file
+     */
     public Dialogue(String message, String completionEvent, String NPCName, int id) {
         this.id = id;
         this.NPCName = NPCName;
