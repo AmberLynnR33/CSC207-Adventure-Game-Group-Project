@@ -25,7 +25,7 @@ public class DisplacementView {
 
         VBox displacementDisplay = new VBox();
         displacementDisplay.setStyle("-fx-background-color: #121212;");
-        displacementDisplay.setAlignment(Pos.CENTER_LEFT);
+        displacementDisplay.setAlignment(Pos.TOP_LEFT);
         displacementDisplay.setSpacing(10);
         displacementDisplay.setPadding(new Insets(10));
 
@@ -34,25 +34,18 @@ public class DisplacementView {
         headerLabel.setStyle("-fx-background-color: #121212; -fx-text-fill: white;");
 
         Label displacementPath = new Label(model.gamePath.toString(true));
-//        displacementPath.setWrapText(true);
+        displacementPath.setWrapText(true);
         displacementPath.setFont(new Font("Arial", 16));
         displacementPath.setStyle("-fx-background-color: #121212; -fx-text-fill: white;");
 
-        Button closeDisplacementPanel = new Button("Close Window");
-        AdventureGameView.makeButtonAccessible(closeDisplacementPanel, "Close Displacement Panel.", "This button closes the Displacement popup.", "This button closes the Displacement window. Click it to go back to your game.");
-        closeDisplacementPanel.setFont(new Font("Arial", 16));
-        closeDisplacementPanel.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
-        closeDisplacementPanel.setOnAction(e -> dialog.close());
 
         headerLabel.setFocusTraversable(true);
         displacementPath.setFocusTraversable(true);
-        closeDisplacementPanel.setFocusTraversable(true);
 
         displacementDisplay.getChildren().add(headerLabel);
         displacementDisplay.getChildren().add(displacementPath);
-        displacementDisplay.getChildren().add(closeDisplacementPanel);
 
-        Scene dialogScene = new Scene(displacementDisplay, 400, 400);
+        Scene dialogScene = new Scene(displacementDisplay, 500, 500);
         dialog.setScene(dialogScene);
         dialog.show();
 
