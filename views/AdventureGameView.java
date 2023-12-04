@@ -273,11 +273,11 @@ public class AdventureGameView {
         this.objectsInInventory.setFocusTraversable(true);
 
         // adding extra features panel
-        VBox extraFeatures = new VBox();
-        extraFeatures.getChildren().addAll(this.zoomButton, this.statsButton);
-        extraFeatures.setAlignment(Pos.CENTER);
-        extraFeatures.setSpacing(10);
-        gridPane.add(extraFeatures, 4,1,1,1);
+        //VBox extraFeatures = new VBox();
+        //extraFeatures.getChildren().addAll(this.zoomButton, this.statsButton);
+        //extraFeatures.setAlignment(Pos.CENTER);
+        //extraFeatures.setSpacing(10);
+        //gridPane.add(extraFeatures, 4,1,1,1);
 
         //make object boxes traversable
         this.objectsInRoom.setAccessibleRole(AccessibleRole.SCROLL_PANE);
