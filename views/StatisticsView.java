@@ -11,14 +11,25 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Class StatisticsView
+ * Creates the popup that displays the statistics in the AdventureGame
+ */
 public class StatisticsView {
 
     private AdventureGameView mainView;
     private AdventureGame model;
 
+    /**
+     * Constructor
+     * Creates and displays the statistics for the AdventureGame
+     * @param gameView the main view of the AdventureGame
+     * @param model the model that contains the statistics for the AdventureGame
+     */
     public StatisticsView(AdventureGameView gameView, AdventureGame model) {
         this.mainView = gameView;
         this.model = model;

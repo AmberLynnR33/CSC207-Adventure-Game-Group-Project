@@ -1,6 +1,6 @@
 package AdventureModel;
 
-import NPC.NPCRoom;
+import NPC.Dialogue;
 import NPC.ProgressionObserver;
 import NPC.ProgressionPublisher;
 import PlayerMovement.MovementGameMode;
@@ -22,17 +22,17 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     private HashMap<String,String> synonyms = new HashMap<>(); //A HashMap to store synonyms of commands.
     private final String[] actionVerbs = {"QUIT","INVENTORY","TAKE","DROP","TALK"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
 
-    public Player player; //The Player of the game.
-
+    /**The Player of the game.*/
+    public Player player;
     private MovementGameMode movementType; //the game mode for player movement
     private boolean actionMade = false; //checks if the player can set game mode
     private final List<ProgressionObserver> progressionSubscribers = new ArrayList<ProgressionObserver>(); //the objects that observe player progression (NPC)
+    /**The statistics of the current game*/
     public AdventureGameStatistics gameStats;
     public AdventureGamePath gamePath;
 
     /**
      * Adventure Game Constructor
-     * __________________________
      * Initializes attributes
      *
      * @param name the name of the adventure
@@ -65,7 +65,6 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * setUpGame
-     * __________________________
      *
      * @throws IOException in the case of a file I/O error
      */
@@ -91,8 +90,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     }
 
     /**
-     * tokenize
-     * __________________________
+     * tokenize_
      *
      * @param input string from the command line
      * @return a string array of tokens that represents the command.
@@ -114,15 +112,13 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     }
 
     /**
-     * movePlayer
-     * __________________________
-     * Moves the player in the given direction, if possible.
+     * Moves the player using the current game mode, possibly in the direction specified.
      * Return false if the player wins or dies as a result of the move.
      *
      * @param direction the move command
      * @return false, if move results in death or a win (and game is over).  Else, true.
      */
-    public boolean movePlayer(String direction) {
+    public boolean movePlayer(String direction, AdventureGameView gameView) {
 
         // in event that no game mode has been set up, assume regular movement occurs
         if (this.movementType == null) {
@@ -130,7 +126,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
         }
 
         // move player based on game mode
-        boolean movementDetails = this.movementType.movePlayer(direction, this.player, this.rooms);
+        boolean movementDetails = this.movementType.movePlayer(direction, this.player, this.rooms, gameView);
 
         //need to update stats!
         this.gameStats.updateStatistics();
@@ -140,7 +136,6 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     }
 
     /**
-     * setMovementGameMode
      * Sets up the game mode that the player has requested
      * @param movementID the ID corresponding to the requested game mode
      */
@@ -150,7 +145,6 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     }
 
     /**
-     * getActionMade
      * getter method for actionMade
      * @return the value stored in actionMade
      */
@@ -159,7 +153,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     }
 
     /**
-     * getGameMode
+     * Return the string representation of the current game mode
      * @return the name of the game mode this model is using, or null if no game mode is set
      */
     public String getGameMode(){
@@ -182,7 +176,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
         PassageTable motionTable = this.player.getCurrentRoom().getMotionTable(); //where can we move?
 
         if (motionTable.optionExists(inputArray[0])) {
-            if (!movePlayer(inputArray[0])) {
+            if (!movePlayer(inputArray[0], viewgame)) {
                 if (this.player.getCurrentRoom().getMotionTable().getDirection().get(0).getDestinationRoom() == 0)
                     return "GAME OVER";
                 else return "FORCED";
@@ -217,7 +211,9 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
             }
             else if(inputArray[0].equals("TALK")){
                 if(this.player.getCurrentRoom().hasNPC()){
-                    return this.player.getCurrentRoom().getNPCDialogue();
+                    Dialogue dialogue = this.player.getCurrentRoom().getNPCDialogue();
+                    viewgame.articulateNPC(dialogue);
+                    return dialogue.message;
                 }
                 else{
                     return "THERE IS NOBODY TO TALK TO.\n";
@@ -229,7 +225,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * getDirectoryName
-     * __________________________
+     *
      * Getter method for directory 
      * @return directoryName
      */
@@ -239,7 +235,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * getInstructions
-     * __________________________
+     *
      * Getter method for instructions 
      * @return helpText
      */
@@ -249,7 +245,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * getPlayer
-     * __________________________
+     *
      * Getter method for Player 
      */
     public Player getPlayer() {
@@ -258,7 +254,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * getRooms
-     * __________________________
+     *
      * Getter method for rooms 
      * @return map of key value pairs (integer to room)
      */
@@ -268,7 +264,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * getSynonyms
-     * __________________________
+     *
      * Getter method for synonyms 
      * @return map of key value pairs (synonym to command)
      */
@@ -278,7 +274,7 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * setHelpText
-     * __________________________
+     *
      * Setter method for helpText
      * @param help which is text to set
      */
@@ -288,21 +284,30 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
     /**
      * setHelpText
-     * __________________________
+     *
      * Getter method for helpText
      */
     public String getHelpText(){return this.helpText;}
 
     /**
      * method for subscribing to progressionPublisher
-     * @param sub ProgressionObserver
+     * @param sub ProgressionObserver to subscribe
      */
     public void subscribe(ProgressionObserver sub){
         progressionSubscribers.add(sub);
     }
-    public void unsubscribe(ProgressionObserver exObserver) {
-        progressionSubscribers.remove(exObserver);
+    /**
+     * method for unsubscribing to progressionPublisher
+     * @param observer ProgressionObserver to unsubscribe
+     */
+    public void unsubscribe(ProgressionObserver observer) {
+        progressionSubscribers.remove(observer);
     }
+
+    /**
+     * pushes an update to all Progression Observers
+     * @param event string that indicates a task completed by the player
+     */
     public void notifyAll(String event) {
         for (ProgressionObserver observer : progressionSubscribers) {
             observer.update(event);

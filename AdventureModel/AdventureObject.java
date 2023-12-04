@@ -33,6 +33,7 @@ public class AdventureObject implements Serializable {
     public final Room ORIGINAL_ROOM;
 
     public InteractBehavior interactBehavior;
+    
     public AdventureGameView game;
     /**
      * Adventure Object Constructor

@@ -3,32 +3,52 @@ package NPC;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This class contains information about an NPC
+ */
 public class NPC implements ProgressionObserver, Serializable {
+    /**
+     * name of the NPC
+     */
     String name;
-    private List<Advice> dialouges; //A priority list of NPC advice. Highest priority is last and Advice is removed if its completionEvent is done.
+    /**
+     * A priority queue of NPC advice. Highest priority is last and Advice is removed if its completionEvent is done.
+     */
+    private List<Dialogue> dialouges;
+
+    /**
+     * Makes an NPC with the given name
+     * @param name name of NPC
+     */
     public NPC(String name){
         this.name = name;
-        this.dialouges = new ArrayList<Advice>();
+        this.dialouges = new ArrayList<Dialogue>();
     }
+
+    /**
+     * Update the NPC on the player's progression. Affects what the NPC says.
+     * @param event completion event. e.g. "TAKEN KEYS"
+     */
     public void update(String event){
         dialouges.removeIf(advice -> advice.completionEvent.equals(event));
     }
-    public String getAdvice(){
-        return dialouges.get(dialouges.size()-1).message;
+
+    /**
+     * Gets the dialogue most relevent to the player at the moment.
+     * @return A dialogue object to be shown as text and have audio played
+     */
+    public Dialogue getDialogue(){
+        return dialouges.get(dialouges.size()-1);
     }
 
-    public void addAdvice(String message, String completionEvent){
-        Advice newAdvice = new Advice(message, completionEvent);
-        dialouges.add(0, newAdvice);
-    }
-    class Advice{
-        String message;
-        String completionEvent;
-
-        public Advice(String message, String completionEvent) {
-            this.message = message;
-            this.completionEvent = completionEvent;
-        }
+    /**
+     * populates the dialogues list
+     * @param message message said to the player
+     * @param completionEvent string indicating when the message is no longer relevent
+     * @param id id number for sound file
+     */
+    public void addDialogue(String message, String completionEvent, int id){
+        Dialogue newDialogue = new Dialogue(message, completionEvent, this.name, id);
+        dialouges.add(0, newDialogue);
     }
 }

@@ -44,7 +44,7 @@ public class AdventureLoader {
     }
 
     /**
-     * NPC file
+     * Parse NPC file
      */
     private void parseNPC() throws IOException{
         String npcFileName = this.adventureName + "/NPCs.txt";
@@ -59,8 +59,9 @@ public class AdventureLoader {
             NPC npc = new NPC(name);
 
             // now we need to get the dialogues
-            while(buff.ready()){
-                buff.readLine();//read out the ---
+            int id = 0;
+            while(buff.ready() && !buff.readLine().equals("-----")){
+                //buff.readLine();//read out the ---
 
                 String advice = "";
                 String line = buff.readLine();
@@ -71,7 +72,9 @@ public class AdventureLoader {
                 advice += "\n";
                 String completionEvent = buff.readLine();
 
-                npc.addAdvice(advice, completionEvent);
+                npc.addDialogue(advice, completionEvent, id);
+
+                id += 1;
             }
             this.game.getRooms().get(roomNumber).addNPC(npc);
             this.game.subscribe(npc);

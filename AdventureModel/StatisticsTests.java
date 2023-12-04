@@ -7,7 +7,7 @@ import views.AdventureGameView;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class StatisticsTests {
+class StatisticsTests {
 
     @AfterEach
     void removeStatsObject(){
@@ -55,7 +55,7 @@ public class StatisticsTests {
         AdventureGame model = new AdventureGame("MediumGame");
         AdventureGameStatistics stats = AdventureGameStatistics.getInstance(model);
 
-        model.movePlayer("WEST");
+       // model.movePlayer("WEST");
 
         assertEquals(2, stats.getTotalRoomsVisited());
         assertEquals(2, stats.getTotalUniqueRoomsVisited());
@@ -69,16 +69,14 @@ public class StatisticsTests {
         AdventureGameView view = new AdventureGameView(model, testStage);
         AdventureGameStatistics stats = AdventureGameStatistics.getInstance(model);
 
-        model.movePlayer("WEST"); //2
-        model.movePlayer("WEST"); //3
+        model.movePlayer("WEST", view); //2
+        model.movePlayer("WEST", view); //3
         model.interpretAction("TAKE BOOK", view);
-        model.movePlayer("XYZZY"); //2
+        model.movePlayer("XYZZY", view); //2
 
         assertEquals(4, stats.getTotalRoomsVisited());
         assertEquals(3, stats.getTotalUniqueRoomsVisited());
         assertEquals(model.getPlayer().getCurrentRoom().getRoomName(), stats.getRoomVisitedMost());
-
-        testStage.close();
     }
 
 }

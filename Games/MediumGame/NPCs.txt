@@ -7,22 +7,79 @@ TAKEN KEYS
 ---
 Hey there adventurer! Try exploring the grates and the caves down south.
 -
+VISITED ROOM 8
+---
+Hey there adventurer! Sure seems like a lamp would
+help you explore the caves down there.
+-
+TAKEN LAMP
+---
+Hey adventurer! Have you heard of the glorious chamber of
+orange stone far west of the canyons? That might be the best place to go.
+I'm headed there soon so if you're around the area, stop by and say hi.
+-
+VISITED ROOM 15
+---
+Hi! You made it! This chamber was made in 1250 A.D. Have a look around.
+Don't hesitate to ask me about the history of the building.
+-
 VISITED ROOM 21
 ---
 Hey there adventurer! It seems like you're trying to cross the chasm.
-In nature's grasp, where giants sleep,
-A rocky chasm, dark and deep.
-To bridge the gap, a secret found,
-A wand of wonder, strength unbound.
+Don't you remember the old hymn from the good 'ol days?
+In nature's grasp, where giants sleep, A rocky chasm, dark and deep.
+To bridge the gap, a secret found, A wand of wonder, strength unbound.
 
-What am I? A rod so slight,
-Yet magic dwells within its light.
-Wave me high, the chasm clears,
-The path revealed, conquer fears.
+What am I? A rod so slight, Yet magic dwells within its light.
+Wave me high, the chasm clears, The path revealed, conquer fears.
 -
 VISITED ROOM 24
 ---
-Adventurer! It seems like you are fully prepared to complete your journey.
-I have no more advice to give you.
+Adventurer! It seems the trials and tribulations of the curtains
+are stopping you. My spell book here says only the one with all of
+the treasures of the earth and a source of life may pass. Good luck!
+-
+END GAME
+-----
+Muhammad Ahmad Bajwa
+15
+---
+Hey there adventurer! You need to pick up some KEYS.
+-
+TAKEN KEYS
+---
+Hey there adventurer! Try exploring the grates and the caves down south.
+-
+VISITED ROOM 8
+---
+Hey there adventurer! Sure seems like a lamp would
+help you explore the caves down there.
+-
+TAKEN LAMP
+---
+Hey adventurer! Have you heard of the glorious chamber of
+orange stone far west of the canyons? That might be the best place to go.
+I'm headed there soon so if you're around the area, stop by and say hi.
+-
+VISITED ROOM 15
+---
+Hi! You made it! This chamber was made in 1250 A.D. Have a look around.
+Don't hesitate to ask me about the history of the building.
+-
+VISITED ROOM 21
+---
+Hey there adventurer! It seems like you're trying to cross the chasm.
+Don't you remember the old hymn from the good 'ol days?
+In nature's grasp, where giants sleep, A rocky chasm, dark and deep.
+To bridge the gap, a secret found, A wand of wonder, strength unbound.
+
+What am I? A rod so slight, Yet magic dwells within its light.
+Wave me high, the chasm clears, The path revealed, conquer fears.
+-
+VISITED ROOM 24
+---
+Adventurer! It seems the trials and tribulations of the curtains
+are stopping you. My spell book here says only the one with all of
+the treasures of the earth and a source of life may pass. Good luck!
 -
 END GAME

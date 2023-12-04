@@ -1,10 +1,10 @@
 package views;
 
 import AdventureModel.*;
+import NPC.Dialogue;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -52,8 +52,11 @@ import javax.swing.*;
  */
 public class AdventureGameView {
 
+    /** Model of the game*/
     public AdventureGame model; //model of the game
-   public  Stage stage; //stage on which all is rendered
+    /** Stage on which all is rendered*/
+    public  Stage stage; //stage on which all is rendered
+    /** Buttons*/
     Button saveButton, loadButton, helpButton; //buttons
     Button zoomButton;
 
@@ -76,21 +79,19 @@ public class AdventureGameView {
 
     private PauseTransition forcedTransition; //the transition that occurs when in FORCED room
 
-    private HashMap<AdventureObject, Integer> seenObjects = new HashMap<>();
-    //Integer corresponds to index of the button in the following list
-    private ArrayList<Button> seenObjectButtons = new ArrayList<>();
-
     private ToggleGroup movementGameModes = new ToggleGroup();
     private VBox gameModePanel;
     private Label gameModeLabel = new Label();
 
     private final Button TEST_BUTTON = new Button(); //Button for checking class
+
+    /** The current view of the game*/
     public static AdventureGameView game;
 
 
     /**
      * Adventure Game View Constructor
-     * __________________________
+     *
      * Initializes attributes
      */
     public AdventureGameView(AdventureGame model, Stage stage) {
@@ -177,7 +178,7 @@ public class AdventureGameView {
         zoomButton.setAlignment(Pos.BASELINE_CENTER);
         zoomButton.setWrapText(true);
         zoomButton.setContentDisplay(ContentDisplay.TOP);
-        makeButtonAccessible(zoomButton, "Zoom Button", "This button gives zoom view of current room image", "This button gives zoom-able view of room image that player is currently in.");
+        makeButtonAccessible(this.zoomButton, "Zoom Button", "This button gives zoom view of currrent room image", "This button gives zoom-able view of room image that player is currently in.");
         addZoomEvent();
 
         distanceButton = new Button("Distance");
@@ -221,7 +222,7 @@ public class AdventureGameView {
         statsButton.setPrefSize(120,60);
         statsButton.setFont(new Font("Arial", 17));
         statsButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
-        makeButtonAccessible(statsButton, "Statistics Button", "This button gives statistics of the current game.", "THis button gives statistics related to the overall game and visited rooms. Click it to see these numbers.");
+        makeButtonAccessible(this.statsButton, "Statistics Button", "This button gives statistics of the current game.", "This button gives statistics related to the overall game and visited rooms. Click it to see these numbers.");
         addStatsEvent();
 
         HBox topButtons = new HBox();
@@ -267,6 +268,29 @@ public class AdventureGameView {
 
         updateScene(""); //method displays an image and whatever text is supplied
         updateItems(); //update items shows inventory and objects in rooms
+
+        this.objectsInRoom.setFocusTraversable(true);
+        this.objectsInInventory.setFocusTraversable(true);
+
+        // adding extra features panel
+        VBox extraFeatures = new VBox();
+        extraFeatures.getChildren().addAll(this.zoomButton, this.statsButton);
+        extraFeatures.setAlignment(Pos.CENTER);
+        extraFeatures.setSpacing(10);
+        gridPane.add(extraFeatures, 4,1,1,1);
+
+        //make object boxes traversable
+        this.objectsInRoom.setAccessibleRole(AccessibleRole.SCROLL_PANE);
+        this.objectsInRoom.setAccessibleRoleDescription("Panel containing objects in this room");
+        this.objectsInRoom.setAccessibleText("This panel contains the objects in this room");
+        this.objectsInRoom.setAccessibleHelp("The following buttons are the objects in this room. Continue traversing to hear more about these objects.");
+
+        this.objectsInInventory.setAccessibleRole(AccessibleRole.SCROLL_PANE);
+        this.objectsInInventory.setAccessibleRoleDescription("Panel containing objects in your inventory");
+        this.objectsInInventory.setAccessibleText("This panel contains the objects in your inventory");
+        this.objectsInInventory.setAccessibleHelp("The following buttons are the objects in your inventory. Continue traversing to hear more about these objects.");
+
+        this.setTraversablePath(this.loadButton, this.gameModeLabel);
 
         // adding the text area and submit button to a VBox
         VBox textEntry = new VBox();
@@ -356,7 +380,6 @@ public class AdventureGameView {
 
     /**
      * updateCommandButtons
-     * __________________________
      *
      */
     private void updateCommandButtons() {
@@ -382,7 +405,7 @@ public class AdventureGameView {
 
     /**
      * makeButtonAccessible
-     * __________________________
+     *
      * For information about ARIA standards, see
      * https://www.w3.org/WAI/standards-guidelines/aria/
      *
@@ -417,7 +440,7 @@ public class AdventureGameView {
 
     /**
      * customizeButton
-     * __________________________
+     *
      *
      * @param inputButton the button to make stylish :)
      * @param w width
@@ -452,6 +475,12 @@ public class AdventureGameView {
         makeRadioButtonAccessible(trollGameMode, "Curse of the Troll", "This button sets the game mode to Curse of the Troll", "This button enables the Curse of the Troll game mode. Select it to encounter trolls when you move rooms.");
         this.gameModeLabel.setFocusTraversable(true);
 
+        this.setTraversablePath(this.gameModeLabel, regMoveGameMode);
+        this.setTraversablePath(regMoveGameMode, chaoticMoveGameMode);
+        this.setTraversablePath(chaoticMoveGameMode, trollGameMode);
+        this.setTraversablePath(trollGameMode, this.objectsInRoom);
+
+        //turn into toggles so only one can be selected
         this.movementGameModes = new ToggleGroup();
         regMoveGameMode.setToggleGroup(this.movementGameModes);
         chaoticMoveGameMode.setToggleGroup(this.movementGameModes);
@@ -472,7 +501,6 @@ public class AdventureGameView {
         this.gameModePanel.getChildren().add(regMoveGameMode);
         this.gameModePanel.getChildren().add(chaoticMoveGameMode);
         this.gameModePanel.getChildren().add(trollGameMode);
-        this.gameModePanel.getChildren().add(zoomButton);
         this.gameModePanel.setAlignment(Pos.CENTER_LEFT);
 
         this.gridPane.add(this.gameModePanel, 4,0,1,1);
@@ -481,7 +509,7 @@ public class AdventureGameView {
 
     /**
      * addTextHandlingEvent
-     * __________________________
+     *
      * Add an event handler to the myTextField attribute
      *
      * Your event handler should respond when users
@@ -517,10 +545,29 @@ public class AdventureGameView {
 
     }
 
+    /**
+     * Set the path tab traversal should take from atNode to toNode
+     *
+     * @param atNode the node that currently has focus when using tab traversing
+     * @param toNode the node that should next need focused on when tab traversing is used
+     */
+    private void setTraversablePath(Node atNode, Node toNode){
+        EventHandler<KeyEvent> pressedButton = new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if(keyEvent.getCode() == KeyCode.TAB){
+                    toNode.requestFocus();
+                }
+                keyEvent.consume();
+            }
+        };
+        atNode.setOnKeyPressed(pressedButton);
+    }
+
 
     /**
      * submitEvent
-     * __________________________
+     *
      *
      * @param text the command that needs to be processed
      */
@@ -547,6 +594,7 @@ public class AdventureGameView {
         if (!this.model.getActionMade()){
             String gameModeID = ((RadioButton) this.movementGameModes.getSelectedToggle()).getId();
             this.model.setMovementGameMode(gameModeID);
+            this.setTraversablePath(this.gameModeLabel, this.objectsInRoom);
         }
         String output = this.model.interpretAction(text, this); //process the command!
 
@@ -566,6 +614,9 @@ public class AdventureGameView {
         }
     }
 
+    /**
+     * Create the pause between forced rooms so the audio has time to play
+     */
     private void instantiatePause(){
         this.forcedTransition = new PauseTransition(Duration.seconds(3));
         this.forcedTransition.setOnFinished(event ->{
@@ -573,6 +624,9 @@ public class AdventureGameView {
         });
     }
 
+    /**
+     * Update the necessary features when a forced room is encountered
+     */
     private void handleForced(){
         this.updateScene("");
         this.updateItems();
@@ -581,6 +635,9 @@ public class AdventureGameView {
         this.forcedTransition.play();
     }
 
+    /**
+     * Move to the appropriate room when a forced room is encountered
+     */
     private void forcedMoveRoom(){
 
         List<Passage> allMoves = this.model.getPlayer().getCurrentRoom().getMotionTable().passageTable;
@@ -618,9 +675,9 @@ public class AdventureGameView {
 
     }
 
-    //lockCommands
-    //stop the ability for the player to enter commands or take/drop objects during forced rooms,
-    //or when the game is over
+    /**
+     * stop the player's ability to enter commands or take/drop objects during forced rooms, or when the game is over
+     */
     private void lockCommands(){
 
         this.inputTextField.setEditable(false);
@@ -645,7 +702,7 @@ public class AdventureGameView {
 
     /**
      * showCommands
-     * __________________________
+     *
      *
      * update the text in the GUI (within roomDescLabel)
      * to show all the moves that are possible from the
@@ -665,7 +722,7 @@ public class AdventureGameView {
 
     /**
      * updateScene
-     * __________________________
+     *
      *
      * Show the current room, and print some text below it.
      * If the input parameter is not null, it will be displayed
@@ -709,7 +766,7 @@ public class AdventureGameView {
 
     /**
      * formatText
-     * __________________________
+     *
      *
      * Format text for display.
      *
@@ -729,7 +786,7 @@ public class AdventureGameView {
 
     /**
      * getRoomImage
-     * __________________________
+     *
      *
      * Get the image for the current room and place 
      * it in the roomImageView 
@@ -747,8 +804,10 @@ public class AdventureGameView {
 
         //set accessible text
         roomImageView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        roomImageView.setAccessibleText(this.model.getPlayer().getCurrentRoom().getRoomDescription());
+        roomImageView.setAccessibleText("Image description: " + this.model.getPlayer().getCurrentRoom().getRoomDescription());
         roomImageView.setFocusTraversable(true);
+
+        this.setTraversablePath(this.roomImageView, this.objectsInInventory);
     }
     private String getRoomImageDir(){
         int roomNumber = this.model.getPlayer().getCurrentRoom().getRoomNumber();
@@ -762,7 +821,7 @@ public class AdventureGameView {
 
     /**
      * updateItems
-     * __________________________
+     *
      *
      * This method is partially completed, but you are asked to finish it off.
      *
@@ -782,23 +841,18 @@ public class AdventureGameView {
         //write some code here to add images of objects in a given room to the objectsInRoom Vbox
         ArrayList<AdventureObject> roomObjects = this.model.getPlayer().getCurrentRoom().objectsInRoom;
 
+        //configure each button
         if (!roomObjects.isEmpty()){
             for (AdventureObject curObj: roomObjects){
-                Integer indObj = this.seenObjects.get(curObj);
                 Button curButton;
 
-                if (indObj == null){
-                    //New button, need to configure
-
-                    curButton = this.configureButton(curObj, false);
-                    this.seenObjectButtons.add(curButton);
-                    this.seenObjects.put(curObj, this.seenObjectButtons.size() - 1);
-                }else{
-                    curButton = this.seenObjectButtons.get(indObj);
-                    this.setRoomButtonHandler(curButton);
-                }
-
+                //configure button
+                curButton = this.configureButton(curObj, false);
                 this.objectsInRoom.getChildren().add(curButton);
+
+                makeButtonAccessible(curButton, curObj.getName() + " Button",
+                        "This button corresponds to a " + curObj.getName() + " object in the current room.",
+                        "Clicking this button adds " + curObj.getName() + " to your inventory.");
             }
         }
         //write some code here to add images of objects in a player's inventory room to the objectsInInventory Vbox
@@ -806,22 +860,34 @@ public class AdventureGameView {
 
         if (!invenObjects.isEmpty()){
             for (AdventureObject curObj: invenObjects){
-                Integer indObj = this.seenObjects.get(curObj);
                 Button curButton;
 
-                if (indObj == null){
-                    //New button, need to configure
-
-                    curButton = this.configureButton(curObj, true);
-                    this.seenObjectButtons.add(curButton);
-                    this.seenObjects.put(curObj, this.seenObjectButtons.size() - 1);
-                }else{
-                    curButton = this.seenObjectButtons.get(indObj);
-                    this.setInventoryButtonHandler(curButton);
-                }
-
+                //configure each button
+                curButton = this.configureButton(curObj, true);
                 this.objectsInInventory.getChildren().add(curButton);
+
+                makeButtonAccessible(curButton, curObj.getName() + " Button",
+                        "This button corresponds to a " + curObj.getName() + " object in your inventory.",
+                        "Clicking this button removes " + curObj.getName() + " from your inventory.");
             }
+        }
+
+        if (!this.objectsInRoom.getChildren().isEmpty()){
+            Node firstButton = this.objectsInRoom.getChildren().get(0);
+            Node lastButton = this.objectsInRoom.getChildren().get(this.objectsInRoom.getChildren().size() - 1);
+            this.setTraversablePath(this.objectsInRoom, firstButton);
+            this.setTraversablePath(lastButton, this.roomImageView);
+        }else{
+            this.setTraversablePath(this.objectsInRoom, this.roomImageView);
+        }
+
+        if (!this.objectsInInventory.getChildren().isEmpty()){
+            Node firstButton = this.objectsInInventory.getChildren().get(0);
+            Node lastButton = this.objectsInInventory.getChildren().get(this.objectsInInventory.getChildren().size() - 1);
+            this.setTraversablePath(this.objectsInInventory, firstButton);
+            this.setTraversablePath(lastButton, this.zoomButton);
+        }else{
+            this.setTraversablePath(this.objectsInInventory, this.zoomButton);
         }
 
         ScrollPane scO = new ScrollPane(objectsInRoom);
@@ -837,6 +903,12 @@ public class AdventureGameView {
 
     }
 
+    /**
+     * Create a new button corresponding to an object in the room or inventory
+     * @param curObject the object that the button corresponds to
+     * @param inInven true if object is in the inventory, false if the object is in the current room
+     * @return the button corresponding to curObject
+     */
     private Button configureButton(AdventureObject curObject, boolean inInven){
         Image objImage = new Image(this.model.getDirectoryName() +
                 "/objectImages/" + curObject.getName().toUpperCase() + ".jpg",
@@ -852,44 +924,32 @@ public class AdventureGameView {
         //please use setAccessibleText to add "alt" descriptions to your images!
 
         if (inInven){
-            makeButtonAccessible(objectButton, curObject.getName() + " Button",
-                    "This button corresponds to a " + curObject.getName() + " object in your inventory.",
-                    "Clicking this button removes " + curObject.getName() + "from your inventory.");
             this.setInventoryButtonHandler(objectButton);
         }else{
-            makeButtonAccessible(objectButton, curObject.getName() + " Button",
-                    "This button corresponds to a " + curObject.getName() + " object in the current room.",
-                    "Clicking this button adds " + curObject.getName() + "to your inventory.");
             this.setRoomButtonHandler(objectButton);
         }
         return objectButton;
     }
 
+    /**
+     * Handles event when dropping an object
+     * @param inventoryButton the object to add the handler to
+     */
     private void setInventoryButtonHandler(Button inventoryButton){
         inventoryButton.setOnAction(e -> {
-            gridPane.requestFocus();
-            this.objectsInInventory.getChildren().remove(inventoryButton);
-            this.objectsInRoom.getChildren().add(inventoryButton);
             this.submitEvent("DROP " + inventoryButton.getText());
-
-            //Update alt text of button
-            makeButtonAccessible(inventoryButton, inventoryButton.getText() + " Button",
-                    "This button corresponds to a " + inventoryButton.getText() + " object in the current room.",
-                    "Clicking this button adds " + inventoryButton.getText() + "to your inventory.");
+            this.updateItems();
         });
     }
 
+    /**
+     * Handles event when picking up an object
+     * @param roomButton the object to add the handler to
+     */
     private void setRoomButtonHandler(Button roomButton){
         roomButton.setOnAction(e -> {
-            gridPane.requestFocus();
-            this.objectsInRoom.getChildren().remove(roomButton);
-            this.objectsInInventory.getChildren().add(roomButton);
             this.submitEvent("TAKE " + roomButton.getText());
-
-            //Update alt text of button
-            makeButtonAccessible(roomButton, roomButton.getText() + " Button",
-                    "This button corresponds to a " + roomButton.getText() + " object in your inventory.",
-                    "Clicking this button removes " + roomButton.getText() + "from your inventory.");
+            this.updateItems();
         });
     }
 
@@ -913,6 +973,17 @@ public class AdventureGameView {
 
         if (helpToggle){
             this.updateScene(null);
+
+            //update traverse
+            if (!this.objectsInRoom.getChildren().isEmpty()){
+                Node lastButton = this.objectsInRoom.getChildren().get(this.objectsInRoom.getChildren().size() - 1);
+                this.setTraversablePath(lastButton, this.roomImageView);
+            }else{
+                this.setTraversablePath(this.objectsInRoom, this.roomImageView);
+            }
+
+            this.setTraversablePath(this.roomImageView, this.objectsInInventory);
+
         }else{
             Label helpText = new Label(this.model.getHelpText());
 
@@ -925,6 +996,16 @@ public class AdventureGameView {
             ScrollPane instructionsBox = new ScrollPane(helpText);
             instructionsBox.setFitToWidth(true);
             instructionsBox.setStyle("-fx-background: #000000; -fx-background-color:transparent;");
+
+            //traverse for scrollpane
+            if (!this.objectsInRoom.getChildren().isEmpty()){
+                Node lastButton = this.objectsInRoom.getChildren().get(this.objectsInRoom.getChildren().size() - 1);
+                this.setTraversablePath(lastButton, helpText);
+            }else{
+                this.setTraversablePath(this.objectsInRoom, helpText);
+            }
+
+            this.setTraversablePath(helpText, this.objectsInInventory);
 
             gridPane.add(instructionsBox, 1, 1);
             stage.sizeToScene();
@@ -987,6 +1068,9 @@ public class AdventureGameView {
         });
     }
 
+    /**
+     * Handles the event related to the statistics button
+     */
     public void addStatsEvent(){
         statsButton.setOnAction(e ->{
             gridPane.requestFocus();
@@ -1016,6 +1100,23 @@ public class AdventureGameView {
     }
 
     /**
+     * This method articulates the NPC message
+     */
+    public void articulateNPC(Dialogue dialogue) {
+        String adventureName = this.model.getDirectoryName();
+
+        String musicFile = "./" + adventureName + "/sounds/" + dialogue.NPCName+ dialogue.id + ".wav";
+        musicFile = musicFile.replace(" ","-");
+        //System.out.println(musicFile);
+
+        Media sound = new Media(new File(musicFile).toURI().toString());
+
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+        mediaPlaying = true;
+    }
+
+    /**
      * This method stops articulations 
      * (useful when transitioning to a new room or loading a new game)
      */
@@ -1025,6 +1126,10 @@ public class AdventureGameView {
             mediaPlaying = false;
         }
     }
+
+    /**
+     * Handles the event realted to the zoom button
+     */
     public void addZoomEvent() {
         zoomButton.setOnMouseClicked(e -> {
             try{
