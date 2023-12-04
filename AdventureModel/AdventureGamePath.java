@@ -49,17 +49,25 @@ public class AdventureGamePath implements Serializable {
     }
 
     public String toString(boolean isDisplacement){
-        ArrayList<Room> source;
-        if (isDisplacement) {
-            source = this.getDisplacement();}
-        else {source = this.getDistance();}
 
         StringBuilder outputBuilder = new StringBuilder();
-        for (Room room: source){
-            outputBuilder.append(room.getRoomName()).append("\n" + " ---> ");
+        ArrayList<Room> source;
+        if (isDisplacement) {
+            outputBuilder.append("<HTML>Your Progress Thus Far: <br>");
+            source = this.getDisplacement();}
+        else {
+            outputBuilder.append("<HTML>Your Journey Thus Far: <br>");
+            source = this.getDistance();}
+
+        for (int i = 0; i < source.size(); i++){
+            if (i== 0){
+                outputBuilder.append(source.get(i).getRoomName()).append("<br>");
+            }
+            else {
+                outputBuilder.append("--->").append(source.get(i).getRoomName()).append("<br>");
+            }
         }
-        String output = outputBuilder.toString();
-        output = output.substring(0, output.length() - 6);
-        return output;
+        outputBuilder.append("</HTML>");
+        return outputBuilder.toString();
     }
 }

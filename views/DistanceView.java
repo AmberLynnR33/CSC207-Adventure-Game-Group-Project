@@ -1,57 +1,107 @@
 package views;
 
-import AdventureModel.AdventureGame;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
-public class DistanceView {
-    private AdventureGameView mainView;
-    private AdventureGame model;
+public class DistanceView extends javax.swing.JFrame {
+    public Point pointView;
 
-    public DistanceView(AdventureGameView gameView, AdventureGame model) {
-        this.mainView = gameView;
-        this.model = model;
-        final Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(mainView.stage);
+    public DistanceView(String distance2str){
+        setUpDistanceView(distance2str);
+    }
 
-        VBox distanceDisplay = new VBox();
-        distanceDisplay.setStyle("-fx-background-color: #121212;");
-        distanceDisplay.setAlignment(Pos.TOP_LEFT);
-        distanceDisplay.setSpacing(10);
-        distanceDisplay.setPadding(new Insets(10));
+    private void setUpDistanceView(String distance2str) {
+        JScrollPane scrollPane1 = new JScrollPane();
+        JLabel label1 = new JLabel();
 
-        javafx.scene.control.Label headerLabel = new javafx.scene.control.Label("Your progress thus far:");
-        headerLabel.setFont(new javafx.scene.text.Font("Arial", 20));
-        headerLabel.setStyle("-fx-background-color: #121212; -fx-text-fill: white;");
+        label1.addMouseMotionListener(new MouseMotionAdapter(){
+            public void mouseDragged(MouseEvent e){
+                Point dragEventPoint = e.getPoint();
+                JViewport viewport = (JViewport) label1.getParent();
 
-        javafx.scene.control.Label distancePath = new javafx.scene.control.Label(model.gamePath.toString(false));
-        distancePath.setWrapText(true);
-        distancePath.setFont(new javafx.scene.text.Font("Arial", 16));
-        distancePath.setStyle("-fx-background-color: #121212; -fx-text-fill: white;");
+                Point viewPos = viewport.getViewPosition();
+                int maxViewPosX = label1.getWidth() - viewport.getWidth();
+                int maxViewPosY = label1.getHeight() - viewport.getHeight();
 
+                if (label1.getWidth() > viewport.getWidth()) {
+                    viewPos.x -= dragEventPoint.x - pointView.x;
 
-        headerLabel.setFocusTraversable(true);
-        distancePath.setFocusTraversable(true);
+                    if (viewPos.x < 0) {
+                        viewPos.x = 0;
+                        pointView.x = dragEventPoint.x;
+                    }
 
-        distanceDisplay.getChildren().add(headerLabel);
-        distanceDisplay.getChildren().add(distancePath);
+                    if (viewPos.x > maxViewPosX) {
+                        viewPos.x = maxViewPosX;
+                        pointView.x = dragEventPoint.x;
+                    }
+                }
 
-        Scene dialogScene = new Scene(distanceDisplay, 500, 500);
-        dialog.setScene(dialogScene);
-        dialog.show();
+                if (label1.getHeight() > viewport.getHeight()) {
+                    viewPos.y -= dragEventPoint.y - pointView.y;
+
+                    if (viewPos.y < 0) {
+                        viewPos.y = 0;
+                        pointView.y = dragEventPoint.y;
+                    }
+
+                    if (viewPos.y > maxViewPosY) {
+                        viewPos.y = maxViewPosY;
+                        pointView.y = dragEventPoint.y;
+                    }
+                }
+
+                viewport.setViewPosition(viewPos);
+
+            }
+        });
+
+        label1.addMouseListener(new MouseAdapter(){
+            public void mousePressed(MouseEvent e){
+                label1.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+                pointView = e.getPoint();
+            }
+            public void mouseReleased(MouseEvent e){
+                label1.setCursor(null);
+            }
+        });
+
+//        label1.setText(distance2str);
+        java.awt.Font f = new java.awt.Font("Arial", java.awt.Font.PLAIN, 20);
+        label1.setFont(f);
+        label1.setVerticalAlignment(1);
+
+        label1.setText(distance2str);
+
+        scrollPane1.setViewportView(label1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+
+                                  .addGap(0, 0, 0))
+        ));
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                        .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        ));
+        pack();
+        setLocationRelativeTo(null);
+        setTitle("Journey thus far: ");
+        setFont(f);
 
     }
 }

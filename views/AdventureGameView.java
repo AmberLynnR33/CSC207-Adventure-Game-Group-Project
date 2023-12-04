@@ -297,9 +297,30 @@ public class AdventureGameView {
     }
 
     private void addDisplacementEvent() {
-        displacementButton.setOnAction(e ->{
+        displacementButton.setOnAction(e -> {
             gridPane.requestFocus();
-            DisplacementView displacementView = new DisplacementView(this, this.model);
+            try{
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
+                }
+            } catch (UnsupportedLookAndFeelException ex) {
+                throw new RuntimeException(ex);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            } catch (InstantiationException ex) {
+                throw new RuntimeException(ex);
+            } catch (IllegalAccessException ex) {
+                throw new RuntimeException(ex);
+            }
+            EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new DisplacementView(getPath(true)).setVisible(true);
+                }
+            });
         });
     }
 
@@ -307,33 +328,29 @@ public class AdventureGameView {
     private void addDistanceEvent() {
         distanceButton.setOnAction(e -> {
             gridPane.requestFocus();
-            DistanceView distanceView = new DistanceView(this, this.model);
+            try{
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
+                }
+            } catch (UnsupportedLookAndFeelException ex) {
+                throw new RuntimeException(ex);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            } catch (InstantiationException ex) {
+                throw new RuntimeException(ex);
+            } catch (IllegalAccessException ex) {
+                throw new RuntimeException(ex);
+            }
+            EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new DistanceView(getPath(false)).setVisible(true);
+                }
+            });
         });
-//                try{
-//                    for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                        if ("Nimbus".equals(info.getName())) {
-//                            javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                            break;
-//                        }
-//                    }
-//                } catch (UnsupportedLookAndFeelException ex) {
-//                    throw new RuntimeException(ex);
-//                } catch (ClassNotFoundException ex) {
-//                    throw new RuntimeException(ex);
-//                } catch (InstantiationException ex) {
-//                    throw new RuntimeException(ex);
-//                } catch (IllegalAccessException ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//
-//                EventQueue.invokeLater(new Runnable() {
-//                    private AdventureGame model;
-//
-//                    @Override
-//                    public void run() {
-//                        new DistanceView(this, this.model);
-//                    }
-//                });
     }
 
 
@@ -737,6 +754,10 @@ public class AdventureGameView {
         int roomNumber = this.model.getPlayer().getCurrentRoom().getRoomNumber();
         String roomImageDir = this.model.getDirectoryName() + "/room-images/" + roomNumber + ".png";
         return roomImageDir;
+    }
+    private String getPath(boolean isDisplacement){
+        if (isDisplacement) return this.model.gamePath.toString(true);
+        else return this.model.gamePath.toString(false);
     }
 
     /**
