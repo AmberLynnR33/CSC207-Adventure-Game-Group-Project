@@ -7,6 +7,7 @@ import AdventureModel.Room;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -16,6 +17,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -26,6 +28,7 @@ import java.util.HashMap;
 
 /**
  * Class AlwaysTrolled
+ * player must face a troll every time they move
  */
 public class AlwaysTrolled implements MovementGameMode{
     /**
@@ -34,7 +37,8 @@ public class AlwaysTrolled implements MovementGameMode{
      *
      * @param direction the direction the player requests to move
      * @param player    the player that is moving rooms
-     * @param roomMap a mapping of all rooms in the game by their room numbers
+     * @param roomMap a mapping of all rooms in the game by their room number
+     * @param view the AdventureGameView object use for gui
      * @return false, if move results in death or a win (and game is over).  Else, true.
      */
     @Override
@@ -62,6 +66,12 @@ public class AlwaysTrolled implements MovementGameMode{
             final Stage troll = new Stage();
             troll.initModality(Modality.APPLICATION_MODAL);
             troll.initOwner(view.stage);
+            Button close = new Button("Close Window");
+            close.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+            close.setPrefSize(200, 25);
+            close.setFont(new Font(16));
+            close.setOnAction(e -> troll.close());
+            view.makeButtonAccessible(close, "close window", "This is a button to close the troll game window", "Use this button to close the troll game window.");
             Label dialogue = new Label();
             dialogue.setWrapText(true);
             dialogue.setStyle("-fx-background-color: transparent;");
@@ -78,8 +88,8 @@ public class AlwaysTrolled implements MovementGameMode{
             box.setPadding(new Insets(20, 20, 20, 20));
             box.setStyle("-fx-background-color: #121212;");
             box.setAlignment(Pos.CENTER);
-            box.getChildren().addAll(trollMan, dialogue, answer);
-            Scene trollScene = new Scene(box, 450, 550);
+            box.getChildren().addAll(close, trollMan, dialogue, answer);
+            Scene trollScene = new Scene(box, 450, 600);
             troll.setScene(trollScene);
             Troll tom = new NumberTroll(dialogue, answer, troll);
             troll.showAndWait();

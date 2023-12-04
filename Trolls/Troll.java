@@ -18,7 +18,7 @@ public interface Troll {
 
     /**
      * giveInstructions
-     * _________________________
+     * @param lab print text to a label
      * All Trolls should explain how their game is played
      */
     public void giveInstructions(Label lab);

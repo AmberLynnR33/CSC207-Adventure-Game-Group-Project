@@ -67,7 +67,7 @@ class ChaoticMovementTests {
 
         model.movePlayer("NORTH", view);
 
-        model.setMovementGameMode("01");
+        //model.setMovementGameMode("01");
 
         model.movePlayer("FORCED", view);
         pathList.add(model.player.getCurrentRoom().getRoomNumber());
