@@ -165,25 +165,25 @@ public class AdventureGameView {
 
         zoomButton = new Button("Zoom");
         zoomButton.setId("Zoom");
-        zoomButton.setPrefSize(50, 50);
-        zoomButton.setFont(new Font("Arial", 15));
+        zoomButton.setPrefSize(60, 60);
+        zoomButton.setFont(new Font("Arial", 17));
         zoomButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         Image zoomIcon = new Image("views/zoom-icon.png");
         ImageView zoomIconView = new ImageView(zoomIcon);
-        zoomIconView.setFitHeight(50);
+        zoomIconView.setFitHeight(60);
         zoomIconView.setPreserveRatio(true);
         zoomButton.setText("Zoom Option");
         zoomButton.setGraphic(zoomIconView);
-        zoomButton.setAlignment(Pos.BOTTOM_CENTER);
+        zoomButton.setAlignment(Pos.BASELINE_CENTER);
         zoomButton.setWrapText(true);
         zoomButton.setContentDisplay(ContentDisplay.TOP);
-        makeButtonAccessible(zoomButton, "Zoom Button", "This button gives zoom view of currrent room image", "This button gives zoom-able view of room image that player is currently in.");
+        makeButtonAccessible(zoomButton, "Zoom Button", "This button gives zoom view of current room image", "This button gives zoom-able view of room image that player is currently in.");
         addZoomEvent();
 
         distanceButton = new Button("Distance");
         distanceButton.setId("distance");
         distanceButton.setPrefSize(60, 60);
-        distanceButton.setFont(new Font("Arial", 12));
+        distanceButton.setFont(new Font("Arial", 17));
         distanceButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         Image distanceIcon = new Image("visualPaths/distance.png");
         ImageView distanceIconView = new ImageView(distanceIcon);
@@ -201,7 +201,7 @@ public class AdventureGameView {
         displacementButton = new Button("Displacement");
         displacementButton.setId("displacement");
         displacementButton.setPrefSize(49, 49);
-        displacementButton.setFont(new Font("Arial", 12));
+        displacementButton.setFont(new Font("Arial", 17));
         displacementButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         Image displacementIcon = new Image("visualPaths/displacement.png");
         ImageView displacementIconView = new ImageView(displacementIcon);
