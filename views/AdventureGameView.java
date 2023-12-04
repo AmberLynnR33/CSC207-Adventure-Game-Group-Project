@@ -272,13 +272,6 @@ public class AdventureGameView {
         this.objectsInRoom.setFocusTraversable(true);
         this.objectsInInventory.setFocusTraversable(true);
 
-        // adding extra features panel
-        //VBox extraFeatures = new VBox();
-        //extraFeatures.getChildren().addAll(this.zoomButton, this.statsButton);
-        //extraFeatures.setAlignment(Pos.CENTER);
-        //extraFeatures.setSpacing(10);
-        //gridPane.add(extraFeatures, 4,1,1,1);
-
         //make object boxes traversable
         this.objectsInRoom.setAccessibleRole(AccessibleRole.SCROLL_PANE);
         this.objectsInRoom.setAccessibleRoleDescription("Panel containing objects in this room");
@@ -755,6 +748,13 @@ public class AdventureGameView {
             this.removeCell(0, 4);
             this.setUpGameModes();
             this.gameModeLabel.setText("Select Your Game Mode:");
+        }
+
+        //update traverse for the features to the command buttons
+        if (this.commandButtons.getChildren().isEmpty()){
+            this.setTraversablePath(this.statsButton, this.inputTextField);
+        }else{
+            this.setTraversablePath(this.statsButton, this.commandButtons.getChildren().get(0));
         }
 
         gridPane.add(roomPane, 1, 1);
