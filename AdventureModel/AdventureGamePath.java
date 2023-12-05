@@ -14,6 +14,7 @@ public class AdventureGamePath implements Serializable {
     private ArrayList<Room> displacement;
 
     /**
+     * Constructor
      * Creates an AdventureGamePath object assuming the player is in the starting room
      */
     private AdventureGamePath(AdventureGame model){

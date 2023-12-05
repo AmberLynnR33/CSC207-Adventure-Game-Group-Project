@@ -1132,12 +1132,7 @@ public class AdventureGameView {
                 throw new RuntimeException(ex);
             }
 
-            EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    new ZoomFrame(getRoomImageDir()).setVisible(true);
-                }
-            });
+            EventQueue.invokeLater(() -> new ZoomFrame(getRoomImageDir()).setVisible(true));
 
         });
     }
