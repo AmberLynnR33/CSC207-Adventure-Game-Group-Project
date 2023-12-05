@@ -14,6 +14,7 @@ INVENTORY: this will print your current inventory.
 LOOK: this will print the description for the current room.
 TAKE <object>: this will take an object from a room and place it in your inventory. Replace <object> with the name of the object to take.  The object must be present in the room in order to take it.
 DROP <object>: this will drop an object in your inventory. Replace <object> with the name of the object to drop. The object must be in your inventory to drop it.
+TALK: this will talk to the NPC in the room.
 
 Some paths may be blocked.  To unblock a path you may need a specific object to be in your inventory.
 

@@ -1,5 +1,7 @@
 package AdventureModel;
 
+import views.AdventureGameView;
+
 import java.io.Serializable; //you will need this to save the game!
 
 /**
@@ -30,6 +32,9 @@ public class AdventureObject implements Serializable {
      */
     public final Room ORIGINAL_ROOM;
 
+    public InteractBehavior interactBehavior;
+    
+    public AdventureGameView game;
     /**
      * Adventure Object Constructor
      * ___________________________
@@ -39,11 +44,13 @@ public class AdventureObject implements Serializable {
      * @param description One line description of the Object.
      * @param location The location of the Object in the game.
      */
-    public AdventureObject(String name, String description, Room location){
+    public AdventureObject(String name, String description, Room location, InteractBehavior behavior){
         this.objectName = name;
         this.description = description;
         this.location = location;
         this.ORIGINAL_ROOM = location;
+        this.interactBehavior = behavior;
+        this.game = AdventureGameView.game;
     }
 
     /**
@@ -73,6 +80,10 @@ public class AdventureObject implements Serializable {
      */
     public Room getLocation(){
         return this.location;
+    }
+
+    public void setInteractBehavior(InteractBehavior type) {
+        this.interactBehavior = type;
     }
 
 }

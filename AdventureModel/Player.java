@@ -1,5 +1,8 @@
 package AdventureModel;
 
+import views.AdventureGameView;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -34,15 +37,20 @@ public class Player implements Serializable {
      * @param object name of the object to pick up
      * @return true if picked up, false otherwise
      */
-    public boolean takeObject(String object){
+    public boolean takeObject(String object, AdventureGameView game){
         if(this.currentRoom.checkIfObjectInRoom(object)){
             AdventureObject object1 = this.currentRoom.getObject(object);
-            this.currentRoom.removeGameObject(object1);
-            this.addToInventory(object1);
-            return true;
-        } else {
-            return false;
+            try {
+                if (object1.interactBehavior.interact(this, object1, game)){
+                    this.currentRoom.removeGameObject(object1);
+                    this.addToInventory(object1);
+                    return true;
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
+        return false;
     }
 
 

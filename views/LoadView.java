@@ -125,6 +125,7 @@ public class LoadView {
      * @param selectGameLabel the label to use to print errors and or successes to the user.
      * @param GameList the ListView to populate
      */
+
     private void selectGame(Label selectGameLabel, ListView<String> GameList) throws IOException {
         //saved games will be in the Games/Saved folder!
         this.adventureGameView.stopArticulation();

@@ -7,4 +7,9 @@ Devin Mendes
 
 Chau Nguyen 
 
-Amber Richardson 
+Amber Richardson
+
+Tools Used:
+https://deepai.org/machine-learning-model/surreal-graphics-generator for images
+https://chat.openai.com/ for NPC dialogue
+https://play.ht/studio/files for NPC audio
