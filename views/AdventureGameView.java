@@ -34,18 +34,13 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.*;
 
 /**
  * Class AdventureGameView.
- *
  * This is the Class that will visualize your model.
  * You are asked to demo your visualization via a Zoom
  * recording. Place a link to your recording below.
- *
  * // Please see the following Google Drive link as I cannot cloud share on Zoom. There is no password.
  * ZOOM LINK: https://drive.google.com/file/d/1q6gIRrxTv5tEANpWZYLRDH3_7im41xvk/view?usp=sharing
  * PASSWORD:
@@ -91,7 +86,6 @@ public class AdventureGameView {
 
     /**
      * Adventure Game View Constructor
-     *
      * Initializes attributes
      */
     public AdventureGameView(AdventureGame model, Stage stage) {
@@ -326,21 +320,11 @@ public class AdventureGameView {
                         break;
                     }
                 }
-            } catch (UnsupportedLookAndFeelException ex) {
-                throw new RuntimeException(ex);
-            } catch (ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
+            } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                     IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
-            EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    new DisplacementView(getPath(true)).setVisible(true);
-                }
-            });
+            EventQueue.invokeLater(() -> new PathView(getPath(true)).setVisible(true));
         });
     }
 
@@ -357,21 +341,11 @@ public class AdventureGameView {
                         break;
                     }
                 }
-            } catch (UnsupportedLookAndFeelException ex) {
-                throw new RuntimeException(ex);
-            } catch (ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
+            } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                     IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
-            EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    new DistanceView(getPath(false)).setVisible(true);
-                }
-            });
+            EventQueue.invokeLater(() -> new PathView(getPath(false)).setVisible(true));
         });
     }
 
@@ -403,7 +377,6 @@ public class AdventureGameView {
 
     /**
      * makeButtonAccessible
-     *
      * For information about ARIA standards, see
      * https://www.w3.org/WAI/standards-guidelines/aria/
      *
@@ -823,8 +796,7 @@ public class AdventureGameView {
      */
     private String getRoomImageDir(){
         int roomNumber = this.model.getPlayer().getCurrentRoom().getRoomNumber();
-        String roomImageDir = this.model.getDirectoryName() + "/room-images/" + roomNumber + ".png";
-        return roomImageDir;
+        return this.model.getDirectoryName() + "/room-images/" + roomNumber + ".png";
     }
     /**
      * Get path to visualize for the Displacement and Distance Buttons
@@ -1155,13 +1127,8 @@ public class AdventureGameView {
                         break;
                     }
                 }
-            } catch (UnsupportedLookAndFeelException ex) {
-                throw new RuntimeException(ex);
-            } catch (ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
+            } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                     IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
 

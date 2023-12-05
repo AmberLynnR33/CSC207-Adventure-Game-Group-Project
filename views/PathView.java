@@ -6,15 +6,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-public class DisplacementView extends javax.swing.JFrame {
+public class PathView extends javax.swing.JFrame {
     public Point pointView;
+
 
     /**
      * Constructor
-     * Creates and displays the Progress thus far for the AdventureGame
-     * @param displacement2str the string representation of the progress that player has made
+     * Creates and displays the Path for the AdventureGame
+     * @param path2str the string representation of the path that player has been on
      */
-    public DisplacementView(String displacement2str){
+    public PathView(String path2str){
 
         JScrollPane scrollPane1 = new JScrollPane();
         JLabel label1 = new JLabel();
@@ -71,10 +72,13 @@ public class DisplacementView extends javax.swing.JFrame {
             }
         });
 
-        label1.setText(displacement2str);
+//        label1.setText(distance2str);
         java.awt.Font f = new java.awt.Font("Arial", java.awt.Font.PLAIN, 20);
         label1.setFont(f);
         label1.setVerticalAlignment(1);
+
+        label1.setText(path2str);
+
         scrollPane1.setViewportView(label1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -86,19 +90,20 @@ public class DisplacementView extends javax.swing.JFrame {
                                 .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGap(0, 0, 0))
-                        ));
+
+                                  .addGap(0, 0, 0))
+        ));
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        ));
+                                        .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        ));
         pack();
         setLocationRelativeTo(null);
-        setTitle("Progress thus far: ");
+        setTitle("Journey thus far: ");
         setFont(f);
 
     }
