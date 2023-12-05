@@ -9,11 +9,13 @@ import java.awt.event.MouseMotionAdapter;
 public class DisplacementView extends javax.swing.JFrame {
     public Point pointView;
 
+    /**
+     * Constructor
+     * Creates and displays the Progress thus far for the AdventureGame
+     * @param displacement2str the string representation of the progress that player has made
+     */
     public DisplacementView(String displacement2str){
-        setUpDisplacementView(displacement2str);
-    }
 
-    private void setUpDisplacementView(String displacement2str) {
         JScrollPane scrollPane1 = new JScrollPane();
         JLabel label1 = new JLabel();
 

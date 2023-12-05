@@ -272,13 +272,6 @@ public class AdventureGameView {
         this.objectsInRoom.setFocusTraversable(true);
         this.objectsInInventory.setFocusTraversable(true);
 
-        // adding extra features panel
-        //VBox extraFeatures = new VBox();
-        //extraFeatures.getChildren().addAll(this.zoomButton, this.statsButton);
-        //extraFeatures.setAlignment(Pos.CENTER);
-        //extraFeatures.setSpacing(10);
-        //gridPane.add(extraFeatures, 4,1,1,1);
-
         //make object boxes traversable
         this.objectsInRoom.setAccessibleRole(AccessibleRole.SCROLL_PANE);
         this.objectsInRoom.setAccessibleRoleDescription("Panel containing objects in this room");
@@ -320,6 +313,9 @@ public class AdventureGameView {
 
     }
 
+    /**
+     * private method to handle event for the Displacement Button
+     */
     private void addDisplacementEvent() {
         displacementButton.setOnAction(e -> {
             gridPane.requestFocus();
@@ -349,7 +345,9 @@ public class AdventureGameView {
     }
 
 
-    private void addDistanceEvent() {
+    /**
+     * private method to handle event for the Distance Button
+     */private void addDistanceEvent() {
         distanceButton.setOnAction(e -> {
             gridPane.requestFocus();
             try{
@@ -809,11 +807,18 @@ public class AdventureGameView {
 
         this.setTraversablePath(this.roomImageView, this.objectsInInventory);
     }
+    /**
+     * Get directory of image of current room
+     */
     private String getRoomImageDir(){
         int roomNumber = this.model.getPlayer().getCurrentRoom().getRoomNumber();
         String roomImageDir = this.model.getDirectoryName() + "/room-images/" + roomNumber + ".png";
         return roomImageDir;
     }
+    /**
+     * Get path to visualize for the Displacement and Distance Buttons
+     * @param isDisplacement true if the path is intended for the Displacement Button, false otherwise
+     */
     private String getPath(boolean isDisplacement){
         if (isDisplacement) return this.model.gamePath.toString(true);
         else return this.model.gamePath.toString(false);
@@ -1128,7 +1133,7 @@ public class AdventureGameView {
     }
 
     /**
-     * Handles the event realted to the zoom button
+     * Handles the event related to the zoom button
      */
     public void addZoomEvent() {
         zoomButton.setOnMouseClicked(e -> {
@@ -1152,7 +1157,7 @@ public class AdventureGameView {
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new zoomFrame(getRoomImageDir()).setVisible(true);
+                    new ZoomFrame(getRoomImageDir()).setVisible(true);
                 }
             });
 

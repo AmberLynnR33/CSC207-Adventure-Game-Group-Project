@@ -9,18 +9,22 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import javax.swing.*;
 
-public class zoomFrame extends javax.swing.JFrame implements Serializable {
-    public Image img;
-    public BufferedImage bufferedImg;
+/**
+ * Class ZoomFrame
+ * Creates the popup that displays the ZoomOption window in the AdventureGame
+ */
+public class ZoomFrame extends javax.swing.JFrame implements Serializable {
     public int w;
     public int h;
     public Point pointView;
 
-    public zoomFrame(String roomImageDir) {
-        setUpZoomFrame(roomImageDir);
-    }
+    /**
+     * Constructor
+     * Creates and displays the ZoomOption window for the AdventureGame
+     * @param roomImageDir the directory to the image file of the room the player is currently in
+     */
+    public ZoomFrame(String roomImageDir) {
 
-    private void setUpZoomFrame(String roomImageDir) {
         JScrollPane scrollPane1 = new JScrollPane();
         JLabel label1 = new JLabel();
         JButton zoomInButton = new JButton();
@@ -140,7 +144,12 @@ public class zoomFrame extends javax.swing.JFrame implements Serializable {
         label1.setIcon(icon);
         setTitle("Room Visuals");
     }
-
+    /**
+     * Private helper method to render the BufferedImage room image for the constructor
+     * @param h height of the image
+     * @param w width of the image
+     * @param img the room image
+     */
     private Image zoom(int h, int w, Image img) {
         BufferedImage bufferedImg = new BufferedImage(h, w, BufferedImage.TYPE_INT_RGB);
         Graphics2D gp = bufferedImg.createGraphics();

@@ -9,11 +9,14 @@ import java.awt.event.MouseMotionAdapter;
 public class DistanceView extends javax.swing.JFrame {
     public Point pointView;
 
-    public DistanceView(String distance2str){
-        setUpDistanceView(distance2str);
-    }
 
-    private void setUpDistanceView(String distance2str) {
+    /**
+     * Constructor
+     * Creates and displays the Journey thus far for the AdventureGame
+     * @param distance2str the string representation of the journey that player has been on
+     */
+    public DistanceView(String distance2str){
+
         JScrollPane scrollPane1 = new JScrollPane();
         JLabel label1 = new JLabel();
 
