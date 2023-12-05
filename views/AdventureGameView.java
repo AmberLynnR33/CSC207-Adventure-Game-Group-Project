@@ -220,7 +220,7 @@ public class AdventureGameView {
         statsButton = new Button("Statistics");
         statsButton.setId("Statistics");
         statsButton.setPrefSize(120,60);
-        statsButton.setFont(new Font("Arial", 17));
+        statsButton.setFont(new Font("Arial", 20));
         statsButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         makeButtonAccessible(this.statsButton, "Statistics Button", "This button gives statistics of the current game.", "This button gives statistics related to the overall game and visited rooms. Click it to see these numbers.");
         addStatsEvent();
@@ -250,12 +250,12 @@ public class AdventureGameView {
         Label objLabel =  new Label("Objects in Room");
         objLabel.setAlignment(Pos.CENTER);
         objLabel.setStyle("-fx-text-fill: white;");
-        objLabel.setFont(new Font("Arial", 16));
+        objLabel.setFont(new Font("Arial", 18));
 
         Label invLabel =  new Label("Your Inventory");
         invLabel.setAlignment(Pos.CENTER);
         invLabel.setStyle("-fx-text-fill: white;");
-        invLabel.setFont(new Font("Arial", 16));
+        invLabel.setFont(new Font("Arial", 18));
 
         //add all the widgets to the GridPane
         gridPane.add( objLabel, 0, 0, 1, 1 );  // Add label
@@ -271,13 +271,6 @@ public class AdventureGameView {
 
         this.objectsInRoom.setFocusTraversable(true);
         this.objectsInInventory.setFocusTraversable(true);
-
-        // adding extra features panel
-        //VBox extraFeatures = new VBox();
-        //extraFeatures.getChildren().addAll(this.zoomButton, this.statsButton);
-        //extraFeatures.setAlignment(Pos.CENTER);
-        //extraFeatures.setSpacing(10);
-        //gridPane.add(extraFeatures, 4,1,1,1);
 
         //make object boxes traversable
         this.objectsInRoom.setAccessibleRole(AccessibleRole.SCROLL_PANE);
@@ -448,7 +441,7 @@ public class AdventureGameView {
      */
     private void customizeButton(Button inputButton, int w, int h) {
         inputButton.setPrefSize(w, h);
-        inputButton.setFont(new Font("Arial", 16));
+        inputButton.setFont(new Font("Arial", 18));
         inputButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
     }
 
@@ -459,12 +452,15 @@ public class AdventureGameView {
     private void setUpGameModes(){
         // game mode buttons
         RadioButton regMoveGameMode = new RadioButton("Regular Movement");
+        regMoveGameMode.setFont(new Font("Arial", 15));
         regMoveGameMode.setId("00");
 
         RadioButton chaoticMoveGameMode = new RadioButton("Curse of the Lost");
+        chaoticMoveGameMode.setFont(new Font("Arial", 15));
         chaoticMoveGameMode.setId("01");
 
         RadioButton trollGameMode = new RadioButton("Curse of the Troll");
+        trollGameMode.setFont(new Font("Arial", 15));
         trollGameMode.setId("02");
 
         regMoveGameMode.fire();
@@ -488,7 +484,7 @@ public class AdventureGameView {
 
         //game mode changing text colour
         this.gameModeLabel.setStyle("-fx-text-fill: white;");
-        this.gameModeLabel.setFont(new Font("Arial", 17));
+        this.gameModeLabel.setFont(new Font("Arial", 18));
         regMoveGameMode.setStyle("-fx-text-fill: white;");
         chaoticMoveGameMode.setStyle("-fx-text-fill: white;");
         trollGameMode.setStyle("-fx-text-fill: white;");
@@ -604,6 +600,7 @@ public class AdventureGameView {
         } else if (output.equals("GAME OVER")) {
             updateScene("");
             updateItems();
+            this.lockCommands();
             PauseTransition pause = new PauseTransition(Duration.seconds(10));
             pause.setOnFinished(event -> {
                 Platform.exit();
@@ -755,6 +752,13 @@ public class AdventureGameView {
             this.removeCell(0, 4);
             this.setUpGameModes();
             this.gameModeLabel.setText("Select Your Game Mode:");
+        }
+
+        //update traverse for the features to the command buttons
+        if (this.commandButtons.getChildren().isEmpty()){
+            this.setTraversablePath(this.statsButton, this.inputTextField);
+        }else{
+            this.setTraversablePath(this.statsButton, this.commandButtons.getChildren().get(0));
         }
 
         gridPane.add(roomPane, 1, 1);
