@@ -320,6 +320,9 @@ public class AdventureGameView {
 
     }
 
+    /**
+     * Private method handling mouse click event relating to the DisplacementButton
+     */
     private void addDisplacementEvent() {
         displacementButton.setOnAction(e -> {
             gridPane.requestFocus();
@@ -348,7 +351,9 @@ public class AdventureGameView {
         });
     }
 
-
+    /**
+     * Private method handling mouse click event relating to the DistanceButton
+     */
     private void addDistanceEvent() {
         distanceButton.setOnAction(e -> {
             gridPane.requestFocus();
@@ -815,8 +820,8 @@ public class AdventureGameView {
         return roomImageDir;
     }
     private String getPath(boolean isDisplacement){
-        if (isDisplacement) return this.model.gamePath.toString(true);
-        else return this.model.gamePath.toString(false);
+        if (isDisplacement) return this.model.displacementPath.toString();
+        else return this.model.distancePath.toString();
     }
 
     /**
