@@ -1,3 +1,4 @@
+
 package views;
 
 import javax.swing.*;
@@ -6,19 +7,47 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-public class PathView extends javax.swing.JFrame {
+/**
+ * Abstract class PathView
+ * Creates the popup that displays the different paths in the AdventureGame
+ */
+abstract class PathView extends javax.swing.JFrame {
     public Point pointView;
+    private JScrollPane scrollPane1;
+    private JLabel label1;
+    private javax.swing.GroupLayout layout;
 
+    public PathView(){
+        setUpPathView();
+    }
+
+    /**
+     * Getter method for the scroll pane attribute
+     */
+    public JScrollPane getScrollPane1() {
+        return this.scrollPane1;
+    }
+
+    /**
+     * Getter method for the label attribute
+     */public JLabel getLabel1() {
+        return this.label1;
+    }
+
+    @Override
+    /**
+     * Getter method for the layout attribute
+     */public GroupLayout getLayout() {
+        return this.layout;
+    }
 
     /**
      * Constructor
-     * Creates and displays the Path for the AdventureGame
-     * @param path2str the string representation of the path that player has been on
+     * Sets up the layout for the popup window
      */
-    public PathView(String path2str){
-
-        JScrollPane scrollPane1 = new JScrollPane();
-        JLabel label1 = new JLabel();
+    private void setUpPathView() {
+        this.scrollPane1 = new JScrollPane();
+        this.label1 = new JLabel();
 
         label1.addMouseMotionListener(new MouseMotionAdapter(){
             public void mouseDragged(MouseEvent e){
@@ -72,16 +101,13 @@ public class PathView extends javax.swing.JFrame {
             }
         });
 
-//        label1.setText(distance2str);
         java.awt.Font f = new java.awt.Font("Arial", java.awt.Font.PLAIN, 20);
         label1.setFont(f);
         label1.setVerticalAlignment(1);
 
-        label1.setText(path2str);
-
         scrollPane1.setViewportView(label1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        this.layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,19 +117,18 @@ public class PathView extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
 
-                                  .addGap(0, 0, 0))
-        ));
+                                        .addGap(0, 0, 0))
+                        ));
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                        .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        ));
+                                                .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        ));
         pack();
         setLocationRelativeTo(null);
-        setTitle("Journey thus far: ");
         setFont(f);
 
     }

@@ -29,8 +29,9 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
     private final List<ProgressionObserver> progressionSubscribers = new ArrayList<ProgressionObserver>(); //the objects that observe player progression (NPC)
     /**The statistics of the current game*/
     public AdventureGameStatistics gameStats;
-    /**The path the player has been on so far in the current game*/
-    public AdventureGamePath gamePath;
+    /**The paths the player has been on so far in the current game*/
+    public DistancePath distancePath;
+    public DisplacementPath displacementPath;
 
     /**
      * Adventure Game Constructor
@@ -87,9 +88,11 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
         this.gameStats = AdventureGameStatistics.getInstance(this);
 
         //reset the path
-        AdventureGamePath.resetPathInstance();
-        this.gamePath = AdventureGamePath.getInstance(this);
-    }
+        DistancePath.resetPathInstance();
+        this.distancePath = DistancePath.getInstance(this);
+
+        DisplacementPath.resetPathInstance();
+        this.displacementPath = DisplacementPath.getInstance(this);}
 
     /**
      * tokenize_
@@ -132,7 +135,8 @@ public class AdventureGame implements Serializable, ProgressionPublisher {
 
         //need to update stats!
         this.gameStats.updateStatistics();
-        this.gamePath.updatePath();
+        this.distancePath.updatePath();
+        this.displacementPath.updatePath();
 
         return movementDetails;
     }
