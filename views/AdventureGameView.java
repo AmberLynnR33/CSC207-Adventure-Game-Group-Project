@@ -324,7 +324,7 @@ public class AdventureGameView {
                      IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
-            EventQueue.invokeLater(() -> new PathView(getPath(true)).setVisible(true));
+            EventQueue.invokeLater(() -> new DisplacementView(getPath(true)).setVisible(true));
         });
     }
 
@@ -345,11 +345,9 @@ public class AdventureGameView {
                      IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
-            EventQueue.invokeLater(() -> new PathView(getPath(false)).setVisible(true));
+            EventQueue.invokeLater(() -> new DistanceView(getPath(false)).setVisible(true));
         });
     }
-
-
     /**
      * updateCommandButtons
      *
@@ -770,8 +768,8 @@ public class AdventureGameView {
      * getRoomImage
      *
      *
-     * Get the image for the current room and place 
-     * it in the roomImageView 
+     * Get the image for the current room and place
+     * it in the roomImageView
      */
     private void getRoomImage() {
 
@@ -803,9 +801,8 @@ public class AdventureGameView {
      * @param isDisplacement true if the path is intended for the Displacement Button, false otherwise
      */
     private String getPath(boolean isDisplacement){
-        if (isDisplacement) return this.model.gamePath.toString(true);
-        else return this.model.gamePath.toString(false);
-    }
+        if (isDisplacement) return this.model.displacementPath.toString();
+        else return this.model.distancePath.toString();}
 
     /**
      * updateItems
@@ -817,7 +814,7 @@ public class AdventureGameView {
      * Each Vbox should contain a collection of nodes (Buttons, ImageViews, you can decide)
      * Each node represents a different object.
      *
-     * Images of each object are in the assets 
+     * Images of each object are in the assets
      * folders of the given adventure game.
      */
     public void updateItems() {
@@ -1105,7 +1102,7 @@ public class AdventureGameView {
     }
 
     /**
-     * This method stops articulations 
+     * This method stops articulations
      * (useful when transitioning to a new room or loading a new game)
      */
     public void stopArticulation() {
