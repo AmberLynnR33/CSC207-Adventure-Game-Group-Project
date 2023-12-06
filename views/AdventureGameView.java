@@ -34,18 +34,13 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.*;
 
 /**
  * Class AdventureGameView.
- *
  * This is the Class that will visualize your model.
  * You are asked to demo your visualization via a Zoom
  * recording. Place a link to your recording below.
- *
  * // Please see the following Google Drive link as I cannot cloud share on Zoom. There is no password.
  * ZOOM LINK: https://drive.google.com/file/d/1q6gIRrxTv5tEANpWZYLRDH3_7im41xvk/view?usp=sharing
  * PASSWORD:
@@ -91,7 +86,6 @@ public class AdventureGameView {
 
     /**
      * Adventure Game View Constructor
-     *
      * Initializes attributes
      */
     public AdventureGameView(AdventureGame model, Stage stage) {
@@ -220,7 +214,7 @@ public class AdventureGameView {
         statsButton = new Button("Statistics");
         statsButton.setId("Statistics");
         statsButton.setPrefSize(120,60);
-        statsButton.setFont(new Font("Arial", 17));
+        statsButton.setFont(new Font("Arial", 20));
         statsButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         makeButtonAccessible(this.statsButton, "Statistics Button", "This button gives statistics of the current game.", "This button gives statistics related to the overall game and visited rooms. Click it to see these numbers.");
         addStatsEvent();
@@ -250,12 +244,12 @@ public class AdventureGameView {
         Label objLabel =  new Label("Objects in Room");
         objLabel.setAlignment(Pos.CENTER);
         objLabel.setStyle("-fx-text-fill: white;");
-        objLabel.setFont(new Font("Arial", 16));
+        objLabel.setFont(new Font("Arial", 18));
 
         Label invLabel =  new Label("Your Inventory");
         invLabel.setAlignment(Pos.CENTER);
         invLabel.setStyle("-fx-text-fill: white;");
-        invLabel.setFont(new Font("Arial", 16));
+        invLabel.setFont(new Font("Arial", 18));
 
         //add all the widgets to the GridPane
         gridPane.add( objLabel, 0, 0, 1, 1 );  // Add label
@@ -271,13 +265,6 @@ public class AdventureGameView {
 
         this.objectsInRoom.setFocusTraversable(true);
         this.objectsInInventory.setFocusTraversable(true);
-
-        // adding extra features panel
-        //VBox extraFeatures = new VBox();
-        //extraFeatures.getChildren().addAll(this.zoomButton, this.statsButton);
-        //extraFeatures.setAlignment(Pos.CENTER);
-        //extraFeatures.setSpacing(10);
-        //gridPane.add(extraFeatures, 4,1,1,1);
 
         //make object boxes traversable
         this.objectsInRoom.setAccessibleRole(AccessibleRole.SCROLL_PANE);
@@ -321,7 +308,11 @@ public class AdventureGameView {
     }
 
     /**
+<<<<<<< HEAD
      * Private method handling mouse click event relating to the DisplacementButton
+=======
+     * private method to handle event for the Displacement Button
+>>>>>>> main
      */
     private void addDisplacementEvent() {
         displacementButton.setOnAction(e -> {
@@ -333,28 +324,25 @@ public class AdventureGameView {
                         break;
                     }
                 }
-            } catch (UnsupportedLookAndFeelException ex) {
-                throw new RuntimeException(ex);
-            } catch (ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
+            } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                     IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
-            EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    new DisplacementView(getPath(true)).setVisible(true);
-                }
-            });
+            EventQueue.invokeLater(() -> new PathView(getPath(true)).setVisible(true));
         });
     }
 
+<<<<<<< HEAD
     /**
      * Private method handling mouse click event relating to the DistanceButton
      */
     private void addDistanceEvent() {
+=======
+
+    /**
+     * private method to handle event for the Distance Button
+     */private void addDistanceEvent() {
+>>>>>>> main
         distanceButton.setOnAction(e -> {
             gridPane.requestFocus();
             try{
@@ -364,21 +352,11 @@ public class AdventureGameView {
                         break;
                     }
                 }
-            } catch (UnsupportedLookAndFeelException ex) {
-                throw new RuntimeException(ex);
-            } catch (ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
+            } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                     IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
-            EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    new DistanceView(getPath(false)).setVisible(true);
-                }
-            });
+            EventQueue.invokeLater(() -> new PathView(getPath(false)).setVisible(true));
         });
     }
 
@@ -410,7 +388,6 @@ public class AdventureGameView {
 
     /**
      * makeButtonAccessible
-     *
      * For information about ARIA standards, see
      * https://www.w3.org/WAI/standards-guidelines/aria/
      *
@@ -453,7 +430,7 @@ public class AdventureGameView {
      */
     private void customizeButton(Button inputButton, int w, int h) {
         inputButton.setPrefSize(w, h);
-        inputButton.setFont(new Font("Arial", 16));
+        inputButton.setFont(new Font("Arial", 18));
         inputButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
     }
 
@@ -464,12 +441,15 @@ public class AdventureGameView {
     private void setUpGameModes(){
         // game mode buttons
         RadioButton regMoveGameMode = new RadioButton("Regular Movement");
+        regMoveGameMode.setFont(new Font("Arial", 15));
         regMoveGameMode.setId("00");
 
         RadioButton chaoticMoveGameMode = new RadioButton("Curse of the Lost");
+        chaoticMoveGameMode.setFont(new Font("Arial", 15));
         chaoticMoveGameMode.setId("01");
 
         RadioButton trollGameMode = new RadioButton("Curse of the Troll");
+        trollGameMode.setFont(new Font("Arial", 15));
         trollGameMode.setId("02");
 
         regMoveGameMode.fire();
@@ -493,7 +473,7 @@ public class AdventureGameView {
 
         //game mode changing text colour
         this.gameModeLabel.setStyle("-fx-text-fill: white;");
-        this.gameModeLabel.setFont(new Font("Arial", 17));
+        this.gameModeLabel.setFont(new Font("Arial", 18));
         regMoveGameMode.setStyle("-fx-text-fill: white;");
         chaoticMoveGameMode.setStyle("-fx-text-fill: white;");
         trollGameMode.setStyle("-fx-text-fill: white;");
@@ -609,6 +589,7 @@ public class AdventureGameView {
         } else if (output.equals("GAME OVER")) {
             updateScene("");
             updateItems();
+            this.lockCommands();
             PauseTransition pause = new PauseTransition(Duration.seconds(10));
             pause.setOnFinished(event -> {
                 Platform.exit();
@@ -762,6 +743,13 @@ public class AdventureGameView {
             this.gameModeLabel.setText("Select Your Game Mode:");
         }
 
+        //update traverse for the features to the command buttons
+        if (this.commandButtons.getChildren().isEmpty()){
+            this.setTraversablePath(this.statsButton, this.inputTextField);
+        }else{
+            this.setTraversablePath(this.statsButton, this.commandButtons.getChildren().get(0));
+        }
+
         gridPane.add(roomPane, 1, 1);
         stage.sizeToScene();
 
@@ -814,11 +802,17 @@ public class AdventureGameView {
 
         this.setTraversablePath(this.roomImageView, this.objectsInInventory);
     }
+    /**
+     * Get directory of image of current room
+     */
     private String getRoomImageDir(){
         int roomNumber = this.model.getPlayer().getCurrentRoom().getRoomNumber();
-        String roomImageDir = this.model.getDirectoryName() + "/room-images/" + roomNumber + ".png";
-        return roomImageDir;
+        return this.model.getDirectoryName() + "/room-images/" + roomNumber + ".png";
     }
+    /**
+     * Get path to visualize for the Displacement and Distance Buttons
+     * @param isDisplacement true if the path is intended for the Displacement Button, false otherwise
+     */
     private String getPath(boolean isDisplacement){
         if (isDisplacement) return this.model.displacementPath.toString();
         else return this.model.distancePath.toString();
@@ -1133,7 +1127,7 @@ public class AdventureGameView {
     }
 
     /**
-     * Handles the event realted to the zoom button
+     * Handles the event related to the zoom button
      */
     public void addZoomEvent() {
         zoomButton.setOnMouseClicked(e -> {
@@ -1144,22 +1138,12 @@ public class AdventureGameView {
                         break;
                     }
                 }
-            } catch (UnsupportedLookAndFeelException ex) {
-                throw new RuntimeException(ex);
-            } catch (ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
+            } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                     IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
 
-            EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    new zoomFrame(getRoomImageDir()).setVisible(true);
-                }
-            });
+            EventQueue.invokeLater(() -> new ZoomFrame(getRoomImageDir()).setVisible(true));
 
         });
     }
