@@ -1,5 +1,7 @@
 This is a group project for CSC207, Software Design, to learn software design practices while improving the accessibility of a text based adventure game and adding fun features. 
 
+-- Permission from the instructor was granted to publicly share this project --
+
 This final group project was intended to build off the work done on the previous assignments, by making a text-based adventure game more interactive and accessible. This project also gave us a chance to apply what we had learnt about design patterns and the agile process scrum.
 
 During this project, we added the following features:
