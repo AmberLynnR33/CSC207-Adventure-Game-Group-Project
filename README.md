@@ -21,13 +21,13 @@ This final group project was intended to build off the work done on the previous
 
 ## Developers:
 
-Andrew Nic Cole 
-Devin Mendes 
-Chau Nguyen 
-Amber Richardson
+- Andrew Nic Cole
+- Devin Mendes
+- Chau Nguyen
+- Amber Richardson
 
 ## Links to tools used:
 
-Room images: https://deepai.org/machine-learning-model/surreal-graphics-generator
-NPC dialogue: https://chat.openai.com/ 
-NPC audio: https://play.ht/studio/files
+- Room images: https://deepai.org/machine-learning-model/surreal-graphics-generator
+- NPC dialogue: https://chat.openai.com/
+- NPC audio: https://play.ht/studio/files
